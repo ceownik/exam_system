@@ -1,0 +1,221 @@
+
+#shortcuts {
+	display: block;
+	position: relative;
+	height: 29px;
+	overflow: visible;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+	border-color: #555555;
+	background: url("../img/content-h1.gif") bottom repeat-x;
+}
+
+#shortcuts a,
+#shortcuts span {
+	text-decoration: none;
+	color: #000000;
+	display: block;
+	padding: 5px 8px;
+	color: #ccc;
+	background-position: center top;
+	cursor:pointer;
+	margin: 0px 4px;
+}
+#shortcuts a:hover,
+#shortcuts span:hover {
+	background-position: center bottom;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+/* first level menu */
+#shortcuts > ul {
+	display: block;
+	margin: 0px;
+	overflow: visible;
+}
+
+#shortcuts > ul > li {
+	display: block;
+	
+	float: left;
+	color: #dddddd;
+	background-image: none;
+	border-right: 1px solid #555;
+	height: 29px;
+	overflow: visible;
+	padding: 0px;
+}
+#shortcuts > ul > li.active {
+	background-color: #000000;
+}
+#shortcuts > ul > li.active > a {
+	opacity: 1.0;
+	filter: alpha(opacity=100);
+	color: #ffffff;
+}
+
+/* second level */
+#shortcuts > ul > li > ul {
+	display: none;
+	position: absolute;
+	margin: 0px;
+}
+#shortcuts > ul > li > ul > li {
+	display: block;
+	position: relative;
+	background-image: none;
+	margin: 0px;
+	padding: 0px;
+	background: url("../img/content-h1.gif") bottom repeat-x;
+}
+
+
+#shortcuts  ul  li  a.create:before,
+#shortcuts  ul  li  span.create:before {
+	content: "";
+	float: left;
+	width: 15px;
+	height: 15px;
+	margin: 0px 5px 0px 0px;
+	background-image: url('../img/plus_icon2.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+#shortcuts  ul  li .parent:after {
+	content: "";
+	float: right;
+	width: 10px;
+	height: 20px;
+	margin: 0px 0px 0px 5px;
+	background-image: url('../img/shortcuts_arrows2.png');
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+
+
+#content > h1:first-child {
+	padding: 5px 15px;
+	font-size: 150%;
+	letter-spacing: 0px;
+	font-weight: normal;
+}
+
+
+
+/**************************************
+ colorful crud forms                 */
+form.color-rows .row.even {
+	background-color: #e6e6e6;
+	border-radius: 10px;
+}
+
+form.active-form .row {
+	display: block;
+	overflow: hidden;
+	clear: both;
+	padding: 10px;
+}
+
+form.active-form .row label {
+	display: block;
+	float: left;
+	width: 150px;
+	text-align: right;
+	padding: 3px 10px 3px 3px;
+}
+
+form.active-form .row input[type="text"],
+form.active-form .row input[type="password"] {
+	display: block;
+	float: left;
+	margin: 0px;
+	padding: 3px;
+	width: 300px;
+	border: 2px solid #c6c6c6;
+	height: 23px;
+}
+
+form.active-form .row .errorMessage {
+	display: block;
+	float: left;
+	margin: 0px 0px 0px 10px;
+}
+
+form.active-form .row .success {
+	display: none;
+}
+form.active-form .row.success .success {
+	display: block;
+	width: 16px;
+	height: 33px;
+	margin: 0px 0px 0px 10px;
+	float: left;
+	background-image: url('../img/ico-done.gif');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+form.active-form .row.radio > span {
+	display: block;
+	float: left;
+}
+form.active-form .row.radio > span p {
+	display: block;
+	overflow: auto;
+	margin: 0px;
+}
+form.active-form .row.radio input[type="radio"] {
+	display: block;
+	float: left;
+	height: 25px;
+}
+form.active-form .row.radio span label {
+	text-align: left;
+	margin: 0px 0px 0px 10px;
+}
+
+
+form.active-form .row.checkbox {
+	
+}
+form.active-form .row.checkbox input {
+	display: block;
+	float: left;
+	height: 33px;
+}
+
+
+form.active-form .row.buttons {
+	
+}
+form.active-form .row.buttons input {
+	display: block;
+	float: right;
+	padding: 5px 10px;
+	margin: 0px 10px 0px 0px;
+}
+form.active-form .row.buttons input:first-child {
+	margin: 0px 30% 0px 0px;
+}
+
+
+form.active-form .errorSummary {
+	display: block;
+	border: 2px solid #FFAEAE;
+	background-color: #FEEBEB;
+	padding: 5px 10px 0px 10px;
+	margin: 0px 0px 20px 0px;
+}
+form.active-form .errorSummary p {
+	margin: 5px 0px 10px 0px;
+}
+#content form.active-form .errorSummary ul {
+	margin: 5px 0px 10px 15px;
+}
+
+
+
+
+
