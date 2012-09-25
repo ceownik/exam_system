@@ -20,7 +20,6 @@ $application = Yii::createWebApplication($config);
 
 
 
-
 // my global helper function
 function pre_dump($data, $die=false)
 {
