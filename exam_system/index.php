@@ -1,4 +1,7 @@
 <?php
+
+echo 'a';
+die;
 $start = microtime();
 
 
