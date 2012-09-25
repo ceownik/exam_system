@@ -1,6 +1,5 @@
 <?php
 
-
 $start = microtime();
 
 
@@ -72,6 +71,10 @@ $application->components['db']->createCommand()
 			'request_uri' => $application->components['request']->requestUri,
 			'render_time' => ($time < 0) ? 0 : $time,
 		));
+?>
+
+<?php 
+ // TODO: delete lines below
 ?>
 <div id="render-time" 
 	 style="background-color: rgb(15,0,80); 
