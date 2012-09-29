@@ -1,4 +1,7 @@
 <?php
+
+// test of password encrypting function
+
 function encrypt( $value )
 	{
 		$counter = 1500;

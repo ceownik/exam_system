@@ -12,13 +12,26 @@ if(Yii::app()->user->checkAccess('users.view_users_list'))
 				'class' => 'CCheckBoxColumn',
 				'selectableRows' => 2,
 			),
-			'id',
-			'login',
-			'display_name',
-			'email',
+			'id'=>array(
+				'name' => 'id',
+				'header' => 'User Id',
+			),
+			'login'=>array(
+				'name' => 'login',
+				'header' => 'Login',
+			),
+			'display_name'=>array(
+				'name' => 'display_name',
+				'header' => 'Display name',
+			),
+			'email'=>array(
+				'name' => 'email',
+				'header' => 'Email',
+			),
 
 			array(
 				'name' => 'status',
+				'header' => 'Status',
 				'value' => '$data->status',
 			),
 //			array(

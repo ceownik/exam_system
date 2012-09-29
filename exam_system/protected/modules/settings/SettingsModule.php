@@ -7,8 +7,8 @@
 /**
  * 
  */
-class SettingsModule extends KModule 
-{
+class SettingsModule extends KModule {
+	
 	/**
 	 * configurable component name
 	 */
@@ -20,7 +20,7 @@ class SettingsModule extends KModule
 	 * link to settings component
 	 */
 	private $component;
-	public function getComponent()
+	public function getComponentInstance()
 	{
 		return $this->component;
 	}
