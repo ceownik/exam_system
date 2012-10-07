@@ -1,0 +1,38 @@
+
+#header {
+	border-bottom: 4px solid #c9e0ed;
+}
+
+.main {
+	padding: 20px;
+}
+
+.database-form {
+	
+}
+
+.form .row {
+	margin: 0px 0px 10px 0px;
+}
+
+.form label {
+	display: block;
+	float: left;
+	width: 140px;
+}
+
+.msg {
+	display: block;
+	margin: 5px 0px 10px 0px;
+	padding: 5px;
+}
+
+.msg.success {
+	border: 2px solid #30B34A;
+	background-color: #A7FAB8;
+}
+
+.msg.error {
+	border: 2px solid #DB2323;
+	background-color: #F7ADAD;
+}

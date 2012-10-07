@@ -2,74 +2,47 @@
 
 $start = microtime();
 
-
-// change the following paths if necessary
-$yii=dirname(__FILE__).'/yii/yii.php';
-$config=dirname(__FILE__).'/protected/config/main.php';
-
 // remove the following lines when in production mode
 defined('YII_DEBUG') or define('YII_DEBUG',true);
 // specify how many levels of call stack should be shown in each log message
 defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
 
+
+defined('APP_BASE') or define('APP_BASE', dirname(__FILE__));
+
+
+$yii=dirname(__FILE__).'/yii/yii.php';
+$config=dirname(__FILE__).'/protected/config/main.php';
+
+$installationDir = dirname(__FILE__).'/protected/installation';
+$installationConfig = dirname(__FILE__).'/protected/installation/config/installation.php';
+
+
 require_once($yii);
 
-$application = Yii::createWebApplication($config);
 
-
-
-
-
-// my global helper function
-function pre_dump($data, $die=false)
+// search for installation dir
+if(is_dir($installationDir))
 {
-	echo '<div style="
-			display: block;
-			width: 90%;
-			overflow: auto;
-			border: 2px solid #dd3333;
-			padding: 5px;
-		"><pre>';
-	print_r($data);
-	echo '</pre></div>';
-	if($die)
-		die;
+	// run installation process
+	$application = Yii::createWebApplication($installationConfig);
 }
-
-
-function dump($var, $die=false, $higlight = true, $depth = 100)
+else
 {
-	echo '<div style="
-			display: block;
-			width: 98%;
-			overflow: auto;
-			border: 2px solid #dd3333;
-			padding: 5px;
-			background-color: #fff;
-			margin: 2px auto;
-		"><pre>';
-	CVarDumper::dump($var, $depth, $higlight);
-	echo '</pre></div>';
-	if($die)
-		die;
+	// run normal application
+	$application = Yii::createWebApplication($config);
 }
-
-
 
 
 $application->run();
+
+
+
 
 $end = microtime();
 
 $time = $end - $start;
 
-//dump($application);
-$application->components['db']->createCommand()
-		->insert('kcms_performance_log', array(
-			'date' => time(),
-			'request_uri' => $application->components['request']->requestUri,
-			'render_time' => ($time < 0) ? 0 : $time,
-		));
 ?>
 
 <?php 

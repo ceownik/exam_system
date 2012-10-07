@@ -270,7 +270,7 @@ class KDbAuthManager extends CDbAuthManager
 	 */
 	public function insertAuthItems($itemsArray)
 	{
-		if( !$this->inDebugMode )
+		if( !$this->inDebugMode)
 			return false;
 			
 		if( !is_array($itemsArray) || empty($itemsArray) )

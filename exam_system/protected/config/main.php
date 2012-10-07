@@ -79,15 +79,16 @@ return array(
 		),
 		
 		// MySQL database
-		'db'=>array(
-			'class' => 'KDbConnection',
-			'connectionString' => 'mysql:host=localhost;dbname=kcms',
-			'emulatePrepare' => true,
-			'username' => 'kcms',
-			'password' => '123456',
-			'charset' => 'utf8',
-			'tablePrefix' => 'kcms_',
-		),
+//		'db'=>array(
+//			'class' => 'KDbConnection',
+//			'connectionString' => 'mysql:host=localhost;dbname=kcms',
+//			'emulatePrepare' => true,
+//			'username' => 'kcms',
+//			'password' => '123456',
+//			'charset' => 'utf8',
+//			'tablePrefix' => 'kcms_',
+//		),
+		'db'=> require(dirname(__FILE__).'/db-config.php'),
 		
 		'authManager'=>array(
 			'class'=>'KDbAuthManager',

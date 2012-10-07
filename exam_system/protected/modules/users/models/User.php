@@ -70,7 +70,6 @@ class User extends KActiveRecord {
 	 */
 	public function tableName()
 	{
-		//var_dump($this->tablePrefix); die();
 		$this->init();
 		return $this->tablePrefix . 'user';
 	}
@@ -191,7 +190,7 @@ class User extends KActiveRecord {
 
 	
 	
-	public function encrypt( $value )
+	public static function encrypt( $value )
 	{
 		$counter = 1500;
 		
@@ -234,7 +233,7 @@ class User extends KActiveRecord {
 			// settings for new record (insert)
 			if( $this->isNewRecord )
 			{
-				$this->password = $this->encrypt( $this->password );
+				$this->password = self::encrypt( $this->password );
 
 				// if user is created by another user
 				if( $this->scenario == 'create' )
@@ -259,7 +258,7 @@ class User extends KActiveRecord {
 				
 				if( $this->scenario == 'passwd' )
 				{
-					$this->password = $this->encrypt( $this->new_password );
+					$this->password = self::encrypt( $this->new_password );
 				}
 				
 			}
@@ -335,7 +334,7 @@ class User extends KActiveRecord {
 	{
 		if(!$this->hasErrors())
 		{
-			if( $this->encrypt($this->old_password) != $this->password )
+			if( self::encrypt($this->old_password) != $this->password )
 				$this->addError('password', Yii::t('app', 'Incorrect password.'));
 		}
 	}
