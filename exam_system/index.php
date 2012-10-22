@@ -1,6 +1,6 @@
 <?php
 
-$start = microtime();
+$start = microtime(true);
 
 // remove the following lines when in production mode
 defined('YII_DEBUG') or define('YII_DEBUG',true);
@@ -39,7 +39,7 @@ $application->run();
 
 
 
-$end = microtime();
+$end = microtime(true);
 
 $time = $end - $start;
 

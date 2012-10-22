@@ -102,16 +102,6 @@ class SiteController extends CController
 				Yii::app()->session->add('username', $data['user']);
 				Yii::app()->session->add('password', $data['password']);
 				
-//				Yii::import('application.modules.users.models.User', true);
-//				$connection->createCommand()->insert('user', array(
-//					'login' => 'admin',
-//					'email' => 'admin@mail.com',
-//					'password' => User::encrypt('1234'),
-//					'is_active' => true,
-//					'create_user' => 0,
-//					'create_date' => time(),
-//					'last_update_user' => 0,
-//				));
 				
 				echo CJSON::encode(array(
 					'status' => 'success',
@@ -342,6 +332,9 @@ return array(
 				`active_from` int(11) not null default 0,
 				`active_to` int(11) not null default 0,
 				`is_deleted` boolean not null default false,
+				`activated` boolean not null default false,
+				`activation_code` varchar(64) collate utf8_unicode_ci not null default '',
+				`pass_reset_code` varchar(64) collate utf8_unicode_ci not null default '',
 
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
@@ -399,6 +392,170 @@ return array(
 				`itemname` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
 				primary key (`itemname`),
 				foreign key (`itemname`) references rights_items (`name`) on delete cascade on update cascade
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'question_set' => "create table question_set (
+				`id` int(11) not null auto_increment,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`name` varchar(128) collate utf8_unicode_ci not null default '',
+				`description` text default null collate utf8_unicode_ci,
+				
+				primary key (`id`),
+				foreign key (`create_user`) references `user`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'question_set_history' => "create table question_set_history (
+				`id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`name` varchar(128) collate utf8_unicode_ci not null default '',
+				`description` text default null collate utf8_unicode_ci,
+				
+				primary key (`id`, `last_update_date`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`id`) references `question_set`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'question_group' => "create table question_group (
+				`id` int(11) not null auto_increment,
+				`set_id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`name` varchar(128) collate utf8_unicode_ci not null default '',
+				`description` text default null collate utf8_unicode_ci,
+				`item_order` int(11)  not null,
+				
+				primary key (`id`),
+				unique (`set_id`, `item_order`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`set_id`) references `question_set`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'question_group_history' => "create table question_group_history (
+				`id` int(11) not null,
+				`set_id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`name` varchar(128) collate utf8_unicode_ci not null default '',
+				`description` text default null collate utf8_unicode_ci,
+				`item_order` int(11)  not null,
+				
+				primary key (`id`, `last_update_date`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`set_id`) references `question_set`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'question' => "create table question (
+				`id` int(11) not null auto_increment,
+				`group_id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`type` int(11) not null,
+				`question` text collate utf8_unicode_ci default null,
+				`description` text default null collate utf8_unicode_ci,
+				`item_order` int(11)  not null,
+				`difficulty` int(11) not null default 1,
+				
+				primary key (`id`),
+				unique (`group_id`, `item_order`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`group_id`) references `question_group`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'question_history' => "create table question_history (
+				`id` int(11),
+				`group_id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`type` int(11) not null,
+				`question` text collate utf8_unicode_ci default null,
+				`description` text default null collate utf8_unicode_ci,
+				`item_order` int(11)  not null,
+				`difficulty` int(11) not null default 1,
+				
+				primary key (`id`, `last_update_date`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`group_id`) references `question_group`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'answer' => "create table answer (
+				`id` int(11) not null auto_increment,
+				`question_id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`answer` text collate utf8_unicode_ci default null,
+				`is_correct` boolean not null default false,
+				`description` text default null collate utf8_unicode_ci,
+				`correct_order` int(11) default null,
+				`column_left` text default null collate utf8_unicode_ci,
+				`column_right` text default null collate utf8_unicode_ci,
+				
+				`item_order` int(11)  not null,
+				
+				primary key (`id`),
+				unique (`question_id`, `item_order`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`question_id`) references `question`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'answer_history' => "create table answer_history (
+				`id` int(11) not null,
+				`question_id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` timestamp default current_timestamp(),
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`answer` text collate utf8_unicode_ci default null,
+				`is_correct` boolean not null default false,
+				`description` text default null collate utf8_unicode_ci,
+				`correct_order` int(11) default null,
+				`column_left` text default null collate utf8_unicode_ci,
+				`column_right` text default null collate utf8_unicode_ci,
+				
+				`item_order` int(11)  not null,
+				
+				primary key (`id`, `last_update_date`),
+				foreign key (`create_user`) references `user`(`id`),
+				foreign key (`question_id`) references `question`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		",
 	);
@@ -558,6 +715,11 @@ return array(
 			'category' => 'appAdmin',
 			'name' => 'paginationPageSize',
 			'value' => 25
+		),
+		array(
+			'category' => 'appAdmin',
+			'name' => 'applicationName',
+			'value' => 'Egzamin',
 		),
 	);
 }
