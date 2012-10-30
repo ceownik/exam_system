@@ -414,7 +414,7 @@ return array(
 				`id` int(11) not null auto_increment,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -430,7 +430,7 @@ return array(
 				`id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -448,7 +448,7 @@ return array(
 				`set_id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -468,7 +468,7 @@ return array(
 				`set_id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -487,7 +487,7 @@ return array(
 				`group_id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -509,7 +509,7 @@ return array(
 				`group_id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -530,7 +530,7 @@ return array(
 				`question_id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				
@@ -555,7 +555,7 @@ return array(
 				`question_id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
-				`last_update_date` timestamp default current_timestamp(),
+				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
 				

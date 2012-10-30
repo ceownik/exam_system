@@ -1,28 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "question_set".
+ * This is the model class for table "question_group".
  *
- * The followings are the available columns in table 'question_set':
+ * The followings are the available columns in table 'question_group':
  * @property integer $id
+ * @property integer $set_id
  * @property integer $create_date
  * @property integer $create_user
- * @property string $last_update_date
+ * @property integer $last_update_date
  * @property integer $last_update_user
  * @property integer $is_deleted
  * @property string $name
  * @property string $description
+ * @property integer $item_order
  *
  * The followings are the available model relations:
- * @property QuestionGroup[] $questionGroups
- * @property QuestionGroupHistory[] $questionGroupHistories
+ * @property Question[] $questions
  * @property User $createUser
- * @property QuestionSetHistory[] $questionSetHistories
+ * @property QuestionSet $set
+ * @property QuestionHistory[] $questionHistories
  */
-class QuestionSet extends KActiveRecord
+class QuestionGroup extends KActiveRecord
 {
-	private $createDefaultQuestionGroup = false;
-	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -33,7 +33,7 @@ class QuestionSet extends KActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'question_set';
+		return 'question_group';
 	}
 
 	/**
@@ -43,10 +43,11 @@ class QuestionSet extends KActiveRecord
 	{
 		return array(
 			array('name', 'required'),
+			array('set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, item_order', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
 			array('description', 'safe'),
 			
-			array('id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description', 'safe', 'on'=>'search'),
+			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description, item_order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,11 +56,13 @@ class QuestionSet extends KActiveRecord
 	 */
 	public function relations()
 	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
 		return array(
-			'questionGroups' => array(self::HAS_MANY, 'QuestionGroup', 'set_id', 'condition'=>'questionGroups.is_deleted=0', 'order'=>'questionGroups.item_order ASC'),
-			'questionGroupHistory' => array(self::HAS_MANY, 'QuestionGroupHistory', 'set_id'),
+			'questions' => array(self::HAS_MANY, 'Question', 'group_id'),
 			'createUser' => array(self::BELONGS_TO, 'User', 'create_user'),
-			'questionSetHistory' => array(self::HAS_MANY, 'QuestionSetHistory', 'id'),
+			'set' => array(self::BELONGS_TO, 'QuestionSet', 'set_id'),
+			'questionHistories' => array(self::HAS_MANY, 'QuestionHistory', 'group_id'),
 		);
 	}
 
@@ -70,6 +73,7 @@ class QuestionSet extends KActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'set_id' => 'Set',
 			'create_date' => 'Create Date',
 			'create_user' => 'Create User',
 			'last_update_date' => 'Last Update Date',
@@ -77,6 +81,7 @@ class QuestionSet extends KActiveRecord
 			'is_deleted' => 'Is Deleted',
 			'name' => 'Name',
 			'description' => 'Description',
+			'item_order' => 'Item Order',
 		);
 	}
 
@@ -86,23 +91,24 @@ class QuestionSet extends KActiveRecord
 	 */
 	public function search()
 	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('set_id',$this->set_id);
 		$criteria->compare('create_date',$this->create_date);
 		$criteria->compare('create_user',$this->create_user);
-		$criteria->compare('last_update_date',$this->last_update_date,true);
+		$criteria->compare('last_update_date',$this->last_update_date);
 		$criteria->compare('last_update_user',$this->last_update_user);
+		$criteria->compare('is_deleted',$this->is_deleted);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
-		
-		$criteria->addCondition('is_deleted IS NOT NULL');
+		$criteria->compare('item_order',$this->item_order);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-			'pagination'=>array(
-				'pageSize'=>20,
-			),
 		));
 	}
 	
@@ -112,7 +118,7 @@ class QuestionSet extends KActiveRecord
 		if($this->isNewRecord) {
 			$this->create_user = Yii::app()->user->id;
 			$this->create_date = $time;
-			$this->createDefaultQuestionGroup = true;
+			$this->item_order = $this->getOrder($this->set_id);
 		}
 		
 		$this->last_update_user = Yii::app()->user->id;
@@ -122,14 +128,27 @@ class QuestionSet extends KActiveRecord
 	}
 	
 	public function afterSave() {
-		$history = new QuestionSetHistory;
+		$history = new QuestionGroupHistory;
 		$history->attributes = $this->attributes;
 		$history->save();
 		
-		if($this->createDefaultQuestionGroup) {
-			QuestionGroup::model()->createDefault($this->primaryKey);
+		parent::afterSave();
+	}
+	
+	public function createDefault($set_id) {
+		$model = new QuestionGroup;
+		$model->name = "Default";
+		$model->set_id = $set_id;
+		$model->save();
+	}
+	
+	private function getOrder($set_id) {
+		var_dump($set_id);
+		$model = $this->findByAttributes(array('set_id'=>$set_id), array(), 'order by item_order desc');
+		if(!$model) {
+			return 1;
+		} else {
+			return $model->item_order;
 		}
-		
-		return parent::afterSave();
 	}
 }

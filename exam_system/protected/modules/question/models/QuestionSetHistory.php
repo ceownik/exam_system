@@ -99,4 +99,8 @@ class QuestionSetHistory extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getForQuestion($id) {
+		
+	}
 }
