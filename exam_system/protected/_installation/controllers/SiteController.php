@@ -236,8 +236,8 @@ class SiteController extends CController
 		
 		
 		$fp = fopen(APP_BASE.'/protected/config/db-config.php', 'w');
-		$html = "
-<?php
+		$html = 
+"<?php
 
 // configuration for database connection
 return array(
@@ -253,17 +253,32 @@ return array(
 		fwrite($fp, $html);
 		fclose($fp);
 		
+		for($i=0; $i<=count($this->tables); $i++)
+		{
+			// create tables
+			$db->schema->refresh();
+			$existingTables = $db->schema->tableNames;
+			
+			foreach($this->tables as $name => $sql)
+			{
+				if(in_array($name, $existingTables))
+				{
+					try
+					{
+						$db->createCommand()->dropTable($name);
+					}
+					catch(CDbException $e) {
+						
+					}
+				}
+			}
+		}
 		// create tables
 		$db->schema->refresh();
 		$existingTables = $db->schema->tableNames;
 		
 		foreach($this->tables as $name => $sql)
 		{
-			if(in_array($name, $existingTables))
-			{
-				$db->createCommand()->dropTable($name);
-			}
-			
 			$db->createCommand($sql)->execute();
 		}
 		
@@ -349,7 +364,7 @@ return array(
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='users';
 		",
 		
-		'settins' => "CREATE TABLE settings (
+		'settings' => "CREATE TABLE settings (
 				`category` varchar(255) collate utf8_unicode_ci not null,
 				`name` varchar(255) collate utf8_unicode_ci not null,
 				`value` text collate utf8_unicode_ci not null,
