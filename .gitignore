@@ -1,1 +1,5 @@
-/exam_system/assets/
+exam_system/protected/runtime/*
+exam_system/assets/*
+exam_system/protected/config/db-config.php
+
+!.gitignore

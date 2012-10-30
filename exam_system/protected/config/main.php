@@ -19,18 +19,19 @@ return array(
 		'application.components.*',
 		'application.modules.users.models.*',
 		'application.extensions.*',
+		'application.extensions.helpers.*',
 	),
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		/*
+		
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
-			'password'=>'Enter Your Password Here',
+			'password'=>'1234',
 		 	// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
-		*/
+		
 		'users' => array(
 			'class' => 'application.modules.users.UsersModule',
 			'isBackEnd' => true,
@@ -43,6 +44,14 @@ return array(
 		'settings' => array(
 			'class' => 'application.modules.settings.SettingsModule',
 			'componentName' => 'settings',
+			'isBackEnd' => true,
+		),
+		'exam' => array(
+			'class' => 'application.modules.exam.ExamModule',
+			'isBackEnd' => true,
+		),
+		'question' => array(
+			'class' => 'application.modules.question.QuestionModule',
 			'isBackEnd' => true,
 		),
 	),
