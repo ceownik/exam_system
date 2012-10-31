@@ -4,6 +4,7 @@
  * This is the model class for table "question_group_history".
  *
  * The followings are the available columns in table 'question_group_history':
+ * @property integer $history_id
  * @property integer $id
  * @property integer $set_id
  * @property integer $create_date
@@ -44,15 +45,12 @@ class QuestionGroupHistory extends KActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, item_order', 'required'),
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, item_order', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
 			array('description', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description, item_order', 'safe', 'on'=>'search'),
 		);
 	}
@@ -62,8 +60,6 @@ class QuestionGroupHistory extends KActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
 			'createUser' => array(self::BELONGS_TO, 'User', 'create_user'),
 			'set' => array(self::BELONGS_TO, 'QuestionSet', 'set_id'),
@@ -76,7 +72,7 @@ class QuestionGroupHistory extends KActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id' => 'Question Group Id',
 			'set_id' => 'Set',
 			'create_date' => 'Create Date',
 			'create_user' => 'Create User',
@@ -95,9 +91,6 @@ class QuestionGroupHistory extends KActiveRecord
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);

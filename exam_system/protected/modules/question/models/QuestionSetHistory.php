@@ -4,6 +4,7 @@
  * This is the model class for table "question_set_history".
  *
  * The followings are the available columns in table 'question_set_history':
+ * @property integer $history_id
  * @property integer $id
  * @property integer $create_date
  * @property integer $create_user
@@ -64,7 +65,7 @@ class QuestionSetHistory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id' => 'Question Set Id',
 			'create_date' => 'Create Date',
 			'create_user' => 'Create User',
 			'last_update_date' => 'Last Update Date',
@@ -81,9 +82,6 @@ class QuestionSetHistory extends CActiveRecord
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);

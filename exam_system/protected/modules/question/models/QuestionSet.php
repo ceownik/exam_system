@@ -132,4 +132,12 @@ class QuestionSet extends KActiveRecord
 		
 		return parent::afterSave();
 	}
+	
+	public function afterUpdate() {
+		if($this->isNewRecord) {
+			return false;
+		}
+		
+		return $this->save(true, array('last_update_user', 'last_update_date'));
+	}
 }

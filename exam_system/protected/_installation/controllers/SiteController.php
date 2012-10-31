@@ -427,6 +427,7 @@ return array(
 		",
 		
 		'question_set_history' => "create table question_set_history (
+				`history_id` int(11) not null auto_increment,
 				`id` int(11) not null,
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
@@ -437,7 +438,7 @@ return array(
 				`name` varchar(128) collate utf8_unicode_ci not null default '',
 				`description` text default null collate utf8_unicode_ci,
 				
-				primary key (`id`, `last_update_date`),
+				primary key (`history_id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`id`) references `question_set`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -464,6 +465,7 @@ return array(
 		",
 		
 		'question_group_history' => "create table question_group_history (
+				`history_id` int(11) not null auto_increment,
 				`id` int(11) not null,
 				`set_id` int(11) not null,
 				`create_date` int(11) not null,
@@ -476,7 +478,7 @@ return array(
 				`description` text default null collate utf8_unicode_ci,
 				`item_order` int(11)  not null,
 				
-				primary key (`id`, `last_update_date`),
+				primary key (`history_id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`set_id`) references `question_set`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -505,6 +507,7 @@ return array(
 		",
 		
 		'question_history' => "create table question_history (
+				`history_id` int(11) not null auto_increment,
 				`id` int(11),
 				`group_id` int(11) not null,
 				`create_date` int(11) not null,
@@ -519,7 +522,7 @@ return array(
 				`item_order` int(11)  not null,
 				`difficulty` int(11) not null default 1,
 				
-				primary key (`id`, `last_update_date`),
+				primary key (`history_id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`group_id`) references `question_group`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -551,6 +554,7 @@ return array(
 		",
 		
 		'answer_history' => "create table answer_history (
+				`history_id` int(11) not null auto_increment,
 				`id` int(11) not null,
 				`question_id` int(11) not null,
 				`create_date` int(11) not null,
@@ -568,7 +572,7 @@ return array(
 				
 				`item_order` int(11)  not null,
 				
-				primary key (`id`, `last_update_date`),
+				primary key (`history_id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`question_id`) references `question`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
