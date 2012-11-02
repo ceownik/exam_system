@@ -11,7 +11,7 @@ HTML - styles
 ============================================================================= */
 
 body {font:0.8em/1.5 "arial", sans-serif;}
-h1, h2, h3, h4, h5, h6, address, blockquote, dl, fieldset, ol, p, table, ul {margin:15px 0;}
+h1, h2, h3, h4, h5, h6, address, blockquote, dl, fieldset, ol, table, ul {margin:15px 0;}
 #content h1 {font-size:180%;}
 #content h2 {font-size:160%;}
 #content h3 {font-size:140%;}

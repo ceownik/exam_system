@@ -25,7 +25,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model, 'description'); ?>
-		<?php echo $form->textArea($model, 'description', array()); ?>
+		<?php echo $form->textArea($model, 'description', array('id'=>'description-editor')); ?>
 		<?php echo $form->error($model, 'description'); ?>
 		<span class="success"></span>
 	</div>
@@ -40,3 +40,7 @@
 
 	<?php ?>
 </div><!-- form -->
+
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->createAbsoluteUrl('').'/css/tiny_mce_content.css'); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createAbsoluteUrl('').'/extensions/tiny_mce/tiny_mce.js'); ?>
+<?php Yii::app()->clientScript->registerScript('editor', 'bindTinyMce("description-editor")'); ?>

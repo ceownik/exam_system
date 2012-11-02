@@ -26,6 +26,7 @@
 	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/toggle.js"></script>
 	
 	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/style.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/common.js"></script>
 	
 	<script type="text/javascript">
 	;(function($){

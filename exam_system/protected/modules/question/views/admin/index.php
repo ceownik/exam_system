@@ -8,6 +8,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 		),
 		array(
 			'name' => 'description',
+			'type' => 'raw',
 		),
 		array(
 			'class'=>'CButtonColumn',
