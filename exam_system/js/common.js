@@ -24,3 +24,70 @@ function bindTinyMce(fieldList, width, height) {
 			content_css : "/css/tiny_mce_content.css"
 		});
 }
+
+function openDialog($id, $dialogId) {
+
+	$($id).live('click', function($event){
+		$event.preventDefault();
+
+		var href = $(this).attr('href');
+		$('#'+$dialogId).html('');
+		$('#'+$dialogId).dialog({
+			draggable: false,
+			position: ["center",20]
+		});
+		$('#'+$dialogId).dialog('open');
+		$.ajax({
+			url: href,
+			cache: false,
+			dataType: 'json',
+			type: "GET",
+			success: function(data){
+				var $step = data.status;
+				if($step == 'render') {
+					$('#'+$dialogId).html(data.html);
+				} else {
+					$('#'+$dialogId).dialog('close');
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				$('#'+$dialogId).dialog('close');
+				console.log(jqXHR);
+			}
+		});
+	});	
+}
+
+function openTinyMceDialog($id, $dialogId, fieldList, width, height) {
+
+	$($id).live('click', function($event){
+		$event.preventDefault();
+
+		var href = $(this).attr('href');
+		$('#'+$dialogId).html('');
+		$('#'+$dialogId).dialog({
+			draggable: false,
+			position: ["center",20]
+		});
+		$('#'+$dialogId).dialog('open');
+		$.ajax({
+			url: href,
+			cache: false,
+			dataType: 'json',
+			type: "GET",
+			success: function(data){
+				var $step = data.status;
+				if($step == 'render' || $step == 'validate') {
+					$('#'+$dialogId).html(data.html);
+					bindTinyMce(fieldList, width, height);
+				} else {
+					$('#'+$dialogId).dialog('close');
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				$('#'+$dialogId).dialog('close');
+				console.log(jqXHR);
+			}
+		});
+	});	
+}

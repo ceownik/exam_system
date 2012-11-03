@@ -1,25 +1,37 @@
-<div style="width: 100%; overflow: auto;">
-	<div>
-		name:
-		<?php echo $model->name; ?>
+<fieldset class="question-set">
+	<legend>Question set: <?php echo $model->name; ?></legend>
+	<div class="content-submenu" style="text-align: right;">
+		<?php echo CHtml::button('update', array('submit'=>Yii::app()->createUrl('question/admin/updateQuestionSet/id/'.$model->primaryKey.'/type/1'))); ?>
+		<?php echo CHtml::button('Add question group', array('submit'=>Yii::app()->createUrl('question/admin/createQuestionGroup/set_id/'.$model->primaryKey))) ?>
 	</div>
-	<div>
-		description:
-		<?php echo $model->description; ?>
-	</div>
+	<div><?php echo $model->description; ?></div>
 	
-	<hr />	
-	groups:
+	<?php foreach($model->questionGroups as $key => $group) : ?>
 	
-	<?php foreach($model->questionGroups as $group) : ?>
-		<div><?php echo $group->name; ?></div>
+	<fieldset class="question-group <?php echo $key; ?>">
+		<legend>question group: <?php echo $group->name; ?></legend>
+		
+		<div class="content-submenu" style="text-align: right;">
+			<?php echo CHtml::button('update', array('submit'=>Yii::app()->createUrl('question/admin/updateQuestionGroup/id/'.$group->primaryKey.'/type/1'))); ?>
+			<?php //echo CHtml::button('Add question group', array('submit'=>Yii::app()->createUrl('question/admin/createQuestionGroup/set_id/'.$model->primaryKey))) ?>
+		</div>
+		
+		<div><?php echo $group->description; ?></div>
+		
+		<fieldset>
+			<legend>questions:</legend>
+		</fieldset>
+	</fieldset>
+	
 	<?php endforeach; ?>
-</div>
+</fieldset>
+
+
 
 <?php
 
 $this->widget('zii.widgets.jui.CJuiDialog', array(
-    'id'=>'confirmation-response-dialog',
+    'id'=>'my-dialog',
     'options'=>array(
         'title'=>false,
         'autoOpen'=>false,

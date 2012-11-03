@@ -145,7 +145,7 @@ class QuestionGroup extends KActiveRecord
 		if(!$model) {
 			return 1;
 		} else {
-			return $model->item_order;
+			return $model->item_order + 1;
 		}
 	}
 }

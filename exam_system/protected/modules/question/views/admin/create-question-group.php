@@ -1,8 +1,9 @@
-<div class="question-set-form">
 
+<div class="question-group-form">
+	
 	<?php
 	$form = $this->beginWidget( 'CActiveForm', array(
-		'id' => 'question-set-form',
+		'id' => 'question-group-form',
 		'enableAjaxValidation' => false,
 		'enableClientValidation' => true,
 		'htmlOptions' => array(
@@ -11,8 +12,8 @@
 		'errorMessageCssClass' => 'errorMessage msg error',
 			) );
 	?>
-	
-	<?php echo $form->errorSummary($model); ?>
+
+	<?php //echo $form->errorSummary($model); ?>
 
 	<div class="row">
 		<?php echo $form->label($model, 'name'); ?>
@@ -28,15 +29,12 @@
 		<span class="success"></span>
 	</div>
 
-
 	<div class="row buttons">
-		<?php echo CHtml::button('Cancel', array ( 'submit' => array($cancelUrl))); ?>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo Chtml::button('Cancel', array('submit'=>Yii::app()->createUrl('/admin/question/viewQuestionSet/id/'.$model->set_id))); ?>
+		<?php echo CHtml::submitButton('Create'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>
-</div><!-- form -->
 
-<?php Yii::app()->clientScript->registerCssFile(Yii::app()->createAbsoluteUrl('').'/css/tiny_mce_content.css'); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createAbsoluteUrl('').'/extensions/tiny_mce/tiny_mce.js'); ?>
+</div><!-- form -->
 <?php Yii::app()->clientScript->registerScript('editor', 'bindTinyMce("description-editor")'); ?>
