@@ -1,8 +1,8 @@
-<div class="question-set-form">
+<div class="question-form">
 
 	<?php
 	$form = $this->beginWidget( 'CActiveForm', array(
-		'id' => 'question-set-form',
+		'id' => 'question-form',
 		'enableAjaxValidation' => false,
 		'enableClientValidation' => true,
 		'htmlOptions' => array(
@@ -12,12 +12,18 @@
 			) );
 	?>
 	
-	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->label($model, 'name'); ?>
-		<?php echo $form->textField($model, 'name', array('maxlength' => 128,)); ?>
-		<?php echo $form->error($model, 'name'); ?>
+		<?php echo $form->label($model, 'type'); ?>
+		<?php echo $form->dropDownList($model, 'type', Question::getTypesOptions()); ?>
+		<?php echo $form->error($model, 'type'); ?>
+		<span class="success"></span>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->label($model, 'question'); ?>
+		<?php echo $form->textField($model, 'question', array('id'=>'question-editor')); ?>
+		<?php echo $form->error($model, 'question'); ?>
 		<span class="success"></span>
 	</div>
 
@@ -30,11 +36,11 @@
 
 
 	<div class="row buttons">
-		<?php echo CHtml::button('Cancel', array ( 'submit' => array($cancelUrl))); ?>
+		<?php echo CHtml::button('Cancel', array ( 'submit' => array('/admin/question/viewQuestionSet/id/'.$group->set_id))); ?>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>
 </div><!-- form -->
 
-<?php Yii::app()->clientScript->registerScript('editor', 'bindTinyMce("description-editor")'); ?>
+<?php Yii::app()->clientScript->registerScript('editor', 'bindTinyMce("question-editor, description-editor")'); ?>

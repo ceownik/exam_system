@@ -1,28 +1,58 @@
 <?php
 
 /**
- * This is the model class for table "question_group".
+ * This is the model class for table "question".
  *
- * The followings are the available columns in table 'question_group':
+ * The followings are the available columns in table 'question':
  * @property integer $id
- * @property integer $set_id
+ * @property integer $group_id
  * @property integer $create_date
  * @property integer $create_user
  * @property integer $last_update_date
  * @property integer $last_update_user
  * @property integer $is_deleted
- * @property string $name
+ * @property integer $type
+ * @property string $question
  * @property string $description
  * @property integer $item_order
+ * @property integer $difficulty
  *
  * The followings are the available model relations:
- * @property Question[] $questions
+ * @property Answer[] $answers
+ * @property AnswerHistory[] $answerHistories
  * @property User $createUser
- * @property QuestionSet $set
- * @property QuestionHistory[] $questionHistories
+ * @property QuestionGroup $group
  */
-class QuestionGroup extends KActiveRecord
+class Question extends KActiveRecord
 {
+	const TYPE_MCSA = 1;
+	
+	public $hasErrors = false;
+	public $hasCorrectAnswer = false;
+	
+	protected static $_typesMap = array(
+		self::TYPE_MCSA => 'Multiple choice single answer',
+	);
+
+	public static function getTypesOptions() {
+		return self::$_typesMap;
+	}
+	
+	public static function getTypeDescription($type=null) {
+		if($type==null)
+			return null;
+		
+		if(isset(self::$_typesMap[$type])) {
+			return self::$_typesMap[$type];
+		} else {
+			return null;
+		}
+	}
+	
+	public function getTypeText() {
+		return self::getTypeDescription($this->type);
+	}
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -33,7 +63,7 @@ class QuestionGroup extends KActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'question_group';
+		return 'question';
 	}
 
 	/**
@@ -42,12 +72,10 @@ class QuestionGroup extends KActiveRecord
 	public function rules()
 	{
 		return array(
-			array('name', 'required'),
-			array('set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, item_order', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>128),
-			array('description', 'safe'),
+			array('type, question', 'required'),
+			array('question, description', 'safe'),
 			
-			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description, item_order', 'safe', 'on'=>'search'),
+			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order, difficulty', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,10 +85,10 @@ class QuestionGroup extends KActiveRecord
 	public function relations()
 	{
 		return array(
-			'questions' => array(self::HAS_MANY, 'Question', 'group_id', 'condition'=>'questions.is_deleted=0'),
+			'answers' => array(self::HAS_MANY, 'Answer', 'question_id', 'condition'=>'answers.is_deleted=0'),
+			'answerHistories' => array(self::HAS_MANY, 'AnswerHistory', 'question_id'),
 			'createUser' => array(self::BELONGS_TO, 'User', 'create_user'),
-			'set' => array(self::BELONGS_TO, 'QuestionSet', 'set_id'),
-			'questionHistories' => array(self::HAS_MANY, 'QuestionHistory', 'group_id'),
+			'group' => array(self::BELONGS_TO, 'QuestionGroup', 'group_id'),
 		);
 	}
 
@@ -71,35 +99,38 @@ class QuestionGroup extends KActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'set_id' => 'Set',
+			'group_id' => 'Group',
 			'create_date' => 'Create Date',
 			'create_user' => 'Create User',
 			'last_update_date' => 'Last Update Date',
 			'last_update_user' => 'Last Update User',
 			'is_deleted' => 'Is Deleted',
-			'name' => 'Name',
+			'type' => 'Type',
+			'question' => 'Question',
 			'description' => 'Description',
 			'item_order' => 'Item Order',
+			'difficulty' => 'Difficulty',
 		);
 	}
 
 	/**
-	 * 
 	 */
 	public function search()
 	{
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('set_id',$this->set_id);
+		$criteria->compare('group_id',$this->group_id);
 		$criteria->compare('create_date',$this->create_date);
 		$criteria->compare('create_user',$this->create_user);
 		$criteria->compare('last_update_date',$this->last_update_date);
 		$criteria->compare('last_update_user',$this->last_update_user);
 		$criteria->compare('is_deleted',$this->is_deleted);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('type',$this->type);
+		$criteria->compare('question',$this->question,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('item_order',$this->item_order);
+		$criteria->compare('difficulty',$this->difficulty);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -112,24 +143,25 @@ class QuestionGroup extends KActiveRecord
 		if($this->isNewRecord) {
 			$this->create_user = Yii::app()->user->id;
 			$this->create_date = $time;
-			$this->item_order = $this->getOrder($this->set_id);
+			$this->item_order = $this->getOrder($this->group_id);
 		}
 		
 		$this->last_update_user = Yii::app()->user->id;
 		$this->last_update_date = $time;
 		
-		return parent::beforeSave();
+		return parent::beforeSave();;
 	}
 	
 	public function afterSave() {
-		$history = new QuestionGroupHistory;
+		$history = new QuestionHistory;
 		$history->attributes = $this->attributes;
+		$history->isNewRecord = true;
 		$history->save();
 		
-		$questionSet = QuestionSet::model()->findByPk($this->set_id);
-		$questionSet->afterUpdate();
+		$questionGroup = QuestionGroup::model()->findByPk($this->group_id);
+		$questionGroup->afterUpdate();
 		
-		parent::afterSave();
+		return parent::afterSave();
 	}
 	
 	public function afterUpdate() {
@@ -140,19 +172,31 @@ class QuestionGroup extends KActiveRecord
 		return $this->save(true, array('last_update_user', 'last_update_date'));
 	}
 	
-	public function createDefault($set_id) {
-		$model = new QuestionGroup;
-		$model->name = "Default";
-		$model->set_id = $set_id;
-		$model->save();
-	}
-	
 	private function getOrder($set_id) {
-		$model = $this->findByAttributes(array('set_id'=>$set_id), array('order'=>'item_order desc'));
+		$model = $this->findByAttributes(array('group_id'=>$set_id), array('order'=>'item_order desc'));
 		if(!$model) {
 			return 1;
 		} else {
 			return $model->item_order + 1;
 		}
+	}
+	
+	public function afterFind() {
+		
+		if($this->type == self::TYPE_MCSA) {
+			$correctCount = 0;
+			foreach($this->answers as $answer) {
+				if($answer->is_correct) {
+					$correctCount++;
+				}
+			}
+			if($correctCount == 1) {
+				$this->hasCorrectAnswer = true;
+			} else {
+				$this->hasErrors = true;
+			}
+		}
+		
+		parent::afterFind();
 	}
 }

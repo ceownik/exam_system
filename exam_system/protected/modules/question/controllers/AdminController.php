@@ -30,6 +30,9 @@ class AdminController extends KAdminController
 				'actions' => array( 'index' ),
 				'roles' => array('question')
 			),
+			array('deny',
+				'users'=>array('*')
+				)
 		);
 		return $rules;
 	}
@@ -50,7 +53,7 @@ class AdminController extends KAdminController
 	
 	public function actionIndex() 
 	{
-		$this->headerTitle = 'Questions';
+		$this->headerTitle = 'Question Sets';
 		
 		$model = new QuestionSet;
 		$model->unsetAttributes();
@@ -125,7 +128,7 @@ class AdminController extends KAdminController
 		
 		$model = $this->getQuestionSet($id);
 		
-		$this->headerTitle = 'Question set: ' . $model->name;
+		$this->headerTitle = 'Question set';
 		
 		$this->render('view',array(
 			'model'=>$model,
@@ -143,6 +146,24 @@ class AdminController extends KAdminController
 	
 	private function getQuestionGroup($id) {
 		$model = QuestionGroup::model()->findByPk($id);
+		if($model==null) {
+			KThrowException::throw404();
+			exit;
+		}
+		return $model;
+	}
+	
+	private function getQuestion($id) {
+		$model = Question::model()->findByPk($id);
+		if($model==null) {
+			KThrowException::throw404();
+			exit;
+		}
+		return $model;
+	}
+	
+	private function getAnswer($id) {
+		$model = Answer::model()->findByPk($id);
 		if($model==null) {
 			KThrowException::throw404();
 			exit;
@@ -194,5 +215,138 @@ class AdminController extends KAdminController
 		$this->render('create-question-group',array(
 			'model'=>$model,
 		));
+	}
+	
+	public function actionRemoveQuestionGroup($id) {
+		$group = $this->getQuestionGroup($id);
+		$group->is_deleted = true;
+		$group->save();
+		
+		$this->redirect(array('admin/viewQuestionSet/id/'.$group->set_id));
+	}
+	
+	public function actionCreateQuestion($group_id) {
+		$this->headerTitle = 'Create question';
+		
+		$model = new Question;
+		$group = $this->getQuestionGroup($group_id);
+		
+		$model->group_id = $group->primaryKey;
+		
+		if(isset($_POST['Question'])) {
+			$model->attributes = $_POST['Question'];
+			
+			if($model->validate())
+			{
+				if($model->save())
+				{
+					Yii::app()->user->setFlash('success', "Item created successfully.");
+					$this->redirect(array('/admin/question/viewQuestionSet/id/'.$group->set_id));
+				}
+			}
+		}
+		$this->render('create-question', array(
+			'model'=>$model,
+			'group'=>$group,
+			));
+	}
+	
+	public function actionViewQuestion($id) {
+		$this->headerTitle = 'Details of question';
+		
+		$model = $this->getQuestion($id);
+		
+		$this->render('view-question',array(
+			'model'=>$model,
+		));
+	}
+	
+	public function actionUpdateQuestion($id) {
+		$this->headerTitle = 'Update question';
+		
+		$model = $this->getQuestion($id);
+		
+		if(isset($_POST['Question']))
+		{
+			$model->attributes = $_POST['Question'];
+			
+			if($model->validate())
+			{
+				if($model->save())
+				{
+					Yii::app()->user->setFlash('success', "Item changed successfully.");
+					$this->redirect(array('/admin/question/viewQuestionSet/id/'.$model->group->set_id));
+				}
+			}
+		}
+		$this->render('update-question',array(
+			'model'=>$model,
+		));
+	}
+	
+	public function actionRemoveQuestion($id) {
+		$question = $this->getQuestion($id);
+		$question->is_deleted = 1;
+		$question->save();
+		
+		$this->redirect(array('admin/viewQuestionSet/id/'.$question->group->set_id));
+	}
+	
+	public function actionAddAnswer($id) {
+		$this->headerTitle = 'Add answer';
+		
+		$question = $this->getQuestion($id);
+		
+		if($question->type == Question::TYPE_MCSA) {
+			$model = new Answer;
+			$model->question_id = $question->primaryKey;
+			
+			if(isset($_POST['Answer'])) {
+				$model->attributes = $_POST['Answer'];
+
+				if($model->validate())
+				{
+					if($model->save())
+					{
+						Yii::app()->user->setFlash('success', "Item created successfully.");
+						$this->redirect(array('/admin/question/viewQuestionSet/id/'.$question->group->set_id));
+					}
+				}
+			}
+			$this->render('create-mcsa-answer', array(
+				'model'=>$model,
+				'question'=>$question,
+				));
+		}
+	}
+	
+	public function actionUpdateAnswer($id) {
+		$this->headerTitle = 'Update answer';
+		
+		$answer = $this->getAnswer($id);
+		
+		if($answer->question->type == Question::TYPE_MCSA) {
+			if(isset($_POST['Answer'])) {
+				$answer->attributes = $_POST['Answer'];
+				if($answer->validate()) {
+					if($answer->save()) {
+						$this->redirect(array('admin/viewQuestionSet/id/'.$answer->question->group->set_id));
+					}
+				}
+			}
+			
+			$this->render('update-mcsa-answer', array(
+				'model' => $answer,
+			));
+		}
+	}
+	
+	public function actionRemoveAnswer($id) {
+		$answer = $this->getAnswer($id);
+		$answer->is_deleted = 1;
+		$set_id = $answer->question->group->set_id;
+		$answer->save();
+		
+		$this->redirect(array('admin/viewQuestionSet/id/'.$set_id));
 	}
 }

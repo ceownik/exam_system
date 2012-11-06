@@ -1,8 +1,8 @@
-<div class="question-set-form">
+<div class="answer-form">
 
 	<?php
 	$form = $this->beginWidget( 'CActiveForm', array(
-		'id' => 'question-set-form',
+		'id' => 'answer-form',
 		'enableAjaxValidation' => false,
 		'enableClientValidation' => true,
 		'htmlOptions' => array(
@@ -13,11 +13,20 @@
 	?>
 	
 	<?php echo $form->errorSummary($model); ?>
-
+	
 	<div class="row">
-		<?php echo $form->label($model, 'name'); ?>
-		<?php echo $form->textField($model, 'name', array('maxlength' => 128,)); ?>
-		<?php echo $form->error($model, 'name'); ?>
+		<?php echo $form->label($model, 'answer'); ?>
+		<?php echo $form->textField($model, 'answer', array('id'=>'answer-editor')); ?>
+		<?php echo $form->error($model, 'answer'); ?>
+		<span class="success"></span>
+	</div>
+	
+	<?php $options = array('0'=>'No');
+	if(!$question->hasCorrectAnswer) { $options['1'] = 'Yes'; }?>
+	<div class="row">
+		<?php echo $form->label($model, 'is_correct'); ?>
+		<?php echo $form->radioButtonList($model, 'is_correct', $options); ?>
+		<?php echo $form->error($model, 'is_correct'); ?>
 		<span class="success"></span>
 	</div>
 
@@ -30,11 +39,11 @@
 
 
 	<div class="row buttons">
-		<?php echo CHtml::button('Cancel', array ( 'submit' => array($cancelUrl))); ?>
+		<?php echo CHtml::button('Cancel', array ( 'submit' => array('/admin/question/viewQuestionSet/id/'.$question->group->set_id))); ?>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>
 </div><!-- form -->
 
-<?php Yii::app()->clientScript->registerScript('editor', 'bindTinyMce("description-editor")'); ?>
+<?php Yii::app()->clientScript->registerScript('editor', 'bindTinyMce("answer-editor, description-editor")'); ?>

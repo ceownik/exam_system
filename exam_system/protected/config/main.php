@@ -20,6 +20,7 @@ return array(
 		'application.modules.users.models.*',
 		'application.extensions.*',
 		'application.extensions.helpers.*',
+		'application.extensions.errors.*',
 	),
 
 	'modules'=>array(

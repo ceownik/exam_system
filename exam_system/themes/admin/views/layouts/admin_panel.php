@@ -19,7 +19,7 @@
 		</p>
 
 		<p class="f-right">User: <strong><a href="<?php echo "/admin/users/view/id/".Yii::app()->user->id; ?>"><?php echo Yii::app()->user->name; ?></a></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		<strong><?php echo CHtml::link('Log out', array('admin/logout'), array('id'=>'logout')); ?></strong></p>
+		<strong><?php echo CHtml::link('Log out', array('/admin/logout'), array('id'=>'logout')); ?></strong></p>
 
 	</div> <!--  /tray -->
 
