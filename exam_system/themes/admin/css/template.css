@@ -200,6 +200,11 @@ form.active-form .row.buttons input:first-child {
 	margin: 0px 30% 0px 0px;
 }
 
+form.active-form .row.radio-button span {
+	display: block;
+	float: left;
+}
+
 
 form.active-form .errorSummary {
 	display: block;
@@ -218,4 +223,68 @@ form.active-form .errorSummary p {
 
 
 
+#content .content-submenu .submenu.button {
+	padding: 0px 4px;
+	background-color: #555;
+	color: #fff;
+	border-radius: 10px;
+	cursor: pointer;
+}
+#content .content-submenu .submenu.button:hover {
+	background-color: #252525;
+}
 
+.separator {
+	display: block;
+	clear: both;
+	width: 100%;
+	height: 1px;
+	background-color: #ccc;
+	
+}
+
+#content .question-set-wrapper {
+	display: block;
+	position: relative;
+}
+
+#content .question-set-title {
+	margin: 0px 0px 5px 0px;
+	font-size: 180%;
+}
+
+#content .question-set-description {
+	margin: 5px 0px 0px 0px;
+}
+
+#content .question-group-wrapper {
+	display: block;
+	position: relative;
+	margin: 15px 0px 0px 0px;
+}
+
+#content .question-group-title {
+	margin: 0px;
+	color: #0085CC;
+}
+
+#content .questions-wrapper {
+	margin: 10px 0px 0px 10px;
+}
+
+#content .question {
+	
+}
+
+#content .question.errors {
+	background-color: #f76f6f;
+}
+
+
+
+#content .answer-form .question {
+	display: block;
+	margin: 10px 20px 20px 20px;
+	background-color: #E6E6E6;
+	padding: 20px;
+}

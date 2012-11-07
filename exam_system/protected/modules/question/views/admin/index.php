@@ -2,6 +2,7 @@
 <?php
 $this->widget('application.extensions.kgridview.KGridView', array(
 	'dataProvider'=>$model->search(),
+	'template'=>"{items}\n{pager}\n{summary}",
 	'columns' => array(
 		array(
 			'name' => 'name',

@@ -69,7 +69,7 @@ LAYOUT
 #menu ul li a:hover span, #menu ul li#menu-active a span {background:url("../img/menu-right.gif") 100% -35px no-repeat;}
 #menu ul li#menu-active a {font-weight:bold;}
 #content {padding:0px; overflow:hidden;}
-#content-inner {padding: 20px; overflow:hidden;}
+#content-inner {padding: 10px; overflow:hidden;}
 #footer {clear:both; padding:15px; background:url("../img/separator.gif") 0 0 repeat-x; font:85%/1.2 "tahoma",sans-serif;}
 #footer p {margin:0;}
 

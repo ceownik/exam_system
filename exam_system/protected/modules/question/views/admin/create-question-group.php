@@ -31,7 +31,7 @@
 
 	<div class="row buttons">
 		<?php echo Chtml::button('Cancel', array('submit'=>Yii::app()->createUrl('/admin/question/viewQuestionSet/id/'.$model->set_id))); ?>
-		<?php echo CHtml::submitButton('Create'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>
