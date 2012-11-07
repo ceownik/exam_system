@@ -7,6 +7,8 @@
 				<?php foreach($question->answers as $answer) : ?>
 					<div style="display:block; overflow: auto;">
 						<div style="float: left; min-width: 300px;">
+							<div class="dot grey" title="answer"></div>
+							<div class="dot <?php if($answer->is_correct) echo 'green'; else echo 'grey'; ?>" title="is correct"></div>
 							<?php echo $answer->answer; ?>
 						</div>
 						<div style="float: left" class="content-submenu">

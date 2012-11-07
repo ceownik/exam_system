@@ -288,3 +288,19 @@ form.active-form .errorSummary p {
 	background-color: #E6E6E6;
 	padding: 20px;
 }
+
+.dot {
+	display: block;
+	float: left;
+	width: 8px;
+	height: 8px;
+	border-radius: 4px;
+	margin: 5px 8px 0px 0px;
+}
+
+.dot.grey {
+	background-color: #888;
+}
+.dot.green {
+	background-color: #71D972;
+}
