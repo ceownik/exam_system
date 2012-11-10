@@ -11,6 +11,7 @@
  * @property string $last_update_date
  * @property integer $last_update_user
  * @property integer $is_deleted
+ * @property integer $enabled
  * @property string $name
  * @property string $description
  *
@@ -71,6 +72,7 @@ class QuestionSetHistory extends CActiveRecord
 			'last_update_date' => 'Last Update Date',
 			'last_update_user' => 'Last Update User',
 			'is_deleted' => 'Is Deleted',
+			'enabled' => 'Enabled',
 			'name' => 'Name',
 			'description' => 'Description',
 		);

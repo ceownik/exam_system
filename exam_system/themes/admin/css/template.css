@@ -221,17 +221,53 @@ form.active-form .errorSummary p {
 }
 
 
-
+#content .content-submenu {
+	display: block;
+	position: relative;
+	height: 20px;
+	overflow: visible;
+	text-align: right;
+}
 
 #content .content-submenu .submenu.button {
-	padding: 0px 4px;
-	background-color: #555;
+	width: 100%;
+	margin: auto;
+	background: none;
+	border: none;
+}
+
+#content .content-submenu .parent.button {
+	padding: 2px 6px;
+	background-color: #252525;
 	color: #fff;
 	border-radius: 10px;
 	cursor: pointer;
+	width: auto;
 }
-#content .content-submenu .submenu.button:hover {
-	background-color: #252525;
+#content .content-submenu .parent.button:hover {
+	background-color: #555;
+}
+
+#content .content-submenu .content-submenu-sub {
+	background-color: #ddd;
+	position: relative;
+	overflow: auto;
+	padding: 4px 4px;
+	z-index: 100;
+	border-radius: 10px;
+	display: none;
+}
+#content .content-submenu .content-submenu-sub input.button {
+	display: block;
+	position: relative;
+	float: right;
+	clear: both;
+	margin: 3px 0px;
+	padding: 4px 2px;
+	cursor: pointer;
+}
+#content .content-submenu .content-submenu-sub input.button:hover {
+	background-color: #aaa;
 }
 
 .separator {
@@ -246,6 +282,11 @@ form.active-form .errorSummary p {
 #content .question-set-wrapper {
 	display: block;
 	position: relative;
+	padding: 0px 0px 100px 0px;
+}
+
+#content .question-set-wrapper div {
+	
 }
 
 #content .question-set-title {
@@ -273,7 +314,7 @@ form.active-form .errorSummary p {
 }
 
 #content .question {
-	
+	margin: 5px 0px 5px 0px;
 }
 
 #content .question.errors {
@@ -303,4 +344,43 @@ form.active-form .errorSummary p {
 }
 .dot.green {
 	background-color: #71D972;
+}
+
+
+#content .question-table {
+	width: 100%;
+	border: none;
+}
+#content .question-table td {
+	border: none;
+}
+#content .question-table tr:hover {
+	background-color: #eee;
+}
+#content .question-table .question-number {
+	width: 20px;
+}
+#content .question-table .question-question {
+	
+}
+#content .question-table .position-body {
+	cursor: pointer;
+}
+#content .question-table .position-description {
+	background-color: #ddd;
+	display: none;
+	padding: 5px;
+}
+#content .question-table .question-menu {
+	width: 130px;
+}
+
+
+#question-set-grid .description > div {
+	max-height: 28px;
+	overflow: hidden;
+}
+#question-set-grid .description > div.visible {
+	max-height: none;
+	overflow: hidden;
 }

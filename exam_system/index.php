@@ -59,7 +59,8 @@ $time = $end - $start;
 		bottom: 0px; 
 		right: 0px; 
 		font-weight: bold;
-		cursor: pointer;">
+		cursor: pointer;
+		display: none;">
 	<?php echo 'Render time: '.$time; ?>
 </div>
 <script type="text/javascript">

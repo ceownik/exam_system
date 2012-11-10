@@ -44,6 +44,15 @@ class UsersModule extends KModule {
 				'linkOptions' => array('class'=>'create '),
 				'visible'=>Yii::app()->user->checkAccess('users.create_user'),
 			),
+			array(
+				'label'=>'Groups', 
+				'url'=>array('/admin/users/groups'), 
+			),
+			array(
+				'label'=>'Create group', 
+				'url'=>array('/admin/users/createGroup'), 
+				'linkOptions' => array('class'=>'create '),
+			),
 		);
 		
 		

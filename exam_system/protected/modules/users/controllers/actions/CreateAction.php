@@ -105,7 +105,7 @@ class CreateAction extends KAction
 			if( $model->save( true, $model->attributes_to_save ) )
 			{
 				Yii::app()->user->setFlash('success', "User created successfully");
-				$this->controller->redirect(array('admin/users/view/id/'.$model->id));
+				$this->controller->redirect(array('/admin/users/view/id/'.$model->id));
 			}
 		}
 

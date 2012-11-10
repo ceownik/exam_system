@@ -11,6 +11,7 @@
  * @property integer $last_update_date
  * @property integer $last_update_user
  * @property integer $is_deleted
+ * @property integer $enabled
  * @property string $answer
  * @property integer $is_correct
  * @property string $description
@@ -83,6 +84,7 @@ class Answer extends KActiveRecord
 			'last_update_date' => 'Last Update Date',
 			'last_update_user' => 'Last Update User',
 			'is_deleted' => 'Is Deleted',
+			'enabled' => 'Enabled',
 			'answer' => 'Answer',
 			'is_correct' => 'Is Correct',
 			'description' => 'Description',

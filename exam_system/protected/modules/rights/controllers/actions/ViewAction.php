@@ -75,7 +75,7 @@ class ViewAction extends KAction
 		
 		// form was sent
 		if(isset($_POST) && !empty($_POST))
-		{dump($_POST);
+		{
 			// check if user has access to add/remove children
 			if(Yii::app()->user->checkAccess('rights.manage_items_relations'))
 			{

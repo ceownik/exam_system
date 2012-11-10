@@ -91,3 +91,52 @@ function openTinyMceDialog($id, $dialogId, fieldList, width, height) {
 		});
 	});	
 }
+
+function questionSetMenu() {
+	
+	var items = $('#content').find('div.content-submenu');
+	
+//	items.find('.parent').click(function(){
+//		return false;
+//	});
+//	
+	items.find('.parent').hover(function(){
+			$(this).parent().find('.content-submenu-sub').show();
+		},
+		function(){
+		}
+	);
+	
+	items.hover(function() {
+		},
+		function() {
+			$(this).find('.content-submenu-sub').hide();
+		}
+	);
+}
+
+function questionShowDescription() {
+	
+	var items = $('#content').find('div.position-body');
+	
+	items.live('click', function(event){
+		event.preventDefault();
+		
+		var description = $(this).parent().children('.position-description');
+		
+		description.stop().slideToggle();
+	});
+}
+
+function questionSetGridShowDescription() {
+	var items = $('#content').find('#question-set-grid .description');
+	
+	items.live('click', function() {
+		var item = $(this).children('div');
+		if(item.hasClass('visible')) {
+			item.removeClass('visible');
+		} else {
+			item.addClass('visible');
+		}
+	});
+}

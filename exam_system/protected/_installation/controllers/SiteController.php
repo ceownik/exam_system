@@ -417,6 +417,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`name` varchar(128) collate utf8_unicode_ci not null default '',
 				`description` text default null collate utf8_unicode_ci,
@@ -434,6 +435,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`name` varchar(128) collate utf8_unicode_ci not null default '',
 				`description` text default null collate utf8_unicode_ci,
@@ -452,6 +454,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`name` varchar(128) collate utf8_unicode_ci not null default '',
 				`description` text default null collate utf8_unicode_ci,
@@ -473,6 +476,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`name` varchar(128) collate utf8_unicode_ci not null default '',
 				`description` text default null collate utf8_unicode_ci,
@@ -492,6 +496,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`type` int(11) not null,
 				`question` text collate utf8_unicode_ci default null,
@@ -515,6 +520,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`type` int(11) not null,
 				`question` text collate utf8_unicode_ci default null,
@@ -536,6 +542,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`answer` text collate utf8_unicode_ci default null,
 				`is_correct` boolean not null default false,
@@ -562,6 +569,7 @@ return array(
 				`last_update_date` int(11) not null,
 				`last_update_user` int(11) not null,
 				`is_deleted` boolean not null default false,
+				`enabled` boolean not null default true,
 				
 				`answer` text collate utf8_unicode_ci default null,
 				`is_correct` boolean not null default false,
@@ -575,6 +583,48 @@ return array(
 				primary key (`history_id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`question_id`) references `question`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'user_group' => "create table user_group (
+				`id` int(11) not null auto_increment,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` int(11) not null,
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`name` varchar(512) collate utf8_unicode_ci not null default '',
+				`description`  text default null collate utf8_unicode_ci,
+				
+				primary key(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'user_group_history' => "create table user_group_history (
+				`history_id` int(11) not null auto_increment,
+				`id` int(11) not null,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` int(11) not null,
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				
+				`name` varchar(512) collate utf8_unicode_ci not null default '',
+				`description`  text default null collate utf8_unicode_ci,
+				
+				primary key(`history_id`),
+				foreign key(`id`) references `user_group`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'user_group_assignment' => "create table user_group_assignment (
+				`user_id` int(11) not null,
+				`group_id` int(11) not null,
+				
+				primary key(`user_id`, `group_id`),
+				foreign key(`user_id`) references `user`(`id`),
+				foreign key(`group_id`) references `user_group`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		",
 	);

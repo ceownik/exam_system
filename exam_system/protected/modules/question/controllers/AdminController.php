@@ -349,4 +349,51 @@ class AdminController extends KAdminController
 		
 		$this->redirect(array('admin/viewQuestionSet/id/'.$set_id));
 	}
+	
+	public function getModel($id, $type) {
+		$model = null;
+		if($type=='set') {
+			$model = $this->getQuestionSet($id);
+		} elseif($type=='group') {
+			$model = $this->getQuestionGroup($id);
+		} elseif($type=='question') {
+			$model = $this->getQuestion($id);
+		} elseif($type=='answer') {
+			$model = $this->getAnswer($id);
+		}
+		return $model;
+	}
+	
+	public function actionEnable($id, $type) {
+		$this->toggleEnabled($id, $type, true);
+	}
+	
+	public function actionDisable($id, $type) {
+		$this->toggleEnabled($id, $type, false);
+	}
+	
+	public function toggleEnabled($id, $type, $to) {
+		$model = null;
+		$redirect = 'admin/viewQuestionSet/id/';
+		if($type=='set') {
+			$model = $this->getQuestionSet($id);
+			$redirect .= $model->primaryKey; 
+		} elseif($type=='group') {
+			$model = $this->getQuestionGroup($id);
+			$redirect .= $model->set_id;
+		} elseif($type=='question') {
+			$model = $this->getQuestion($id);
+			$redirect .= $model->group->set_id;
+		} elseif($type=='answer') {
+			$model = $this->getAnswer($id);
+			$redirect .= $model->question->group->set_id;
+		}
+		
+		if($model) {
+			$model->enabled = $to;
+			$model->save();
+			$this->redirect(array($redirect));
+		}
+		KThrowException::throw404();
+	}
 }

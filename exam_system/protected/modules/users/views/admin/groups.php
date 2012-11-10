@@ -9,6 +9,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 	'columns' => array(
 		array(
 			'name' => 'name',
+			'htmlOptions'=>array('style'=>'min-width: 150px;'),
 		),
 		array(
 			'name' => 'description',
@@ -17,10 +18,17 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 			'htmlOptions'=>array('class'=>'description'),
 		),
 		array(
+			'name' => 'count',
+			'type' => 'raw',
+			'value' => 'count($data->userGroupAssignments)',
+			'header' => 'Users',
+		),
+		array(
 			'class'=>'CButtonColumn',
-			'template'=>'{view}',
-			'viewButtonUrl'=>'Yii::app()->createUrl("admin/question/viewQuestionSet/id/".$data->primaryKey);',
-			'updateButtonUrl'=>'Yii::app()->createUrl("admin/question/updateQuestionSet/id/".$data->primaryKey);',
+			'template'=>'{view}{update}{delete}',
+			'viewButtonUrl'=>'Yii::app()->createUrl("admin/users/viewGroup/id/".$data->primaryKey);',
+			'updateButtonUrl'=>'Yii::app()->createUrl("admin/users/updateGroup/id/".$data->primaryKey);',
+			'deleteButtonUrl'=>'Yii::app()->createUrl("admin/users/deleteGroup/id/".$data->primaryKey);',
 		),
 	),
 ));

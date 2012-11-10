@@ -131,7 +131,7 @@ class User extends KActiveRecord {
 //			array( 'active_from_time, active_to_time', 'match', 'pattern' => '/^(([01][0-9])|([2][0-3]))[:](([0-5][0-9])|([0-5][0-9][:][0-5][0-9]))$/', 'on' => 'create' ),
 				// The following rule is used by search().
 				// Please remove those attributes that should not be searched.
-			//array('login, email ', 'safe', 'on'=>'search'),
+			array('login, email ', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -143,6 +143,15 @@ class User extends KActiveRecord {
 	public function relations()
 	{
 		return array(
+			'answers' => array(self::HAS_MANY, 'Answer', 'create_user'),
+			'answerHistories' => array(self::HAS_MANY, 'AnswerHistory', 'create_user'),
+			'questions' => array(self::HAS_MANY, 'Question', 'create_user'),
+			'questionGroups' => array(self::HAS_MANY, 'QuestionGroup', 'create_user'),
+			'questionGroupHistories' => array(self::HAS_MANY, 'QuestionGroupHistory', 'create_user'),
+			'questionHistories' => array(self::HAS_MANY, 'QuestionHistory', 'create_user'),
+			'questionSets' => array(self::HAS_MANY, 'QuestionSet', 'create_user'),
+			'questionSetHistories' => array(self::HAS_MANY, 'QuestionSetHistory', 'create_user'),
+			'userGroupAssignments' => array(self::HAS_MANY, 'UserGroupAssignment', 'user_id'),
 		);
 	}
 
@@ -293,36 +302,57 @@ class User extends KActiveRecord {
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria = new CDbCriteria;
 
-		//	$criteria->compare('user_id',$this->user_id);
-			$criteria->compare('login',$this->login,true);
-		// $criteria->compare('password',$this->password,true);
-		//	$criteria->compare('email',$this->email,true);
-		// $criteria->compare('is_active',$this->is_active);
-		// $criteria->compare('active_from',$this->active_from,true);
-		// $criteria->compare('active_to',$this->active_to,true);
-		// $criteria->compare('is_deleted',$this->is_deleted);
-		// $criteria->compare('create_date',$this->create_date,true);
-		// $criteria->compare('create_user',$this->create_user);
-		// $criteria->compare('last_update_date',$this->last_update_date,true);
-		// $criteria->compare('last_update_user',$this->last_update_user);
-		//	$criteria->compare('name',$this->name,true);
-		//	$criteria->compare('surname',$this->surname,true);
-		//	$criteria->compare('birth_date',$this->birth_date,true);
-		//	$criteria->compare('gender',$this->gender);
-		//	$criteria->compare('add_street',$this->add_street,true);
-		//	$criteria->compare('add_building_number',$this->add_building_number,true);
-		//	$criteria->compare('add_city',$this->add_city,true);
-		//	$criteria->compare('add_post_code',$this->add_post_code,true);
-		//	$criteria->compare('add_post_office',$this->add_post_office,true);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('login',$this->login,true);
+		$criteria->compare('email',$this->email,true);
+		$criteria->compare('is_active',$this->is_active);
+		$criteria->compare('is_deleted',$this->is_deleted);
 
 		return new CActiveDataProvider( $this, array(
-					'criteria' => $criteria,
-						) );
+			'criteria' => $criteria,
+		) );
+	}
+	
+	
+	public function searchGroupMembers($id) {
+		$criteria = new CDbCriteria;
+		
+		$criteria->select = 't.*';
+		
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.login',$this->login,true);
+		$criteria->compare('t.email',$this->email,true);
+		$criteria->compare('t.is_active',$this->is_active);
+		
+		$criteria->addCondition('t.is_deleted = 0');
+		$criteria->addCondition('user_group_assignment.group_id = '.$id);
+		
+		$criteria->join = 'RIGHT JOIN user_group_assignment ON t.id = user_group_assignment.user_id';
+		
+		return new CActiveDataProvider( $this, array(
+			'criteria' => $criteria,
+		) );
+	}
+	
+	
+	public function searchForGroup($id) {
+		$criteria = new CDbCriteria;
+		
+		$criteria->select = 't.*';
+		
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.login',$this->login,true);
+		$criteria->compare('t.email',$this->email,true);
+		$criteria->compare('t.is_active',$this->is_active);
+		
+		$criteria->addCondition('t.is_deleted = 0');
+		$criteria->addCondition('t.id NOT IN (select assign.user_id from user_group_assignment assign where group_id = '.$id.')');
+		
+		return new CActiveDataProvider( $this, array(
+			'criteria' => $criteria,
+		) );
 	}
 	
 	
