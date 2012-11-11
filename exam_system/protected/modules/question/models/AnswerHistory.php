@@ -55,7 +55,7 @@ class AnswerHistory extends CActiveRecord
 		return array(
 			array('id, question_id, create_date, create_user, last_update_date, last_update_user, item_order', 'required'),
 			array('id, question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, is_correct, correct_order, item_order', 'numerical', 'integerOnly'=>true),
-			array('answer, description, column_left, column_right', 'safe'),
+			array('answer, description, column_left, column_right, enabled', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('history_id, id, question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, answer, is_correct, description, correct_order, column_left, column_right, item_order', 'safe', 'on'=>'search'),

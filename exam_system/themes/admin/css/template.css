@@ -376,11 +376,11 @@ form.active-form .errorSummary p {
 }
 
 
-#question-set-grid .description > div {
+.grid-view .description > div {
 	max-height: 28px;
 	overflow: hidden;
 }
-#question-set-grid .description > div.visible {
+.grid-view .description > div.visible {
 	max-height: none;
 	overflow: hidden;
 }

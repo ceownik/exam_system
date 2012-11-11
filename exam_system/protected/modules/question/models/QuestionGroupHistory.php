@@ -23,11 +23,8 @@
  */
 class QuestionGroupHistory extends KActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return QuestionGroupHistory the static model class
-	 */
+	public $questions;
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -50,7 +47,7 @@ class QuestionGroupHistory extends KActiveRecord
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, item_order', 'required'),
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, item_order', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
-			array('description', 'safe'),
+			array('description, enabled', 'safe'),
 			
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description, item_order', 'safe', 'on'=>'search'),
 		);
@@ -109,5 +106,56 @@ class QuestionGroupHistory extends KActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function beforeFind() {
+		$this->dbCriteria->order = 'history_id DESC';
+		parent::beforeFind();
+	}
+	
+	public function afterFind() {
+		
+		parent::afterFind();
+	}
+	
+	public function findQuestions() {
+		$items = QuestionHistory::model()->findAllByAttributes(
+			array(
+				'group_id'=>$this->id,
+			), 
+			array(
+				'condition'=>'last_update_date <= '.$this->last_update_date,
+				'order'=>'history_id DESC',
+			)
+		);
+		$models = array();
+		foreach($items as $item) {
+			if(!isset($models[$item->id])) {
+				$models[$item->id] = $item;
+			}
+		}
+		foreach($models as $id=>$model) {
+			if($model->is_deleted) {
+				unset($models[$id]);
+			} else {
+				$model->answers = $model->findAnswers();
+				$model->hasErrors = Question::validateQuestion($model);
+			}
+		}
+		usort($models, function($a, $b){return $a->item_order > $b->item_order;});
+		return $models;
+	}
+	
+	public function getCorrectQuestionsCount($type=null) {
+		$count = 0;
+		foreach($this->questions as $q) {
+			if(!$q->hasErrors) {
+				if($type==null || $type=="")
+					++$count;
+				elseif($type == Question::TYPE_MCSA)
+					++$count;
+			}
+		}
+		return $count;
 	}
 }

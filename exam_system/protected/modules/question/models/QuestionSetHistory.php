@@ -21,6 +21,8 @@
  */
 class QuestionSetHistory extends CActiveRecord
 {
+	public $questionGroups = array();
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -43,7 +45,7 @@ class QuestionSetHistory extends CActiveRecord
 			array('id, create_date, create_user, last_update_date, last_update_user', 'required'),
 			array('id, create_date, create_user, last_update_user, is_deleted', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
-			array('description', 'safe'),
+			array('description, enabled', 'safe'),
 			
 			array('id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description', 'safe', 'on'=>'search'),
 		);
@@ -56,7 +58,8 @@ class QuestionSetHistory extends CActiveRecord
 	{
 		return array(
 			'createUser' => array(self::BELONGS_TO, 'User', 'create_user'),
-			'id0' => array(self::BELONGS_TO, 'QuestionSet', 'id'),
+			'questionSet' => array(self::BELONGS_TO, 'QuestionSet', 'id'),
+			//'questionGroups' => array(self::HAS_MANY, 'QuestionGroupHistory', 'set_id', 'order'=>'questionGroups.history_id DESC', 'group'=>'questionGroups.id'),
 		);
 	}
 
@@ -100,7 +103,36 @@ class QuestionSetHistory extends CActiveRecord
 		));
 	}
 	
-	public function getForQuestion($id) {
+	public function findQuestionGroups() {
+		$items = QuestionGroupHistory::model()->findAllByAttributes(
+			array(
+				'set_id'=>$this->id,
+			), 
+			array(
+				'condition'=>'last_update_date <= '.$this->last_update_date,
+				'order'=>'history_id DESC, item_order ASC',
+			)
+		);
+		$models = array();
+		foreach($items as $item) {
+			if(!isset($models[$item->id])) {
+				$models[$item->id] = $item;
+			}
+		}
+		foreach($models as $id=>$model) {
+			if($model->is_deleted) {
+				unset($models[$id]);
+			} else {
+				$models[$id]->questions = $models[$id]->findQuestions();
+			}
+		}
+		usort($models, function($a, $b){return $a->item_order > $b->item_order;});
+		return $models;
+	}
+	
+	public function afterFind() {
+		$this->questionGroups = $this->findQuestionGroups();
 		
+		parent::afterFind();
 	}
 }

@@ -74,7 +74,7 @@ class Question extends KActiveRecord
 	{
 		return array(
 			array('type, question', 'required'),
-			array('question, description', 'safe'),
+			array('question, description, enabled', 'safe'),
 			
 			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order, difficulty', 'safe', 'on'=>'search'),
 		);
@@ -151,7 +151,7 @@ class Question extends KActiveRecord
 		$this->last_update_user = Yii::app()->user->id;
 		$this->last_update_date = $time;
 		
-		return parent::beforeSave();;
+		return parent::beforeSave();
 	}
 	
 	public function afterSave() {
@@ -184,25 +184,28 @@ class Question extends KActiveRecord
 	}
 	
 	public function afterFind() {
-		
-		if($this->type == self::TYPE_MCSA) {
+		$this->hasErrors = self::validateQuestion($this);
+		parent::afterFind();
+	}
+	
+	public static function validateQuestion($question) {
+		if($question->type == self::TYPE_MCSA) {
 			$correctCount = 0;
-			foreach($this->answers as $answer) {
+			foreach($question->answers as $answer) {
 				if($answer->is_correct && ($answer->enabled)) {
 					$correctCount++;
 				}
 			}
 			if($correctCount == 1) {
-				$this->hasCorrectAnswer = true;
+				$question->hasCorrectAnswer = true;
 			} else {
-				$this->hasErrors = true;
+				$question->hasErrors = true;
 			}
 			
-			if(count($this->answers) < 2) {
-				$this->hasErrors = true;
+			if(count($question->answers) < 2) {
+				$question->hasErrors = true;
 			}
 		}
-		
-		parent::afterFind();
+		return $question->hasErrors;
 	}
 }

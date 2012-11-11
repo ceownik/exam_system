@@ -24,6 +24,8 @@ class QuestionSet extends KActiveRecord
 {
 	private $createDefaultQuestionGroup = false;
 	
+	public $version;
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -45,7 +47,7 @@ class QuestionSet extends KActiveRecord
 		return array(
 			array('name', 'required'),
 			array('name', 'length', 'max'=>128),
-			array('description', 'safe'),
+			array('description, enabled', 'safe'),
 			
 			array('id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description', 'safe', 'on'=>'search'),
 		);
@@ -58,9 +60,9 @@ class QuestionSet extends KActiveRecord
 	{
 		return array(
 			'questionGroups' => array(self::HAS_MANY, 'QuestionGroup', 'set_id', 'condition'=>'questionGroups.is_deleted=0', 'order'=>'questionGroups.item_order ASC'),
-			'questionGroupHistory' => array(self::HAS_MANY, 'QuestionGroupHistory', 'set_id'),
+			'questionGroupHistory' => array(self::HAS_MANY, 'QuestionGroupHistory', 'set_id', 'order'=>'questionGroupHistory.history_id DESC'),
 			'createUser' => array(self::BELONGS_TO, 'User', 'create_user'),
-			'questionSetHistory' => array(self::HAS_MANY, 'QuestionSetHistory', 'id'),
+			'questionSetHistory' => array(self::HAS_MANY, 'QuestionSetHistory', 'id', 'order'=>'questionSetHistory.history_id DESC'),
 		);
 	}
 
@@ -141,5 +143,27 @@ class QuestionSet extends KActiveRecord
 		}
 		
 		return $this->save(true, array('last_update_user', 'last_update_date'));
+	}
+	
+	public function findEnabled() {
+		return $this->findAll('is_deleted = 0 AND enabled = 1');
+	}
+	
+	/**
+	 * returns history model
+	 * @param type $v
+	 * @return type
+	 */
+	public function getHistoryByVersion($v) {
+		$model = QuestionSetHistory::model()->findByAttributes(
+			array(
+				'id'=>$this->id,
+			), 
+			array(
+				'condition'=>'last_update_date <= '.$v,
+				'order'=>'history_id DESC',
+			)
+		);
+		return $model;
 	}
 }

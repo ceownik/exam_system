@@ -483,6 +483,7 @@ return array(
 				`item_order` int(11)  not null,
 				
 				primary key (`history_id`),
+				foreign key (`id`) references `question_group`(`id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`set_id`) references `question_set`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -529,6 +530,7 @@ return array(
 				`difficulty` int(11) not null default 1,
 				
 				primary key (`history_id`),
+				foreign key (`id`) references `question`(`id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`group_id`) references `question_group`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -581,6 +583,7 @@ return array(
 				`item_order` int(11)  not null,
 				
 				primary key (`history_id`),
+				foreign key (`id`) references `answer`(`id`),
 				foreign key (`create_user`) references `user`(`id`),
 				foreign key (`question_id`) references `question`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -625,6 +628,104 @@ return array(
 				primary key(`user_id`, `group_id`),
 				foreign key(`user_id`) references `user`(`id`),
 				foreign key(`group_id`) references `user_group`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'test' => "create table test (
+				`id` int(11) not null auto_increment,
+				`create_date` int(11) not null,
+				`create_user` int(11) not null,
+				`last_update_date` int(11) not null,
+				`last_update_user` int(11) not null,
+				`is_deleted` boolean not null default false,
+				`status` int(11) not null default 0,
+				
+				`name` varchar(512) collate utf8_unicode_ci not null default '',
+				`description`  text default null collate utf8_unicode_ci,
+				`begin_time` int(11) not null,
+				`end_time` int(11) not null,
+				`duration_time` int(11) not null,
+				
+				`question_set_id` int(11) not null,
+				`question_set_version` int(11) not null,
+
+				primary key(`id`),
+				foreign key(`question_set_id`) references `question_set`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'test_user_group' => "create table test_user_group (
+				`test_id` int(11) not null,
+				`group_id` int(11) not null,
+
+				primary key(`test_id`, `group_id`),
+				foreign key(`test_id`) references `test`(`id`),
+				foreign key(`group_id`) references `user_group`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'test_question_group' => "create table test_question_group (
+				`test_id` int(11) not null,
+				`group_id` int(11) not null,
+				`question_types` int(11) not null default 0,
+				`question_quantity` int(11) not null default 0,
+				`answers` int(11) not null default 0,
+
+				primary key(`test_id`, `group_id`),
+				foreign key(`test_id`) references `test`(`id`),
+				foreign key(`group_id`) references `question_group`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'test_user_log' => "create table test_user_log (
+				`id` int(11) not null auto_increment,
+				`test_id` int(11) not null,
+				`user_id` int(11) not null,
+				`status` int(11) not null,
+				`create_date` int(11) not null,
+				`last_change_date` int(11) not null,
+				`end_date` int(11) not null,
+				
+				`user_comment`  text default null collate utf8_unicode_ci,
+				
+				primary key(`id`),
+				foreign key(`test_id`) references `test`(`id`),
+				foreign key(`user_id`) references `user`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'test_user_question_log' => "create table test_user_question_log (
+				`id` int(11) not null auto_increment,
+				`test_user_id` int(11) not null,
+				`question_id` int(11) not null,
+				
+				`answer` text collate utf8_unicode_ci default null,
+				
+				`last_change_date` int(11) default null,
+				`user_comment`  text default null collate utf8_unicode_ci,
+				
+				`score` double default null,
+
+				primary key(`id`),
+				foreign key(`test_user_id`) references `test_user_log`(`id`),
+				foreign key(`question_id`) references `question`(`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		",
+		
+		'test_user_answer_log' => "create table test_user_answer_log (
+				`id` int(11) not null auto_increment,
+				`test_log_id` int(11) not null,
+				`answer_id` int(11) not null,
+				`display_order` int(11) not null,
+				
+				`selected` int(11) not null default -1,
+				`item_order` int(11) not null default 1,
+				
+				`last_change_date` int(11) default null,
+				
+				primary key(`id`),
+				foreign key(`test_log_id`) references `test_user_question_log`(`id`),
+				foreign key(`answer_id`) references `answer`(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		",
 	);

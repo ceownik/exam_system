@@ -1,5 +1,8 @@
 <div class="answer-form">
-
+	<div class="question">
+		<?php  //echo $question->question; ?>
+	</div>
+	
 	<?php
 	$form = $this->beginWidget( 'CActiveForm', array(
 		'id' => 'answer-form',
@@ -23,9 +26,9 @@
 	
 	<?php $options = array('0'=>'No');
 	if((!$model->question->hasCorrectAnswer)||($model->question->hasCorrectAnswer && $model->is_correct)) { $options['1'] = 'Yes'; }?>
-	<div class="row">
+	<div class="row  radio-button">
 		<?php echo $form->label($model, 'is_correct'); ?>
-		<?php echo $form->radioButtonList($model, 'is_correct', $options); ?>
+		<?php echo $form->radioButtonList($model, 'is_correct', $options, array('template'=>'<div style="clear:both">{label}{input}</div>', 'separator'=>'', 'style'=>'float:left;')); ?>
 		<?php echo $form->error($model, 'is_correct'); ?>
 		<span class="success"></span>
 	</div>

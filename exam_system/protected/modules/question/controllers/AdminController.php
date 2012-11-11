@@ -396,4 +396,19 @@ class AdminController extends KAdminController
 		}
 		KThrowException::throw404();
 	}
+	
+	public function actionViewQuestionSetHistory($id, $v) {
+		$this->headerTitle = 'Update answer';
+		$this->module->menuItems = array();
+		
+		$questionSet = $this->getQuestionSet($id);
+		$setVersion = $questionSet->getHistoryByVersion($v);
+		
+//		foreach($setVersion->questionGroups as $group)
+//			KDump::d($group->attributes);
+		
+		$this->render('view', array(
+				'model' => $setVersion,
+			));
+	}
 }

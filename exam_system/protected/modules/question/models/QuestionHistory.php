@@ -25,11 +25,10 @@
  */
 class QuestionHistory extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return QuestionHistory the static model class
-	 */
+	public $hasCorrectAnswer;
+	public $hasErrors;
+	public $answers;
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -51,7 +50,7 @@ class QuestionHistory extends CActiveRecord
 		return array(
 			array('group_id, create_date, create_user, last_update_date, last_update_user, type, item_order', 'required'),
 			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, item_order, difficulty', 'numerical', 'integerOnly'=>true),
-			array('question, description', 'safe'),
+			array('question, description, enabled', 'safe'),
 			
 			array('history_id, id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order, difficulty', 'safe', 'on'=>'search'),
 		);
@@ -121,5 +120,42 @@ class QuestionHistory extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function getTypeText() {
+		return Question::getTypeDescription($this->type);
+	}
+	
+	public function afterFind() {
+		
+		parent::afterFind();
+	}
+	
+	public function findAnswers() {
+		$items = AnswerHistory::model()->findAllByAttributes(
+			array(
+				'question_id'=>$this->id,
+			), 
+			array(
+				'condition'=>'last_update_date <= '.$this->last_update_date,
+				'order'=>'history_id DESC',
+			)
+		);
+		$models = array();
+		foreach($items as $item) {
+			if(!isset($models[$item->id])) {
+				$models[$item->id] = $item;
+			}
+		}
+		foreach($models as $id=>$model) {
+			if($model->is_deleted) {
+				unset($models[$id]);
+			} else {
+				
+			}
+		}
+		
+		usort($models, function($a, $b){return $a->item_order > $b->item_order;});
+		return $models;
 	}
 }

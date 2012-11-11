@@ -54,7 +54,7 @@ class Answer extends KActiveRecord
 		return array(
 			array('answer', 'required'),
 			array('question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, is_correct, correct_order, item_order', 'numerical', 'integerOnly'=>true),
-			array('answer, description, column_left, column_right', 'safe'),
+			array('answer, description, column_left, column_right, enabled', 'safe'),
 			
 			array('id, question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, answer, is_correct, description, correct_order, column_left, column_right, item_order', 'safe', 'on'=>'search'),
 		);
@@ -141,6 +141,7 @@ class Answer extends KActiveRecord
 	public function afterSave() {
 		$history = new AnswerHistory;
 		$history->attributes = $this->attributes;
+		$history->enabled = $this->enabled;
 		$history->isNewRecord = true;
 		$history->save();
 		
@@ -170,9 +171,6 @@ class Answer extends KActiveRecord
 	}
 	
 	public function beforeFind() {
-//		if(!$this->findDeleted)
-//			$this->getDbCriteria()->mergeWith(array('condition'=>"is_deleted=0"));
-		
 		parent::beforeFind();
 	}
 }

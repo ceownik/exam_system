@@ -10,6 +10,7 @@ class ExamModule extends KModule
 		$this->setImport(array(
 			'exam.models.*',
 			'exam.components.*',
+			'question.models.*'
 		));
 		
 		$this->moduleTitle = 'Users';

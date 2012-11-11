@@ -46,7 +46,7 @@ class QuestionGroup extends KActiveRecord
 			array('name', 'required'),
 			array('set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, item_order', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
-			array('description', 'safe'),
+			array('description, enabled', 'safe'),
 			
 			array('id, set_id, create_date, create_user, last_update_date, last_update_user, is_deleted, name, description, item_order', 'safe', 'on'=>'search'),
 		);
@@ -156,5 +156,16 @@ class QuestionGroup extends KActiveRecord
 		} else {
 			return $model->item_order + 1;
 		}
+	}
+	
+	public function getCorrectQuestionsCount($type=null) {
+		$count = 0;
+		foreach($this->questions as $q) {
+			if(!$q->hasErrors) {
+				if($type==null || $type=="")
+					++$count;
+			}
+		}
+		return $count;
 	}
 }

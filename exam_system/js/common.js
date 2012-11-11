@@ -129,7 +129,7 @@ function questionShowDescription() {
 }
 
 function questionSetGridShowDescription() {
-	var items = $('#content').find('#question-set-grid .description');
+	var items = $('#content').find('.grid-view .description');
 	
 	items.live('click', function() {
 		var item = $(this).children('div');
@@ -139,4 +139,53 @@ function questionSetGridShowDescription() {
 			item.addClass('visible');
 		}
 	});
+}
+
+function gridShowDescription() {
+	var items = $('#content').find('.grid-view .description');
+	
+	items.live('click', function() {
+		var item = $(this).children('div');
+		if(item.hasClass('visible')) {
+			item.removeClass('visible');
+		} else {
+			item.addClass('visible');
+		}
+	});
+}
+
+function updateQuestionQuantity(testId, dropdown, baseUrl) {
+
+	$(dropdown).live('change', function($event){
+		
+		var groupId = $(this).parents('div.group').attr('id');
+		groupId = groupId.substr(groupId.length - 1);
+		var type = $(this).val();
+		
+		var quantity = $(this).parents('div.group').find('.question-quantity');
+		
+		$.ajax({
+			url: baseUrl + '/admin/exam/getQuestionCount',
+			cache: false,
+			dataType: 'json',
+			type: "POST",
+			data: {
+				testId: testId,
+				groupId: groupId,
+				type: type
+			},
+			success: function(data){
+				//console.log(data);
+				quantity.html('');
+				for(var i=0; i<=data.count; i++)  {
+					quantity.html(quantity.html()+'<option value="'+i+'">'+i+'</option>');
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				console.log(jqXHR);
+			}
+		});
+		
+	});	
+	$(dropdown).change();
 }
