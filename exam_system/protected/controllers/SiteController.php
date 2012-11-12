@@ -62,15 +62,33 @@ class SiteController extends KPublicController
 	
 	
 	
-	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
-	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		if(Yii::app()->user->isGuest) 
+			$this->redirect(array('home'));
+		
+		Yii::import('exam.models.*');
+		
+		$model = new Test();
+		$model->unsetAttributes();
+		if(isset($_GET['Test']))
+			$model->attributes = $_GET['Test'];
+		
+//		if(isset($_POST['execute-exam'])) {
+//			$this->redirect('/exam/execute');
+//		}
+
+		$this->render('index', array(
+			'model'=>$model,
+		));
+	}
+	
+	
+	
+	public function actionHome() {
+		$this->render('home', array(
+			
+		));
 	}
 	
 	

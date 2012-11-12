@@ -155,7 +155,7 @@ function gridShowDescription() {
 }
 
 function updateQuestionQuantity(testId, dropdown, baseUrl) {
-
+	var first = 0;
 	$(dropdown).live('change', function($event){
 		
 		var groupId = $(this).parents('div.group').attr('id');
@@ -163,6 +163,8 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 		var type = $(this).val();
 		
 		var quantity = $(this).parents('div.group').find('.question-quantity');
+		var value = quantity.val();
+		
 		
 		$.ajax({
 			url: baseUrl + '/admin/exam/getQuestionCount',
@@ -177,8 +179,14 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 			success: function(data){
 				//console.log(data);
 				quantity.html('');
+				var html = '';
 				for(var i=0; i<=data.count; i++)  {
-					quantity.html(quantity.html()+'<option value="'+i+'">'+i+'</option>');
+					html = '<option value="'+i+'">'+i+'</option>';
+					if(first<2 && i==value) {
+						first++;
+						html = '<option value="'+i+'" selected>'+i+'</option>';
+					}
+					quantity.html(quantity.html()+html);
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown){

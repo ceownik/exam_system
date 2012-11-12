@@ -35,6 +35,7 @@ class TestQuestionGroup extends CActiveRecord
 		return array(
 			array('test_id, group_id', 'required'),
 			array('test_id, group_id', 'numerical', 'integerOnly'=>true),
+			array('question_types, question_quantity, answers', 'safe'),
 			
 			array('test_id, group_id', 'safe', 'on'=>'search'),
 		);

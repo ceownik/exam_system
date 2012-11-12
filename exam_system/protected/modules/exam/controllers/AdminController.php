@@ -200,8 +200,30 @@ class AdminController extends KAdminController
 			Yii::app()->user->setFlash('warning', 'Zestaw pytań z którego utworzony jest egzamin uległ zmianie! '.CHtml::link('(Uaktualnij)', array('/admin/exam/updateQuestionGroups/id/'.$model->id.'/r/1')).' (kliknięcie w link spowoduje zresetowanie ustawień egzaminu)');
 		}
 		
-		if(isset($_POST)) {
-			KDump::d($_POST);
+		if(isset($_POST['TestQuestionGroup'])) {
+			
+			$transaction = Yii::app()->db->beginTransaction();
+				try {
+					foreach($_POST['TestQuestionGroup'] as $id=>$settings) {
+						$testQuestionGroup = TestQuestionGroup::model()->findByAttributes(array(
+							'test_id'=>$model->id,
+							'group_id'=>$id,
+						));
+						if($testQuestionGroup==null)
+							throw new Exception;
+						$testQuestionGroup->attributes = $settings;
+						$testQuestionGroup->save();
+					}
+					$model->status = Test::STATUS_PREPARED;
+					$model->save();
+					
+					$transaction->commit();
+					Yii::app()->user->setFlash('success', 'Item updated successfully');
+					$this->redirect(array('/admin/exam/index/'));
+				} catch(Exception $e) {
+					$transaction->rollback();
+					Yii::app()->user->setFlash('error', 'Transaction unsuccessful');
+				}
 		}
 		
 		$this->render('configure-test',array(

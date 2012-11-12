@@ -228,6 +228,37 @@ class Test extends CActiveRecord
 		));
 	}
 	
+	public function searchForUser() {
+		$criteria=new CDbCriteria;
+//		$criteria->with = array(
+//			'userGroups'
+//		);
+
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.name',$this->name,true);
+		$criteria->compare('t.description',$this->description,true);
+		$criteria->compare('t.begin_time',$this->begin_time);
+		$criteria->compare('t.end_time',$this->end_time);
+		$criteria->compare('t.duration_time',$this->duration_time);
+		$criteria->compare('t.status',$this->status);
+		
+		$criteria->addCondition('t.is_deleted = 0');
+		$criteria->addCondition('t.begin_time < '.time());
+		$criteria->addCondition('t.status = 2');
+		$criteria->addCondition(Yii::app()->user->id.' IN (select assign.user_id from user_group_assignment assign where assign.group_id IN (select test.group_id from test_user_group test where test.test_id=t.id))');
+		$criteria->having = '(t.end_time + t.duration_time) > '.time() .'';
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>20,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'end_time',
+			),
+		));
+	}
+	
 	public function afterFind() {
 		if(!empty($this->userGroups)) {
 			foreach($this->userGroups as $group) {

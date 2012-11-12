@@ -33,7 +33,7 @@
 
 		<div class="row">
 			<?php echo $form->label($group, '['.$group->group_id.']question_quantity'); ?>
-			<?php echo $form->dropDownList($group, '['.$group->group_id.']question_quantity', array(), array('class'=>'question-quantity')); ?>
+			<?php echo $form->dropDownList($group, '['.$group->group_id.']question_quantity', array($group->question_quantity=>$group->question_quantity), array('class'=>'question-quantity')); ?>
 			<?php echo $form->error($group, '['.$group->group_id.']question_quantity'); ?>
 			<span class="success"></span>
 		</div>
