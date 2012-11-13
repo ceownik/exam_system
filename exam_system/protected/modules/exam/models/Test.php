@@ -230,9 +230,6 @@ class Test extends CActiveRecord
 	
 	public function searchForUser() {
 		$criteria=new CDbCriteria;
-//		$criteria->with = array(
-//			'userGroups'
-//		);
 
 		$criteria->compare('t.id',$this->id);
 		$criteria->compare('t.name',$this->name,true);

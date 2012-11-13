@@ -82,6 +82,15 @@ class AdminController extends KAdminController
 			'url'=>array('/admin/exam/index')
 		);
 		
+		$questionSetCount = count(QuestionSet::model()->findEnabled());
+		$userGroupCount = count(UserGroup::model()->findAll());
+		if($questionSetCount==0) {
+			$this->redirect('/admin/question/createQuestionSet');
+		}
+		if($userGroupCount==0) {
+			$this->redirect('/admin/users/createGroup');
+		}
+		
 		$model = new Test();
 		
 		if(isset($_POST['Test'])) {

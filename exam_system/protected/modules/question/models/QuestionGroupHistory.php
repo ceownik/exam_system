@@ -149,7 +149,7 @@ class QuestionGroupHistory extends KActiveRecord
 	public function getCorrectQuestionsCount($type=null) {
 		$count = 0;
 		foreach($this->questions as $q) {
-			if(!$q->hasErrors) {
+			if(!$q->hasErrors && $q->enabled) {
 				if($type==null || $type=="")
 					++$count;
 				elseif($type == Question::TYPE_MCSA)
@@ -157,5 +157,19 @@ class QuestionGroupHistory extends KActiveRecord
 			}
 		}
 		return $count;
+	}
+	
+	public function getCorrectQuestions($type=null) {
+		$questions = array();
+		foreach($this->questions as $q) {
+			if(!$q->hasErrors && $q->enabled) {
+				if($type==null || $type == 0) {
+					$questions[] = $q;
+				} elseif($type == Question::TYPE_MCSA) {
+					$questions[] = $q;
+				}
+			}
+		}
+		return $questions;
 	}
 }

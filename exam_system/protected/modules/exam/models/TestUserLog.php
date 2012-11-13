@@ -113,4 +113,16 @@ class TestUserLog extends CActiveRecord
 		
 		return $model->status;
 	}
+	
+	public function updateStatus($status = null) {
+		if($status!==null) {
+			$this->status = $status;
+		} else {
+			if($this->end_date < time()) {
+				$this->status = self::STATUS_COMPLETED;
+			}
+		}
+		$this->last_change_date = time();
+		return $this->save();
+	}
 }

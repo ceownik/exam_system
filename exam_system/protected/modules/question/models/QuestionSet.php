@@ -166,4 +166,17 @@ class QuestionSet extends KActiveRecord
 		);
 		return $model;
 	}
+	
+	public static function getHistoryByIdVersion($id, $v) {
+		$model = QuestionSetHistory::model()->findByAttributes(
+			array(
+				'id'=>$id,
+			), 
+			array(
+				'condition'=>'last_update_date <= '.$v,
+				'order'=>'history_id DESC',
+			)
+		);
+		return $model;
+	}
 }
