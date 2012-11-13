@@ -85,9 +85,11 @@ class AdminController extends KAdminController
 		$questionSetCount = count(QuestionSet::model()->findEnabled());
 		$userGroupCount = count(UserGroup::model()->findAll());
 		if($questionSetCount==0) {
+			Yii::app()->user->setFlash('warning', 'Aby utworzyć test wymagane jest utworzenie zestawu pytań.');
 			$this->redirect('/admin/question/createQuestionSet');
 		}
 		if($userGroupCount==0) {
+			Yii::app()->user->setFlash('warning', 'Aby utworzyć test wymagane jest utworzenie grupy użytkowników rozwiązującej test.');
 			$this->redirect('/admin/users/createGroup');
 		}
 		
@@ -106,8 +108,9 @@ class AdminController extends KAdminController
 				try {
 					$model->save();
 					$model->updateUserGroups($_POST['Test']['groupsIds']);
+					$model->updateQuestionGroups($model->question_set_id);
 					$transaction->commit();
-					$this->redirect(array('/admin/configure/id/'.$model->primaryKey));
+					$this->redirect(array('/admin/exam/configure/id/'.$model->primaryKey));
 				} catch(Exception $e) {
 					$transaction->rollback();
 					Yii::app()->user->setFlash('error', 'Transaction unsuccessful');

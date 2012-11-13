@@ -46,7 +46,7 @@ class ExecuteController extends KPublicController
 				$this->prepare();
 			} elseif($this->userLogModel->updateStatus()) {
 				if($this->userLogModel->status == TestUserLog::STATUS_STARTED) {
-					$this->render();
+					$this->renderHtml();
 				} elseif($this->userLogModel->status == TestUserLog::STATUS_COMPLETED) {
 					echo 'completed';
 				} elseif($this->userLogModel->status == TestUserLog::STATUS_CANCELED) {
@@ -76,14 +76,14 @@ class ExecuteController extends KPublicController
 			$this->generateQuestions();
 			
 			$transaction->commit();
-			$this->render();
+			$this->renderHtml();
 		} catch(Exception $e) {
 			$transaction->rollback();
 			$this->renderError();
 		}
 	}
 	
-	public function render() {
+	public function renderHtml() {
 		$this->render('index');
 	}
 	
@@ -121,17 +121,33 @@ class ExecuteController extends KPublicController
 	}
 	
 	public function generateQuestions() {
-		foreach($this->testModel->testQuestionGroups as $questionGroup) {
-			if($questionGroup->question_quantity > 0 ) {
-				foreach($this->questionSet->questionGroups as $group) {
-					if($questionGroup->group_id == $group->id) {
-						$questions = $group->getCorrectQuestions($questionGroup->question_types);
-						KDump::d($questions);
-						break;
+		$selectedQuestions = array();
+		foreach($this->testModel->testQuestionGroups as $questionGroupSettings) {
+			if($questionGroupSettings->question_quantity > 0 ) {
+				foreach($this->questionSet->questionGroups as $group) { // find correct group
+					if($questionGroupSettings->group_id == $group->id) {
+						$questions = $group->getCorrectQuestions($questionGroupSettings->question_types);
+						if(count($questions) < $questionGroupSettings->question_quantity) {
+							KThrowException::throw404();
+						} else {
+							$selected = array_rand($questions, $questionGroupSettings->question_quantity);
+							if(!is_array($selected))
+								$selected = array($selected);
+							foreach($selected as $q) {
+								$selectedQuestions[] = $questions[$q];
+							}
+						}
 					}
 				}
 			}
 		}
+		foreach($selectedQuestions as $qq) {
+			$this->generateQuestion($qq);
+		}
 		die;
+	}
+	
+	public function generateQuestion($question) {
+		
 	}
 }
