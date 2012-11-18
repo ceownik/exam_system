@@ -172,4 +172,46 @@ class QuestionGroupHistory extends KActiveRecord
 		}
 		return $questions;
 	}
+	
+	public function getMCQuestionAnswerCount() {
+		$minCorrectCount = null;
+		$minWrongCount = null;
+		$maxCorrectCount = null;
+		$maxWrongCount = null;
+		foreach($this->questions as $q) {
+			if(!$q->hasErrors) {
+				if($q->type == Question::TYPE_MCSA) {
+					$correct = 0;
+					$wrong = 0;
+					foreach($q->answers as $answer) {
+						if($answer->is_correct)
+							$correct++;
+						elseif(!$answer->is_correct)
+							$wrong++;
+					}
+					if($minCorrectCount!=null && $minWrongCount!=null) {
+						if($minCorrectCount > $correct)
+							$minCorrectCount = $correct;
+						if($minWrongCount > $wrong)
+							$minWrongCount = $wrong;
+						if($maxCorrectCount < $correct) 
+							$maxCorrectCount = $correct;
+						if($maxWrongCount < $wrong)
+							$maxWrongCount = $wrong;
+					} else {
+						$minCorrectCount = $correct;
+						$minWrongCount = $wrong;
+						$maxCorrectCount = $correct;
+						$maxWrongCount = $wrong;
+					}
+				}
+			}
+		}
+		return array(
+			'minCorrect' => $minCorrectCount,
+			'minWrong' => $minWrongCount,
+			'maxCorrect' => $maxCorrectCount,
+			'maxWrong' => $maxWrongCount,
+		);
+	}
 }

@@ -165,6 +165,8 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 		var quantity = $(this).parents('div.group').find('.question-quantity');
 		var value = quantity.val();
 		
+		var answers = $(this).parents('div.group').find('.answers-count');
+		var answersValue = answers.val();
 		
 		$.ajax({
 			url: baseUrl + '/admin/exam/getQuestionCount',
@@ -188,6 +190,17 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 					}
 					quantity.html(quantity.html()+html);
 				}
+				answers.html('');
+				if(type==1 || type=='') 
+					var loopTo = data.answersCount.minWrong + 1;
+				else if(type==2)
+					var loopTo = data.answersCount.minWrong + data.answersCount.minCorrect;
+				for(i=2; i<=loopTo; i++) {
+					html = '<option value="'+i+'">'+i+'</option>';
+					if(i==answersValue)
+						html = '<option value="'+i+'" selected>'+i+'</option>';
+					answers.html(answers.html() + html);
+				}console.log(typeof type);
 			},
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(jqXHR);

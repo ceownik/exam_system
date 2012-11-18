@@ -191,14 +191,21 @@ class Question extends KActiveRecord
 	public static function validateQuestion($question) {
 		if($question->type == self::TYPE_MCSA) {
 			$correctCount = 0;
+			$wrongCount = 0;
 			foreach($question->answers as $answer) {
 				if($answer->is_correct && ($answer->enabled)) {
 					$correctCount++;
+				} elseif(!$answer->is_correct && $answer->enabled) {
+					$wrongCount++;
 				}
 			}
-			if($correctCount == 1) {
+			if($correctCount >= 1) {
 				$question->hasCorrectAnswer = true;
 			} else {
+				$question->hasErrors = true;
+			}
+			
+			if($wrongCount<1) {
 				$question->hasErrors = true;
 			}
 			

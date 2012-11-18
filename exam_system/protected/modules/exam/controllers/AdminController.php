@@ -207,7 +207,7 @@ class AdminController extends KAdminController
 		);
 		
 		$model = $this->getTestModel($id);
-		//$questionSet = $this->getQuestionSet($model->question_set_id);
+		
 		if($model->question_set_version != $model->questionSet->last_update_date) {
 			Yii::app()->user->setFlash('warning', 'Zestaw pytań z którego utworzony jest egzamin uległ zmianie! '.CHtml::link('(Uaktualnij)', array('/admin/exam/updateQuestionGroups/id/'.$model->id.'/r/1')).' (kliknięcie w link spowoduje zresetowanie ustawień egzaminu)');
 		}
@@ -282,6 +282,7 @@ class AdminController extends KAdminController
 						'status'=>'render',
 						'html'=>'success',
 						'count'=>$group->getCorrectQuestionsCount($_POST['type']),
+						'answersCount'=>$group->getMCQuestionAnswerCount(),
 					));
 					exit;
 				}	

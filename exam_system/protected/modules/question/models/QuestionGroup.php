@@ -164,6 +164,8 @@ class QuestionGroup extends KActiveRecord
 			if(!$q->hasErrors) {
 				if($type==null || $type=="")
 					++$count;
+				elseif($type==Question::TYPE_MCSA)
+					++$count;
 			}
 		}
 		return $count;

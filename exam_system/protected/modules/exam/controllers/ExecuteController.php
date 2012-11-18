@@ -133,21 +133,47 @@ class ExecuteController extends KPublicController
 							$selected = array_rand($questions, $questionGroupSettings->question_quantity);
 							if(!is_array($selected))
 								$selected = array($selected);
+							
 							foreach($selected as $q) {
-								$selectedQuestions[] = $questions[$q];
+								$question = $questions[$q];
+								$this->generateAnswers($question, $questionGroupSettings->answers);
+								$selectedQuestions[] = $question;
 							}
 						}
+						break;
 					}
 				}
 			}
 		}
 		foreach($selectedQuestions as $qq) {
-			$this->generateQuestion($qq);
+//			$this->generateAnswers($qq);
 		}
 		die;
 	}
 	
-	public function generateQuestion($question) {
+	public function generateAnswers($question, $count) {
+		$answers = array();
+		$correctAnswers = array();
+		$wrongAnswers = array();
+		if($question->type==Question::TYPE_MCSA) {
+			foreach($quesiton->answers as $k=>$answer) {
+				if($answer->is_correct) {
+					$correctAnswers[$k] = $k;
+				} else {
+					$wrongAnswers[$k] = $k;
+				}
+			}
+			$selectedCorrect = array(array_rand($correctAnswers));
+			$selectedWrong = array_rand($wrongAnswers, $count - 1);
+			if(!is_array($selectedWrong))
+				$selectedWrong = array($selectedWrong);
+		}
+		foreach($selectedCorrect as $correct)
+			$answers[] = $question->answers[$correct];
+		foreach($selectedWrong as $wrong)
+			$answer = $quesiton->answers[$wrong];
+		shuffle($answers);
 		
+		return $answers;
 	}
 }

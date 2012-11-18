@@ -62,7 +62,7 @@ class TestQuestionGroup extends CActiveRecord
 			'group_id' => 'Group',
 			'question_types' => 'Question Type',
 			'question_quantity' => 'Question Quantity',
-			'answers' => 'Answers',
+			'answers' => 'Ilość odpowiedzi w pytaniach zamkniętych',
 		);
 	}
 

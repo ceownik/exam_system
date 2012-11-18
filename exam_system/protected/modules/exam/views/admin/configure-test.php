@@ -37,6 +37,13 @@
 			<?php echo $form->error($group, '['.$group->group_id.']question_quantity'); ?>
 			<span class="success"></span>
 		</div>
+
+		<div class="row">
+			<?php echo $form->label($group, '['.$group->group_id.']answers'); ?>
+			<?php echo $form->dropDownList($group, '['.$group->group_id.']answers', array($group->answers=>$group->answers), array('class'=>'answers-count')); ?>
+			<?php echo $form->error($group, '['.$group->group_id.']answers'); ?>
+			<span class="success"></span>
+		</div>
 	</div>
 	<?php endforeach; ?>
 	
