@@ -42,15 +42,12 @@ class TestUserQuestionLog extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('test_user_id, question_id', 'required'),
 			array('test_user_id, question_id, last_change_date', 'numerical', 'integerOnly'=>true),
 			array('score', 'numerical'),
 			array('answer, user_comment', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			
 			array('id, test_user_id, question_id, answer, last_change_date, user_comment, score', 'safe', 'on'=>'search'),
 		);
 	}
@@ -60,8 +57,6 @@ class TestUserQuestionLog extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
 			'testUserAnswerLogs' => array(self::HAS_MANY, 'TestUserAnswerLog', 'test_log_id'),
 			'testUser' => array(self::BELONGS_TO, 'TestUserLog', 'test_user_id'),
@@ -91,9 +86,6 @@ class TestUserQuestionLog extends CActiveRecord
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);

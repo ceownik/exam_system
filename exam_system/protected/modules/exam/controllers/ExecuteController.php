@@ -136,7 +136,10 @@ class ExecuteController extends KPublicController
 							
 							foreach($selected as $q) {
 								$question = $questions[$q];
-								$this->generateAnswers($question, $questionGroupSettings->answers);
+								
+								if($question->type==Question::TYPE_MCSA) {
+									$this->generateAnswers($question, $questionGroupSettings->answers);
+								}
 								$selectedQuestions[] = $question;
 							}
 						}
@@ -144,9 +147,6 @@ class ExecuteController extends KPublicController
 					}
 				}
 			}
-		}
-		foreach($selectedQuestions as $qq) {
-//			$this->generateAnswers($qq);
 		}
 		die;
 	}
