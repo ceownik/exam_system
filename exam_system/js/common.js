@@ -210,3 +210,64 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 	});	
 	$(dropdown).change();
 }
+
+function performTest(baseUrl, testId) {
+	window.test = {};
+	test.changed = false;
+	test.saved = true;
+	test.form = $('#content').find('#test-form');
+	test.msg = $('#content').find('.message-wrapper');
+	test.id = testId;
+	test.form.change(function(){
+		test.changed = true;
+		return true;
+	});
+	
+	var clearLinks = $('#content').find('a.clear');
+	clearLinks.click(function(){
+		$(this).parents('table').find('input').attr('checked', false);
+		test.form.change();
+		return false;
+	});
+	
+	testLooper(baseUrl);
+}
+
+function testLooper(baseUrl) {
+	if(test.changed==true) {
+		test.msg.stop(true, true).html('zapisywanie zmian').show().delay(1000).slideUp(1000);
+		test.saved = false;
+	}
+	test.changed = false;
+	var postData = {
+		id: test.id,
+		test: test.form.serialize(),
+		changed: test.changed
+	};
+	
+	$.ajax({
+		url: baseUrl + '/exam/execute/submitTest',
+		cache: false,
+		dataType: 'json',
+		type: "POST",
+		data: postData,
+		success: function(data){
+			console.log(data);
+			if(data.status=='success') {
+				if(!test.saved) {
+					test.msg.stop(true, true).html('zmiany zostały zapisane').show().delay(1000).slideUp(1000);
+					test.saved = true;
+				}
+				setTimeout(function(){testLooper(baseUrl)}, 1000);	
+			} else if(data.status=='end' || data.status=='error') {
+				alert(data.msg);
+				location.reload();
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log('error');
+			console.log(jqXHR);
+			setTimeout(function(){testLooper(baseUrl)}, 1000);
+		}
+	});
+}

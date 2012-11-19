@@ -58,7 +58,7 @@ class TestUserQuestionLog extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'testUserAnswerLogs' => array(self::HAS_MANY, 'TestUserAnswerLog', 'test_log_id'),
+			'testUserAnswerLogs' => array(self::HAS_MANY, 'TestUserAnswerLog', 'test_log_id', 'order'=>'display_order ASC'),
 			'testUser' => array(self::BELONGS_TO, 'TestUserLog', 'test_user_id'),
 			'question' => array(self::BELONGS_TO, 'Question', 'question_id'),
 		);
@@ -99,5 +99,11 @@ class TestUserQuestionLog extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function beforeSave() {
+		$this->last_change_date = time();
+		
+		return parent::beforeSave();
 	}
 }

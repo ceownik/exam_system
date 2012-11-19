@@ -17,7 +17,7 @@ class ExecuteController extends KPublicController
 	
 	public function actionIndex()
 	{
-		if((isset($_POST['execute-exam']) || isset($_POST['continue-exam'])) && isset($_POST['exam_id'])) {
+		if((isset($_POST['execute-exam']) || isset($_POST['continue-exam'])) && isset($_POST['exam_id']) && (!Yii::app()->user->isGuest)) {
 			
 			$this->testModel = Test::model()->findByPk($_POST['exam_id']);
 			
@@ -66,7 +66,7 @@ class ExecuteController extends KPublicController
 		$this->userLogModel->test_id = $this->testModel->id;
 		$this->userLogModel->status = TestUserLog::STATUS_STARTED;
 		$this->userLogModel->create_date = $time;
-		$this->userLogModel->end_date = $time + $this->testModel->duration_time;
+		$this->userLogModel->end_date = $time + ($this->testModel->duration_time*60);
 		$this->userLogModel->last_change_date = $time;
 		
 		$transaction = Yii::app()->db->beginTransaction();
@@ -84,7 +84,10 @@ class ExecuteController extends KPublicController
 	}
 	
 	public function renderHtml() {
-		$this->render('index');
+		$this->render('index', array(
+			'testUserLog'=>$this->userLogModel,
+			'questionSet'=>$this->questionSet,
+		));
 	}
 	
 	public function renderError() {
@@ -136,11 +139,17 @@ class ExecuteController extends KPublicController
 							
 							foreach($selected as $q) {
 								$question = $questions[$q];
-								
-								if($question->type==Question::TYPE_MCSA) {
-									$this->generateAnswers($question, $questionGroupSettings->answers);
-								}
 								$selectedQuestions[] = $question;
+							}
+							shuffle($selectedQuestions);
+							foreach($selectedQuestions as $question) {
+								$questionLog = new TestUserQuestionLog();
+								$questionLog->test_user_id = $this->userLogModel->id;
+								$questionLog->question_id = $question->id;
+								$questionLog->save();
+								if($question->type==Question::TYPE_MCSA) {
+									$this->generateAnswers($question, $questionGroupSettings->answers, $questionLog);
+								}
 							}
 						}
 						break;
@@ -148,15 +157,14 @@ class ExecuteController extends KPublicController
 				}
 			}
 		}
-		die;
 	}
 	
-	public function generateAnswers($question, $count) {
+	public function generateAnswers($question, $count, $questionLog) {
 		$answers = array();
 		$correctAnswers = array();
 		$wrongAnswers = array();
 		if($question->type==Question::TYPE_MCSA) {
-			foreach($quesiton->answers as $k=>$answer) {
+			foreach($question->answers as $k=>$answer) {
 				if($answer->is_correct) {
 					$correctAnswers[$k] = $k;
 				} else {
@@ -164,6 +172,8 @@ class ExecuteController extends KPublicController
 				}
 			}
 			$selectedCorrect = array(array_rand($correctAnswers));
+			if(!is_array($selectedCorrect))
+				$selectedCorrect = array($selectedCorrect);
 			$selectedWrong = array_rand($wrongAnswers, $count - 1);
 			if(!is_array($selectedWrong))
 				$selectedWrong = array($selectedWrong);
@@ -171,9 +181,102 @@ class ExecuteController extends KPublicController
 		foreach($selectedCorrect as $correct)
 			$answers[] = $question->answers[$correct];
 		foreach($selectedWrong as $wrong)
-			$answer = $quesiton->answers[$wrong];
+			$answers[] = $question->answers[$wrong];
 		shuffle($answers);
-		
-		return $answers;
+		$i = 0;
+		foreach($answers as $answer) {
+			$model = new TestUserAnswerLog();
+			$model->test_log_id = $questionLog->id;
+			$model->answer_id = $answer->id;
+			$model->display_order = ++$i;
+			$model->save();
+		}
+	}
+	
+	public function actionSubmitTest() {
+		if(Yii::app()->request->isAjaxRequest) {
+			
+			
+			$this->userLogModel = TestUserLog::model()->findByPk($_POST['id']);
+			$this->testModel = $this->userLogModel->test;
+			
+			$status = $this->testCanBePerformed();
+			if($status==self::EXPIRED) {
+				echo CJSON::encode(array(
+					'status'=>'end',
+					'msg'=>'Czas na wykonanie testu dobiegł końca',
+				));
+				exit(0);
+			}
+			if($status!=self::PERFORM) {
+				echo CJSON::encode(array(
+					'status'=>'error',
+					'msg'=>'Wystąpił nieoczekiwany błąd',
+				));
+				exit(0);
+			}
+			
+			$post = array();
+			parse_str($_POST['test'], $post);
+			
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				$this->userLogModel->updateStatus();
+				if($this->userLogModel->status == TestUserLog::STATUS_STARTED) {
+					$time = time();
+					foreach($this->userLogModel->testUserQuestionLogs as $questionLog) {
+						$questionLog->last_change_date = $time;
+						$questionLog->save();
+						if($questionLog->question->type==Question::TYPE_MCSA) {
+							$selected = null;
+							if(isset($post['question-'.$questionLog->id])) {
+								$selected = $post['question-'.$questionLog->id];
+							}
+							foreach($questionLog->testUserAnswerLogs as $answerLog) {
+								if($selected==null) {
+									$answerLog->selected = -1;
+									$answerLog->last_change_date = $time;
+								} else {
+									if($answerLog->id==$selected) {
+										$answerLog->selected = 1;
+									} else {
+										$answerLog->selected = 0;
+									}
+								}
+								$answerLog->save();
+							}
+						}
+					}
+					$transaction->commit();
+				} elseif($this->userLogModel->status == TestUserLog::STATUS_COMPLETED) {
+					$transaction->commit();
+					echo CJSON::encode(array(
+						'status'=>'end',
+						'msg'=>'Czas na wykonanie testu dobiegł końca',
+					));
+					exit(0);
+				} elseif($this->userLogModel->status == TestUserLog::STATUS_CANCELED) {
+					$transaction->commit();
+					echo CJSON::encode(array(
+						'status'=>'end',
+						'msg'=>'Test został przerwany przez administratora',
+					));
+					exit(0);
+				}
+				
+			} catch(Exception $e) {
+				echo CJSON::encode(array(
+					'status'=>'error',
+					'msg'=>'Wystąpił nieoczekiwany błąd',
+				));
+				exit(0);
+			}
+			
+			echo CJSON::encode(array(
+				'status'=>'success',
+				'post'=>$post,
+			));
+			exit(0);
+		}
 	}
 }

@@ -60,7 +60,7 @@ class TestUserLog extends CActiveRecord
 		return array(
 			'test' => array(self::BELONGS_TO, 'Test', 'test_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-			'testUserQuestionLogs' => array(self::HAS_MANY, 'TestUserQuestionLog', 'test_user_id'),
+			'testUserQuestionLogs' => array(self::HAS_MANY, 'TestUserQuestionLog', 'test_user_id', 'order'=>'id ASC'),
 		);
 	}
 
