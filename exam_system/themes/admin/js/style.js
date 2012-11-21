@@ -26,10 +26,19 @@
 		
 		
 		// append datepickers
-		$('.datepicker').datetimepicker({
-			'dateFormat'	: 'yy-mm-dd',
-			'firstDay'		: 1
+		var datepickers = $('#content').find('input.datepicker');
+		datepickers.each(function(){
+			var dHour = $(this).data("hour");
+			var dMin = $(this).data("minute");
+			
+			$(this).datetimepicker({
+				dateFormat		: 'yy-mm-dd',
+				firstDay		: 1,
+				minute			: dMin,
+				hour			: dHour
+			});
 		});
+		//$('.datepicker')
 		
 		
 		

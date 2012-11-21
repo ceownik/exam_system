@@ -240,7 +240,7 @@ class Test extends CActiveRecord
 		$criteria->addCondition('t.is_deleted = 0');
 		$criteria->addCondition('t.begin_time < '.time());
 		$criteria->addCondition('t.status = 2');
-		$criteria->addCondition('(select log.status from test_user_log log where log.test_id=t.id AND log.user_id='.Yii::app()->user->id.') =1');
+		$criteria->addCondition('coalesce((select log.status from test_user_log log where log.test_id=t.id AND log.user_id='.Yii::app()->user->id.'), 1)=1');
 		$criteria->addCondition(Yii::app()->user->id.' IN (select assign.user_id from user_group_assignment assign where assign.group_id IN (select test.group_id from test_user_group test where test.test_id=t.id))');
 		$criteria->having = '(t.end_time + t.duration_time) > '.time() .'';
 		

@@ -31,14 +31,14 @@
 
 	<div class="row">
 		<?php echo $form->label( $model, 'beginTime' ); ?>
-		<?php echo $form->textField( $model, 'beginTime', array('class'=>'datepicker') ); ?>
+		<?php echo $form->textField( $model, 'beginTime', array('class'=>'datepicker', 'data-hour'=>date('H',time()), 'data-minute'=>date('i',time())) ); ?>
 		<?php echo $form->error( $model, 'beginTime' ); ?>
 		<span class="success"></span>
 	</div>
 
 	<div class="row">
 		<?php echo $form->label( $model, 'endTime' ); ?>
-		<?php echo $form->textField( $model, 'endTime', array('class'=>'datepicker') ); ?>
+		<?php echo $form->textField( $model, 'endTime', array('class'=>'datepicker', 'data-hour'=>date('H',time()+3600), 'data-minute'=>date('i',time()+3600)) ); ?>
 		<?php echo $form->error( $model, 'endTime' ); ?>
 		<span class="success"></span>
 	</div>
