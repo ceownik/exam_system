@@ -49,6 +49,7 @@
 					'details'=>array(
 						'label'=>'(szczegóły)',
 						'url'=>'Yii::app()->createUrl("/admin/exam/configure/id/".$data->primaryKey)',
+						'visible'=>'false',
 					),
 					'score'=>array(
 						'label'=>'(oceń)',

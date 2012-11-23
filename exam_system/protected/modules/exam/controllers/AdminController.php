@@ -358,18 +358,104 @@ class AdminController extends KAdminController
 		$this->headerTitle = 'Szczegóły testu';
 		$model = $this->getTestUserLogModel($id);
 		
-		if($model->status!=TestUserLog::STATUS_COMPLETED && $model->status!=TestUserLog::STATUS_CANCELED) {
+		if($model->status!=TestUserLog::STATUS_COMPLETED && 
+				$model->status!=TestUserLog::STATUS_CANCELED && 
+				$model->status!=TestUserLog::STATUS_SCORED) {
 			Yii::app()->user->setFlash('warning', 'Nie można ocenić tego testu');
 			$this->redirect(array('/admin/exam/testSummary/id/'.$model->test->id));
 		}
 		
-		if($model->status == TestUserLog::STATUS_COMPLETED) {
-			$transaction = Yii::app()->db->beginTransaction();
-			try {
-				
-			} catch(Exception $e) {
-				
+		$questionSet = QuestionSet::getHistoryByIdVersion($model->test->question_set_id, $model->test->question_set_version);
+		
+		$questions = array();
+		$answers = array();
+		$scores = array();
+		
+		$transaction = Yii::app()->db->beginTransaction();
+		try {
+			foreach($model->testUserQuestionLogs as $questionLog) {
+				$scores[$questionLog->id] = $questionLog->score;
+				$break = false;
+				// find question
+				foreach($questionSet->questionGroups as $questionGroup) {
+					foreach($questionGroup->questions as $question) {
+						if($questionLog->question_id==$question->id) {
+							// found question - score it
+							$questions[$questionLog->id] = $question;
+							if($question->type == Question::TYPE_MCSA) {
+								$correctSelected = 0;
+								foreach($questionLog->testUserAnswerLogs as $answerLog) {
+									if($answerLog->selected==1) {
+										foreach($question->answers as $answer) {
+											if($answerLog->answer_id==$answer->id) {
+												$answers[$questionLog->id] = $answer;
+												if($answer->is_correct) {
+													$correctSelected = 1;
+												}
+											}
+										}
+									}
+								}
+								if($model->status == TestUserLog::STATUS_COMPLETED) {
+									$questionLog->score = $correctSelected;
+									$questionLog->update(array('score'));
+									$scores[$questionLog->id] = $correctSelected;
+								}
+							}								
+
+							$break = true;
+							break;
+						}
+					}
+					if($break)
+						break;
+				}
+			}
+			if($model->status == TestUserLog::STATUS_COMPLETED) {
+				$model->status = TestUserLog::STATUS_SCORED;
+				$model->update(array('status'));
+			}
+			$transaction->commit();
+		} catch(Exception $e) {
+			KThrowException::throw500();
+			die;
+		}
+		
+		
+		if(!empty($_POST)) {
+			$correct = true;
+			foreach($_POST['question'] as $id => $newScore) {
+				$scores[$id] = $newScore;
+				if(!(is_numeric($newScore) && is_int($newScore + 0))) {
+					$correct = false;
+				}
+			}
+			if($correct) {
+				$transaction = Yii::app()->db->beginTransaction();
+				try {
+					$questionLogM = new TestUserQuestionLog();
+					foreach($_POST['question'] as $id => $newScore) {
+						$questionLogM->updateByPk($id, array(
+							'score' => $newScore,
+						));
+					}
+					$transaction->commit();
+					Yii::app()->user->setFlash('success', 'Zmiany zapisano poprawnie.');
+					$this->refresh();
+				} catch(Exception $e) {
+					Yii::app()->user->setFlash('error', 'Nie udało się poprawnie zapisać wszystkich zmian.');
+				}				
+			} else {
+				Yii::app()->user->setFlash('warning', 'Nie wszystkie oceny zostały wprowadzone poprawnie!');
 			}
 		}
+		
+		$this->render('score-test',array(
+			'model'=>$model,
+			'questionSet'=>$questionSet,
+			'questions'=>$questions,
+			'answers'=>$answers,
+			'scores'=>$scores,
+		));
 	}
 }

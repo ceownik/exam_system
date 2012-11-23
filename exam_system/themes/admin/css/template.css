@@ -384,3 +384,41 @@ form.active-form .errorSummary p {
 	max-height: none;
 	overflow: hidden;
 }
+
+
+
+
+#content .score-test {
+	
+}
+
+#content .score-test .question {
+	display: block;
+	overflow: auto;
+	margin: 0px 0px 10px 0px;
+	padding: 0px 0px 10px 0px;
+	border-bottom: 1px solid #ccc;
+}
+
+#content .score-test .answer {
+	margin: 5px 0px 0px 10px;
+}
+
+#content .score-test .question-body {
+	display: block;
+	float: left;
+	
+}
+
+#content .score-test .score {
+	display: block;
+	float: right;
+}
+
+#content .score-test {
+	
+}
+
+#content .score-test {
+	
+}

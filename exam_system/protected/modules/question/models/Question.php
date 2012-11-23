@@ -90,6 +90,8 @@ class Question extends KActiveRecord
 			'answerHistories' => array(self::HAS_MANY, 'AnswerHistory', 'question_id'),
 			'createUser' => array(self::BELONGS_TO, 'User', 'create_user'),
 			'group' => array(self::BELONGS_TO, 'QuestionGroup', 'group_id'),
+			'questionHistories' => array(self::HAS_MANY, 'QuestionHistory', 'id', 'order'=>'id DESC'),
+			'testUserQuestionLogs' => array(self::HAS_MANY, 'TestUserQuestionLog', 'question_id'),
 		);
 	}
 
