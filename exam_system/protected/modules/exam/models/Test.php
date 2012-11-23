@@ -33,11 +33,13 @@ class Test extends CActiveRecord
 	const STATUS_NEW = 0;
 	const STATUS_PREPARED = 1;
 	const STATUS_CONFIRMED = 2;
+	const STATUS_FINISHED = 3;
 	
 	protected static $_statusMap = array(
 		self::STATUS_NEW => 'Nowy',
 		self::STATUS_PREPARED => 'Przygotowany',
 		self::STATUS_CONFIRMED => 'Zatwierdzony',
+		self::STATUS_FINISHED => 'Zakończony',
 	);
 	
 	public static function getStatusOptions() {
@@ -213,7 +215,8 @@ class Test extends CActiveRecord
 		
 		$criteria->addCondition('is_deleted = 0');
 		$criteria->addCondition('status = 2');
-		$criteria->having = '(end_time + duration_time) < '.time() .'';
+		$criteria->addCondition('(end_time + duration_time) < '.time() .'', 'AND');
+		$criteria->addCondition('status = 3', 'OR');
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

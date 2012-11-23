@@ -98,12 +98,17 @@
 					'name'=>'duration_time',
 					'htmlOptions'=>array('style'=>'width: 60px;'),
 				),
-		//		array(
-		//			'class'=>'CButtonColumn',
-		//			'template'=>'{view}',
-		//			'viewButtonUrl'=>'Yii::app()->createUrl("admin/question/viewQuestionSet/id/".$data->primaryKey);',
-		//			'updateButtonUrl'=>'Yii::app()->createUrl("admin/question/updateQuestionSet/id/".$data->primaryKey);',
-		//		),
+				array(
+					'class'=>'CButtonColumn',
+					'template'=>'{end}',
+					'buttons'=>array(
+						'end'=>array(
+							'label'=>'(zakończ)',
+							'url'=>'Yii::app()->createUrl("/admin/exam/endTest/id/".$data->primaryKey)',
+							'click'=>'function() {return confirm("zakończyć test?");}',
+						),
+					),
+				),
 			),
 		));
 		?>
@@ -142,12 +147,16 @@
 					'name'=>'duration_time',
 					'htmlOptions'=>array('style'=>'width: 60px;'),
 				),
-		//		array(
-		//			'class'=>'CButtonColumn',
-		//			'template'=>'{view}',
-		//			'viewButtonUrl'=>'Yii::app()->createUrl("admin/question/viewQuestionSet/id/".$data->primaryKey);',
-		//			'updateButtonUrl'=>'Yii::app()->createUrl("admin/question/updateQuestionSet/id/".$data->primaryKey);',
-		//		),
+				array(
+					'class'=>'CButtonColumn',
+					'template'=>'{statistics}',
+					'buttons'=>array(
+						'statistics'=>array(
+							'label'=>'(podsumowanie)',
+							'url'=>'Yii::app()->createUrl("/admin/exam/testSummary/id/".$data->primaryKey)',
+						),
+					),
+				),
 			),
 		));
 		?>

@@ -30,6 +30,9 @@
 				'filter'=>false,
 			),
 			array(
+				'name'=>'status',
+			),
+			array(
 				'class' => 'application.extensions.kgridview.KButtonColumn',
 				'template' => '{execute}{continue}',
 				'header' => 'Actions',
@@ -45,7 +48,7 @@
 								'exam_id' => '$data->id',
 							),
 						),
-						'visible'=>'TestUserLog::checkStatus($data->status, Yii::app()->user->id) == TestUserLog::STATUS_NEW',
+						'visible'=>'TestUserLog::checkStatus($data->id, Yii::app()->user->id) == TestUserLog::STATUS_NEW',
 					),
 					'continue' => array(
 						'label' => 'Kontynuuj',
@@ -58,7 +61,7 @@
 								'exam_id' => '$data->id',
 							),
 						),
-						'visible'=>'TestUserLog::checkStatus($data->status, Yii::app()->user->id) == TestUserLog::STATUS_STARTED',
+						'visible'=>'TestUserLog::checkStatus($data->id, Yii::app()->user->id) == TestUserLog::STATUS_STARTED',
 					),
 				),
 			),

@@ -135,10 +135,10 @@ return array(
 					'levels'=>'error, warning',
 				),
 				// show log messages on web pages
-//				array(
-//					'class'=>'CWebLogRoute',
-//					'categories' => 'system.db.*',
-//				),
+				array(
+					'class'=>'CWebLogRoute',
+					'categories' => 'system.db.*',
+				),
 			),
 		),
 		

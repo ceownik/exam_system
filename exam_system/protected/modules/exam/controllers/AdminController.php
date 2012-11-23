@@ -56,6 +56,15 @@ class AdminController extends KAdminController
 		return $model;
 	}
 	
+	public function getTestUserLogModel($id) {
+		$model = TestUserLog::model()->findByPk($id);
+		if($model==null) {
+			KThrowException::throw404();
+			exit;
+		}
+		return $model;
+	}
+	
 	public function actionIndex() {
 		$this->headerTitle = 'Exams';
 		
@@ -240,7 +249,6 @@ class AdminController extends KAdminController
 		
 		$this->render('configure-test',array(
 			'model'=>$model,
-			//'questionSet'=>$questionSet,
 		));
 	}
 	
@@ -292,6 +300,76 @@ class AdminController extends KAdminController
 				'html'=>'error',
 			));
 			exit;
+		}
+	}
+	
+	public function actionEndTest($id, $return=0) {
+		$model = $this->getTestModel($id);
+		
+		$url = '/admin/exam/index';
+		if($return==1) 
+			$url = '/admin/exam/configure/id/'.$id;
+		
+		if($model->status != Test::STATUS_CONFIRMED) {
+			Yii::app()->user->setFlash('error', 'Egzamin nie może zostać zakończony');
+			$this->redirect($url);
+		} else {
+			$model->status = Test::STATUS_FINISHED;
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				$model->save();
+				
+				TestUserLog::model()->
+				
+				$transaction->commit();
+				$this->redirect($url);
+			} catch(Exception $e) {
+				Yii::app()->user->setFlash('error', 'Egzamin nie został poprawnie zatwierdzony');
+				$this->redirect($url);			
+			}
+		}
+	}
+	
+	public function actionTestSummary($id) {
+		$this->headerTitle = 'Test summary';
+		$model = $this->getTestModel($id);
+		$testUserLog = new TestUserLog('search');
+		
+		$testUserLog->unsetAttributes();
+		if(isset($_GET['TestUserLog']))
+			$testUserLog->attributes = $_GET['TestUserLog'];
+		
+		$this->render('test-summary',array(
+			'model'=>$model,
+			'testUserLog'=>$testUserLog,
+		));
+	}
+	
+	public function actionTestDetails($id) {
+		$this->headerTitle = 'Szczegóły testu';
+		$model = $this->getTestUserLogModel($id);
+		
+		$this->render('test-details',array(
+			'model'=>$model,
+		));
+	}
+	
+	public function actionScoreTest($id) {
+		$this->headerTitle = 'Szczegóły testu';
+		$model = $this->getTestUserLogModel($id);
+		
+		if($model->status!=TestUserLog::STATUS_COMPLETED && $model->status!=TestUserLog::STATUS_CANCELED) {
+			Yii::app()->user->setFlash('warning', 'Nie można ocenić tego testu');
+			$this->redirect(array('/admin/exam/testSummary/id/'.$model->test->id));
+		}
+		
+		if($model->status == TestUserLog::STATUS_COMPLETED) {
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				
+			} catch(Exception $e) {
+				
+			}
 		}
 	}
 }
