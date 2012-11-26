@@ -79,8 +79,8 @@ class QuestionGroup extends KActiveRecord
 			'last_update_user' => 'Last Update User',
 			'is_deleted' => 'Is Deleted',
 			'enabled' => 'Enabled',
-			'name' => 'Name',
-			'description' => 'Description',
+			'name' => 'Nazwa',
+			'description' => 'Opis',
 			'item_order' => 'Item Order',
 		);
 	}

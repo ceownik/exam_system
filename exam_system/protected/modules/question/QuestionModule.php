@@ -15,7 +15,7 @@ class QuestionModule extends KModule
 	{
 		$this->menuItems = array(
 			'create' => array(
-				'label'=>'Create question set', 
+				'label'=>'Utwórz zestaw pytań', 
 				'url'=>array('/admin/question/createQuestionSet'), 
 				'linkOptions' => array('class'=>'',)
 			),
