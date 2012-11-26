@@ -319,7 +319,7 @@ class AdminController extends KAdminController
 			try {
 				$model->save();
 				
-				TestUserLog::model()->
+				//TestUserLog::model()->
 				
 				$transaction->commit();
 				$this->redirect($url);
