@@ -116,14 +116,17 @@ class Test extends CActiveRecord
 			'last_update_date' => 'Last Update Date',
 			'last_update_user' => 'Last Update User',
 			'is_deleted' => 'Is Deleted',
-			'name' => 'Name',
-			'description' => 'Description',
-			'begin_time' => 'Begin Time',
-			'end_time' => 'End Time',
-			'duration_time' => 'Duration Time (min)',
-			'question_set_id' => 'Question Set',
-			'groupsIds' => 'User groups',
+			'name' => 'Nazwa',
+			'description' => 'Opis',
+			'begin_time' => 'Początek dostępności',
+			'end_time' => 'Koniec dostępności',
+			'duration_time' => 'Czas trwania (min)',
+			'question_set_id' => 'Zestaw pytań',
+			'groupsIds' => 'Grupy użytkowników',
 			'status' => 'Status',
+			'beginTime' => 'Początek dostępności',
+			'endTime' => 'Koniec dostępności',
+			
 		);
 	}
 	

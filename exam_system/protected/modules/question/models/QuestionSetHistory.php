@@ -135,4 +135,39 @@ class QuestionSetHistory extends CActiveRecord
 		
 		parent::afterFind();
 	}
+	
+	public function getPrevAndNextVersionNumber() {
+		
+		$prev = $this->findByAttributes(
+				array(
+				), 
+				array(
+					'condition'=>'t.id = '.$this->id.' AND t.last_update_date < '.$this->last_update_date,
+					'order'=>'t.last_update_date DESC'
+				),
+				array(
+				));
+		
+		$next = $this->findByAttributes(
+				array(
+				), 
+				array(
+					'condition'=>'t.id = '.$this->id.' AND t.last_update_date > '.$this->last_update_date,
+					'order'=>'last_update_date ASC'
+				),
+				array(
+				));
+		
+		$result = array(
+			'next' => null,
+			'prev' => null,
+		);
+		
+		if($prev!=null)
+			$result['prev'] = $prev->last_update_date;
+		if($next!=null)
+			$result['next'] = $next->last_update_date;
+		
+		return $result;
+	}
 }

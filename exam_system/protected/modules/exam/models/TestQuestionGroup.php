@@ -60,8 +60,8 @@ class TestQuestionGroup extends CActiveRecord
 		return array(
 			'test_id' => 'Test',
 			'group_id' => 'Group',
-			'question_types' => 'Question Type',
-			'question_quantity' => 'Question Quantity',
+			'question_types' => 'Typ pytań',
+			'question_quantity' => 'Ilość pytań',
 			'answers' => 'Ilość odpowiedzi w pytaniach zamkniętych',
 		);
 	}

@@ -21,6 +21,7 @@
 class TestUserLog extends CActiveRecord
 {
 	public $login_search;
+	public $display_name_search;
 	
 	
 	const STATUS_NEW = 0;
@@ -79,7 +80,7 @@ class TestUserLog extends CActiveRecord
 			array('test_id, user_id, status, create_date, last_change_date, end_date', 'numerical', 'integerOnly'=>true),
 			array('user_comment', 'safe'),
 			
-			array('id, test_id, user_id, status, create_date, last_change_date, end_date, user_comment, login_search', 'safe', 'on'=>'search'),
+			array('id, test_id, user_id, status, create_date, last_change_date, end_date, user_comment, login_search, display_name_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -109,6 +110,7 @@ class TestUserLog extends CActiveRecord
 			'last_change_date' => 'Last Change Date',
 			'end_date' => 'End Date',
 			'user_comment' => 'User Comment',
+			'display_name_search' => '',
 		);
 	}
 
@@ -185,6 +187,7 @@ class TestUserLog extends CActiveRecord
 		$criteria->compare('t.end_date',$this->end_date);
 		$criteria->compare('t.user_comment',$this->user_comment,true);
 		$criteria->compare('user.login', $this->login_search, true);
+		$criteria->compare('user.display_name', $this->display_name_search, true);
 		
 		$criteria->addCondition('t.test_id='.$id);
 

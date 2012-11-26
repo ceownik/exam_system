@@ -49,8 +49,8 @@
 	
 
 	<div class="row buttons">
-		<?php echo Chtml::button('Cancel', array('submit'=>Yii::app()->createUrl('/admin/exam'))); ?>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo Chtml::button('Anuluj', array('submit'=>Yii::app()->createUrl('/admin/exam'))); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Utwórz' : 'Zapisz'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

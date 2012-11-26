@@ -103,7 +103,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item changed successfully.");
+					Yii::app()->user->setFlash('success', "Zmiany zapisano poprawnie.");
 					if($type == 1) {
 						$this->redirect(array('/admin/question/viewQuestionSet/id/'.$model->primaryKey));
 					} else {
@@ -128,7 +128,7 @@ class AdminController extends KAdminController
 		
 		$model = $this->getQuestionSet($id);
 		
-		$this->headerTitle = 'Question set';
+		$this->headerTitle = 'Zestaw pytań';
 		
 		$this->render('view',array(
 			'model'=>$model,
@@ -172,7 +172,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionCreateQuestionGroup($set_id) {
-		$this->headerTitle = 'Create question group';
+		$this->headerTitle = 'Utwórz grupę pytań';
 		
 		$setModel = $this->getQuestionSet($set_id);
 		$groupModel = new QuestionGroup;
@@ -191,11 +191,13 @@ class AdminController extends KAdminController
 				}
 			}
 		}
-		$this->render('create-question-group', array('model'=>$groupModel));
+		$this->render('create-question-group', array(
+			'model'=>$groupModel
+		));
 	}
 	
 	public function actionUpdateQuestionGroup($id, $type=0) {
-		$this->headerTitle = 'Update question group';
+		$this->headerTitle = 'Edytuj grupę pytań';
 		
 		$model = $this->getQuestionGroup($id);
 		
@@ -207,7 +209,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item changed successfully.");
+					Yii::app()->user->setFlash('success', "Zmiany zapisano poprawnie.");
 					$this->redirect(array('/admin/question/viewQuestionSet/id/'.$model->set_id));
 				}
 			}
@@ -226,7 +228,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionCreateQuestion($group_id) {
-		$this->headerTitle = 'Create question';
+		$this->headerTitle = 'Utwórz pytanie';
 		
 		$model = new Question;
 		$group = $this->getQuestionGroup($group_id);
@@ -240,7 +242,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item created successfully.");
+					Yii::app()->user->setFlash('success', 'Pytanie dodano poprawnie');
 					$this->redirect(array('/admin/question/viewQuestionSet/id/'.$group->set_id));
 				}
 			}
@@ -252,7 +254,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionViewQuestion($id) {
-		$this->headerTitle = 'Details of question';
+		$this->headerTitle = 'Szczegóły pytania';
 		
 		$model = $this->getQuestion($id);
 		
@@ -262,7 +264,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionUpdateQuestion($id) {
-		$this->headerTitle = 'Update question';
+		$this->headerTitle = 'Zaktualizuj pytanie';
 		
 		$model = $this->getQuestion($id);
 		
@@ -274,7 +276,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item changed successfully.");
+					Yii::app()->user->setFlash('success', "Zmiany zapisano poprawnie");
 					$this->redirect(array('/admin/question/viewQuestionSet/id/'.$model->group->set_id));
 				}
 			}
@@ -293,7 +295,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionAddAnswer($id) {
-		$this->headerTitle = 'Add answer';
+		$this->headerTitle = 'Dodaj odpowiedź';
 		
 		$question = $this->getQuestion($id);
 		
@@ -308,7 +310,7 @@ class AdminController extends KAdminController
 				{
 					if($model->save())
 					{
-						Yii::app()->user->setFlash('success', "Item created successfully.");
+						Yii::app()->user->setFlash('success', "Dodano nową odpowiedź.");
 						$this->redirect(array('/admin/question/viewQuestionSet/id/'.$question->group->set_id));
 					}
 				}
@@ -321,7 +323,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionUpdateAnswer($id) {
-		$this->headerTitle = 'Update answer';
+		$this->headerTitle = 'Zaktualizuj odpowiedź';
 		
 		$answer = $this->getAnswer($id);
 		
@@ -397,15 +399,36 @@ class AdminController extends KAdminController
 		KThrowException::throw404();
 	}
 	
-	public function actionViewQuestionSetHistory($id, $v) {
-		$this->headerTitle = 'Update answer';
-		$this->module->menuItems = array();
+	public function actionViewQuestionSetHistory($id, $v=null) {
+		$this->headerTitle = 'Wyświetl historię wersji zestawu';
 		
 		$questionSet = $this->getQuestionSet($id);
+		if($v == null)
+			$v = $questionSet->last_update_date;
 		$setVersion = $questionSet->getHistoryByVersion($v);
 		
-//		foreach($setVersion->questionGroups as $group)
-//			KDump::d($group->attributes);
+		$versions = $setVersion->getPrevAndNextVersionNumber();
+		
+		if($versions['prev']!=null) {
+			$this->module->menuItems[] = array(
+				'label'=>'Poprzednia', 
+				'url'=>array('/admin/question/viewQuestionSetHistory/id/'.$setVersion->id.'./v/'.$versions['prev']), 
+				'linkOptions' => array('class'=>'',)
+			);			
+		}
+		if($versions['next']!=null) {
+			$this->module->menuItems[] = array(
+				'label'=>'Następna', 
+				'url'=>array('/admin/question/viewQuestionSetHistory/id/'.$setVersion->id.'/v/'.$versions['next']), 
+				'linkOptions' => array('class'=>'',)
+			);			
+		}
+		
+		$this->module->menuItems[] = array(
+			'label'=>'Wyświetl zestaw', 
+			'url'=>array('/admin/question/viewQuestionSet/id/'.$setVersion->id), 
+			'linkOptions' => array('class'=>'',)
+		);	
 		
 		$this->render('view', array(
 				'model' => $setVersion,

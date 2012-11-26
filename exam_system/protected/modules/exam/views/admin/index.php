@@ -24,16 +24,16 @@
 				array(
 					'name' => 'begin_time',
 					'value' => 'date("Y-m-d H:i", $data->begin_time)',
-					'htmlOptions'=>array('style'=>'width: 90px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 				array(
 					'name' => 'end_time',
 					'value' => 'date("Y-m-d H:i", $data->end_time)',
-					'htmlOptions'=>array('style'=>'width: 90px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 				array(
 					'name'=>'duration_time',
-					'htmlOptions'=>array('style'=>'width: 60px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 70px;'),
 				),
 				array(
 					'name'=>'status',
@@ -87,16 +87,16 @@
 				array(
 					'name' => 'begin_time',
 					'value' => 'date("Y-m-d H:i", $data->begin_time)',
-					'htmlOptions'=>array('style'=>'width: 90px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 				array(
 					'name' => 'end_time',
 					'value' => 'date("Y-m-d H:i", $data->end_time)',
-					'htmlOptions'=>array('style'=>'width: 90px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 				array(
 					'name'=>'duration_time',
-					'htmlOptions'=>array('style'=>'width: 60px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 70px;'),
 				),
 				array(
 					'class'=>'CButtonColumn',
@@ -136,16 +136,16 @@
 				array(
 					'name' => 'begin_time',
 					'value' => 'date("Y-m-d H:i", $data->begin_time)',
-					'htmlOptions'=>array('style'=>'width: 90px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 				array(
 					'name' => 'end_time',
 					'value' => 'date("Y-m-d H:i", $data->end_time)',
-					'htmlOptions'=>array('style'=>'width: 90px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 				array(
 					'name'=>'duration_time',
-					'htmlOptions'=>array('style'=>'width: 60px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 70px;'),
 				),
 				array(
 					'class'=>'CButtonColumn',

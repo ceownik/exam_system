@@ -66,10 +66,10 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionIndex() {
-		$this->headerTitle = 'Exams';
+		$this->headerTitle = 'Testy';
 		
 		$this->module->menuItems[] = array(
-			'label'=>'Create', 
+			'label'=>'Utwórz nowy', 
 			'url'=>array('/admin/exam/create'), 
 			'linkOptions' => array('class'=>'create '),
 		);
@@ -85,9 +85,9 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionCreate() {
-		$this->headerTitle = 'Create exam';
+		$this->headerTitle = 'Utwórz test';
 		$this->module->menuItems[] = array(
-			'label'=>'View list', 
+			'label'=>'Wyświetl testy', 
 			'url'=>array('/admin/exam/index')
 		);
 		
@@ -122,7 +122,7 @@ class AdminController extends KAdminController
 					$this->redirect(array('/admin/exam/configure/id/'.$model->primaryKey));
 				} catch(Exception $e) {
 					$transaction->rollback();
-					Yii::app()->user->setFlash('error', 'Transaction unsuccessful');
+					Yii::app()->user->setFlash('error', 'Zapisano poprawnie');
 					$this->refresh();
 				}
 			}
@@ -134,14 +134,14 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionUpdate($id) {
-		$this->headerTitle = 'Configure exam';
+		$this->headerTitle = 'Edytuj test';
 		$this->module->menuItems[] = array(
-			'label'=>'Create', 
+			'label'=>'Utwórz test', 
 			'url'=>array('/admin/exam/create'), 
 			'linkOptions' => array('class'=>'create '),
 		);
 		$this->module->menuItems[] = array(
-			'label'=>'View list', 
+			'label'=>'Wyświetl testy', 
 			'url'=>array('/admin/exam/index')
 		);
 		
@@ -168,7 +168,7 @@ class AdminController extends KAdminController
 					$this->redirect(array('/admin/exam/index'));
 				} catch(Exception $e) {
 					$transaction->rollback();
-					Yii::app()->user->setFlash('error', 'Transaction unsuccessful');
+					Yii::app()->user->setFlash('error', 'Błąd podczas zapisu do bazy danych');
 					$this->refresh();
 				}
 			}
@@ -198,20 +198,20 @@ class AdminController extends KAdminController
 			$this->redirect(array($url));
 		} catch(Exception $e) {
 			$transaction->rollback();
-			Yii::app()->user->setFlash('error', 'Transaction unsuccessful');
+			Yii::app()->user->setFlash('error', 'Błąd podczas zapisu do bazy danych');
 			$this->redirect(array($url));
 		}
 	}
 	
 	public function actionConfigure($id) {
-		$this->headerTitle = 'Configure exam';
+		$this->headerTitle = 'Skonfiguruj test';
 		$this->module->menuItems[] = array(
-			'label'=>'Create', 
+			'label'=>'Utwórz test', 
 			'url'=>array('/admin/exam/create'), 
 			'linkOptions' => array('class'=>'create '),
 		);
 		$this->module->menuItems[] = array(
-			'label'=>'View list', 
+			'label'=>'Wyświetl listę', 
 			'url'=>array('/admin/exam/index')
 		);
 		
@@ -331,7 +331,11 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionTestSummary($id) {
-		$this->headerTitle = 'Test summary';
+		$this->headerTitle = 'Podsumowanie testu';
+		$this->module->menuItems[] = array(
+			'label'=>'Wyświetl listę', 
+			'url'=>array('/admin/exam/index')
+		);
 		$model = $this->getTestModel($id);
 		$testUserLog = new TestUserLog('search');
 		
@@ -347,6 +351,10 @@ class AdminController extends KAdminController
 	
 	public function actionTestDetails($id) {
 		$this->headerTitle = 'Szczegóły testu';
+		$this->module->menuItems[] = array(
+			'label'=>'Wyświetl listę', 
+			'url'=>array('/admin/exam/index')
+		);
 		$model = $this->getTestUserLogModel($id);
 		
 		$this->render('test-details',array(
@@ -357,6 +365,14 @@ class AdminController extends KAdminController
 	public function actionScoreTest($id) {
 		$this->headerTitle = 'Szczegóły testu';
 		$model = $this->getTestUserLogModel($id);
+		$this->module->menuItems[] = array(
+			'label'=>'Wyświetl listę', 
+			'url'=>array('/admin/exam/index')
+		);
+		$this->module->menuItems[] = array(
+			'label'=>'Podsumowanie testu', 
+			'url'=>array('/admin/exam/testSummary/id/'.$model->test_id),
+		);
 		
 		if($model->status!=TestUserLog::STATUS_COMPLETED && 
 				$model->status!=TestUserLog::STATUS_CANCELED && 

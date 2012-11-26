@@ -18,7 +18,12 @@
 			array(
 				'name' => 'login_search',
 				'value' => '$data->user->login',
-				'header' => 'User'
+				'header' => 'Login'
+			),
+			array(
+				'name' => 'display_name_search',
+				'value' => '$data->user->display_name',
+				'header' => 'Nazwa użytkownika',
 			),
 			array(
 				'name' => 'create_date',

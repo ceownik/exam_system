@@ -109,9 +109,9 @@ class Question extends KActiveRecord
 			'last_update_user' => 'Last Update User',
 			'is_deleted' => 'Is Deleted',
 			'enabled' => 'Enabled',
-			'type' => 'Type',
-			'question' => 'Question',
-			'description' => 'Description',
+			'type' => 'Typ',
+			'question' => 'Pytanie',
+			'description' => 'Opis',
 			'item_order' => 'Item Order',
 			'difficulty' => 'Difficulty',
 		);
