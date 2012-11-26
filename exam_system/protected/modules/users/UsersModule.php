@@ -34,22 +34,22 @@ class UsersModule extends KModule {
 	{
 		$this->menuItems = array(
 			array(
-				'label'=>'Users list', 
+				'label'=>'Lista użytkowników', 
 				'url'=>array('/admin/users/index'),
 				'visible'=>Yii::app()->user->checkAccess('users.view_users_list'),
 			),
 			array(
-				'label'=>'Create user', 
+				'label'=>'Utwórz użytkownika', 
 				'url'=>array('/admin/users/create'), 
 				'linkOptions' => array('class'=>'create '),
 				'visible'=>Yii::app()->user->checkAccess('users.create_user'),
 			),
 			array(
-				'label'=>'Groups', 
+				'label'=>'Grupy', 
 				'url'=>array('/admin/users/groups'), 
 			),
 			array(
-				'label'=>'Create group', 
+				'label'=>'Utwórz grupę', 
 				'url'=>array('/admin/users/createGroup'), 
 				'linkOptions' => array('class'=>'create '),
 			),

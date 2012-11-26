@@ -59,7 +59,7 @@ class AdminController extends KAdminController
 	public function init()
 	{
 		parent::init();
-		$this->headerTitle = 'Welcome to KCMS';
+		$this->headerTitle = 'Witamy';
 	}
 	
 	

@@ -49,35 +49,35 @@ class UpdateAction extends KAction
 		
 		if( !$model )
 		{
-			Yii::app()->user->setFlash('error', "No such user.");
+			Yii::app()->user->setFlash('error', "Nie ma takiego użytkownika.");
 			$this->controller->redirect( array( 'index' ) );
 		}
 		
 		
 		$title = ($model->display_name) ? $model->display_name : $model->login;
-		$this->controller->headerTitle = 'Users - Update user: ' . $title;
+		$this->controller->headerTitle = 'Użytkownicy - edytuj konto: ' . $title;
 		
 		
 		if( $model->is_deleted )
 		{
-			Yii::app()->user->setFlash('error', "User is deleted");
+			Yii::app()->user->setFlash('error', "Użytkownik został usunięty");
 			$this->controller->redirect( array( 'index' ) );
 		}
 		
 		
 		// add few menu items
 		$this->controller->module->menuItems[] = array(
-			'label'=>'Details', 
+			'label'=>'Szczegóły konta', 
 			'url'=>array('/admin/users/view/id/'.$model->id), 
 			'visible'=> (Yii::app()->user->checkAccess('users.view_self_details')&&Yii::app()->user->id==$id)||Yii::app()->user->checkAccess('users.view_details')
 			);
 		$this->controller->module->menuItems[] = array(
-			'label'=>'Update', 
+			'label'=>'Edytuj konto', 
 			'url'=>array('/admin/users/update/id/'.$model->id), 
 			'visible'=>(Yii::app()->user->checkAccess('users.update_self_details')&&Yii::app()->user->id==$id)||Yii::app()->user->checkAccess('users.update_user')
 			);
 		$this->controller->module->menuItems[] = array(
-			'label'=>'Change password', 
+			'label'=>'Zmień hasło', 
 			'url'=>array('/admin/users/passwd/id/'.$model->id), 
 			'visible' => Yii::app()->user->id == $id
 			);
@@ -115,7 +115,7 @@ class UpdateAction extends KAction
 			
 			if( $model->save( true, $model->attributes_to_save ) ) 
 			{
-				Yii::app()->user->setFlash('success', "User updated successfully");
+				Yii::app()->user->setFlash('success', "Konto zaktualizowano poprawnie.");
 				$this->controller->redirect( array( 'view', 'id' => $model->id ) );
 			}
 		}

@@ -16,7 +16,7 @@ class IndexAction extends KAction
 	
 	
 	public $rbacItemChild = array(
-		'rights.view_assingments' => 'rights',
+		'rights.view_assingments' => 'rights', 
 		'rights.view_assingments' => 'rights.view_user_assignments',
 	);
 	

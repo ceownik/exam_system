@@ -14,7 +14,7 @@
 
 	
 
-	<?php echo $form->errorSummary( $model ); ?>
+	<?php //echo $form->errorSummary( $model ); ?>
 
 	<div class="row">
 		<?php echo $form->label( $model, 'name' ); ?>
@@ -49,8 +49,8 @@
 	?>
 
 	<div class="row buttons">
-		<?php echo CHtml::button('Cancel', array ( 'submit' => array('index') ) ); ?>
-		<?php echo CHtml::submitButton( $model->isNewRecord ? 'Create' : 'Save'  ); ?>
+		<?php echo CHtml::button('Anuluj', array ( 'submit' => array('index') ) ); ?>
+		<?php echo CHtml::submitButton( $model->isNewRecord ? 'Utwórz' : 'Zapisz'  ); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

@@ -30,8 +30,8 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo Chtml::button('Cancel', array('submit'=>Yii::app()->createUrl('/admin/question/viewQuestionSet/id/'.$model->set_id))); ?>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo Chtml::button('Anuluj', array('submit'=>Yii::app()->createUrl('/admin/question/viewQuestionSet/id/'.$model->set_id))); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Utwórz' : 'Zapisz'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

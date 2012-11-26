@@ -36,7 +36,7 @@ class DeleteAction extends KAction
 		
 		if( !$item )
 		{
-			Yii::app()->user->setFlash('error', "Item not found");
+			Yii::app()->user->setFlash('error', "Nie znaleziono pozycji");
 			$this->controller->redirect( '/admin/rights' );
 		}
 		else
@@ -44,7 +44,7 @@ class DeleteAction extends KAction
 			
 			if( $item->isProtected() )
 			{
-				Yii::app()->user->setFlash('warning', 'Item can not be deleted.');
+				Yii::app()->user->setFlash('warning', 'Pozycja nie może zostać usunięta.');
 				$this->controller->redirect( '/admin/rights/list/type/'.$item->type);
 			}
 			
@@ -52,12 +52,12 @@ class DeleteAction extends KAction
 
 			if($result)
 			{
-				Yii::app()->user->setFlash('success', 'Item has been successfully deleted.');
+				Yii::app()->user->setFlash('success', 'Pozycję usunięto poprawnie.');
 				$this->controller->redirect( '/admin/rights/list/type/'.$item->type);
 			}
 			else
 			{
-				Yii::app()->user->setFlash('error', 'Error while deleting item.');
+				Yii::app()->user->setFlash('error', 'Błąd podczas usuwania.');
 				$this->controller->redirect( '/admin/rights/list/type/'.$item->type);
 			}
 		}

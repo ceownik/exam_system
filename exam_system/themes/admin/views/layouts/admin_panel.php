@@ -18,8 +18,8 @@
 			
 		</p>
 
-		<p class="f-right">User: <strong><a href="<?php echo "/admin/users/view/id/".Yii::app()->user->id; ?>"><?php echo Yii::app()->user->name; ?></a></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		<strong><?php echo CHtml::link('Log out', array('/admin/logout'), array('id'=>'logout')); ?></strong></p>
+		<p class="f-right">Użytkownik: <strong><a href="<?php echo "/admin/users/view/id/".Yii::app()->user->id; ?>"><?php echo Yii::app()->user->name; ?></a></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<strong><?php echo CHtml::link('Wyloguj', array('/admin/logout'), array('id'=>'logout')); ?></strong></p>
 
 	</div> <!--  /tray -->
 
@@ -36,8 +36,8 @@
 			<div class="padding box">
 
 				<!-- Logo (Max. width = 200px) -->
-				<p id="logo"><a href="#"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/tmp/logo.gif" alt="Our logo" title="Visit Site" /></a></p>
-
+				<p id="logo"><a href="#"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/app-logo.png" alt="Our logo" title="Visit Site" /></a></p>
+				
 				
 				<!-- Search -->
 				<form action="#" method="get" id="search" style="display:none">
@@ -66,7 +66,7 @@
 				
 				<div id="mainmenu">
 					<?php $items = array(
-							array('label'=>'Home', 'url'=>array('/admin/index')),
+							array('label'=>'Strona główna', 'url'=>array('/admin/index')),
 						);
 					foreach( Yii::app()->modules as $id => $m )
 					{

@@ -1,24 +1,25 @@
 <div style="overflow: auto;">
-	<h3 style="margin: 0px 0px 10px 0px;">User's rights</h3>
+	<h3 style="margin: 0px 0px 10px 0px;">Uprawnienia przyznane użytkownikowi</h3>
 <?php
 
 $this->widget('application.extensions.kgridview.KGridView', array(
     'dataProvider' => $assignedRights,
 	'filter'=>$filterAssignedRights,
+	'template'=>"{items}\n{pager}",
 	'columns' => array(
 		array(
 			'name' => 'name',
-			'header' => 'Name',
+			'header' => 'Nazwa',
 			'value' => '$data->name',
 		),
 		array(
 			'name' => 'description',
-			'header' => 'Description',
+			'header' => 'Opis',
 			'value' => '$data->description',
 		),
 		array(
 			'name' => 'type',
-			'header' => 'Type',
+			'header' => 'Typ',
 			'value' => '$data->typeName',
 			'headerHtmlOptions' => array(
 				'style' => 'width: 70px; text-align: center;',
@@ -26,7 +27,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 			'htmlOptions' => array(
 				'style' => 'text-align: center;',
 			),
-			'filter' => array('0'=>'Operation', '1'=>'Task', '2'=>'Role'),
+			'filter' => array('0'=>'Operacja', '1'=>'Zadanie', '2'=>'Rola'),
 		),
 		array(
 			'class' => 'application.extensions.kgridview.KButtonColumn',
@@ -34,7 +35,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 			'header' => 'Actions',
 			'buttons' => array(
 				'revoke' => array(
-					'label' => 'Revoke',
+					'label' => 'Odwołaj',
 					'url' => 'Yii::app()->createUrl("admin/rights/assignment", array("id"=>"'.$user->id.'"))',
 					'options' => array(
 						'class' => 'submit-revoke',
@@ -47,7 +48,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 					'visible' => '$data->directlyAssigned && Yii::app()->user->checkAccess("rights.manage_user_assignments")',
 				),
 				'text' => array(
-					'label' => 'Inherited',
+					'label' => 'Odziedziczone',
 					'visible' => '!$data->directlyAssigned',
 					'url' => null,
 					'options' => array(
@@ -67,27 +68,28 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 
 
 <div style="overflow: auto; margin: 30px 0px 0px 0px;">
-	<h3 style="margin: 0px 0px 10px 0px; clear:both;">Assign right item</h3>
+	<h3 style="margin: 0px 0px 10px 0px; clear:both;">Nadaj uprawnienie</h3>
 		
 <?php
 
 $this->widget('application.extensions.kgridview.KGridView', array(
     'dataProvider' => $rightsToAssign,
 	'filter' => $filterRightsToAssign,
+	'template'=>"{items}\n{pager}",
 	'columns' => array(
 		array(
 			'name' => 'name',
-			'header' => 'Name',
+			'header' => 'Nazwa',
 			'value' => '$data->name',
 		),
 		array(
 			'name' => 'description',
-			'header' => 'Description',
+			'header' => 'Opis',
 			'value' => '$data->description',
 		),
 		array(
 			'name' => 'type',
-			'header' => 'Type',
+			'header' => 'Typ',
 			'value' => '$data->typeName',
 			'headerHtmlOptions' => array(
 				'style' => 'width: 70px; text-align: center;',
@@ -95,7 +97,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 			'htmlOptions' => array(
 				'style' => 'text-align: center;',
 			),
-			'filter' => array('0'=>'Operation', '1'=>'Task', '2'=>'Role'),
+			'filter' => array('0'=>'Operacja', '1'=>'Zadanie', '2'=>'Rola'),
 		),
 		array(
 			'class' => 'application.extensions.kgridview.KButtonColumn',
@@ -103,7 +105,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 			'header' => 'Actions',
 			'buttons' => array(
 				'assign' => array(
-					'label' => 'Assign',
+					'label' => 'Przypisz',
 					'options' => array(
 						'class' => 'submit-assign',
 						'submit' => '',

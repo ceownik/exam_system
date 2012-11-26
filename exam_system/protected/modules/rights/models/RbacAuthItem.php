@@ -149,13 +149,13 @@ class RbacAuthItem extends KActiveRecord
 			switch($item->type)
 			{
 				case 0:
-					$model->typeName = 'Operation';
+					$model->typeName = 'Operacja';
 					break;
 				case 1:
-					$model->typeName = 'Task';
+					$model->typeName = 'Zadanie';
 					break;
 				case 2:
-					$model->typeName = 'Role';
+					$model->typeName = 'Rola';
 					break;
 			}
 			
@@ -198,13 +198,13 @@ class RbacAuthItem extends KActiveRecord
 			switch($item->type)
 			{
 				case 0:
-					$models[$key]->typeName = 'Operation';
+					$models[$key]->typeName = 'Operacja';
 					break;
 				case 1:
-					$models[$key]->typeName = 'Task';
+					$models[$key]->typeName = 'Zadanie';
 					break;
 				case 2:
-					$models[$key]->typeName = 'Role';
+					$models[$key]->typeName = 'Rola';
 					break;
 			}
 			
@@ -247,13 +247,13 @@ class RbacAuthItem extends KActiveRecord
 			switch($i->type)
 			{
 				case 0:
-					$models[$key]->typeName = 'Operation';
+					$models[$key]->typeName = 'Operacja';
 					break;
 				case 1:
-					$models[$key]->typeName = 'Task';
+					$models[$key]->typeName = 'Zadanie';
 					break;
 				case 2:
-					$models[$key]->typeName = 'Role';
+					$models[$key]->typeName = 'Rola';
 					break;
 			}
 			
@@ -361,7 +361,10 @@ class RbacAuthItem extends KActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			
+			'name' => 'Nazwa',
+			'description' => 'Opis',
+			'bizrule' => 'BizRule',
+			'data' => 'Dane',
 		);
 	}
 

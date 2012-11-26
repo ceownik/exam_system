@@ -9,7 +9,7 @@
 			'id' => 'new-test-grid',
 			'dataProvider'=>$model->searchNew(),
 			'filter'=>$model,
-			'template'=>"{items}\n{pager}\n{summary}",
+			'template'=>"{items}\n{pager}",
 			'columns' => array(
 				array(
 					'name' => 'name',
@@ -72,7 +72,7 @@
 			'id' => 'current-test-grid',
 			'dataProvider'=>$model->searchCurrent(),
 			'filter'=>$model,
-			'template'=>"{items}\n{pager}\n{summary}",
+			'template'=>"{items}\n{pager}",
 			'columns' => array(
 				array(
 					'name' => 'name',
@@ -121,7 +121,7 @@
 			'id' => 'completed-test-grid',
 			'dataProvider'=>$model->searchCompleted(),
 			'filter'=>$model,
-			'template'=>"{items}\n{pager}\n{summary}",
+			'template'=>"{items}\n{pager}",
 			'columns' => array(
 				array(
 					'name' => 'name',

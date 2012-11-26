@@ -5,7 +5,7 @@
 $this->widget('application.extensions.kgridview.KGridView', array(
 	'id' => 'question-set-grid',
 	'dataProvider'=>$model->search(),
-	'template'=>"{items}\n{pager}\n{summary}",
+	'template'=>"{items}\n{pager}",
 	'columns' => array(
 		array(
 			'name' => 'name',

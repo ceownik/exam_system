@@ -17,14 +17,14 @@
 			</td>
 			<td class="question-menu">
 				<div style="text-align: right;" class="content-submenu">
-					<?php echo CHtml::button('question menu', array('submit'=>'#', 'class'=>'parent button')); ?>
+					<?php echo CHtml::button('menu pytania', array('submit'=>'#', 'class'=>'parent button')); ?>
 					<div class="content-submenu-sub">
-						<?php echo CHtml::button('update question', array('submit'=>Yii::app()->createUrl('question/admin/updateQuestion/id/'.$question->primaryKey), 'class'=>'submenu button')); ?>
+						<?php echo CHtml::button('edytuj', array('submit'=>Yii::app()->createUrl('question/admin/updateQuestion/id/'.$question->primaryKey), 'class'=>'submenu button')); ?>
 						<?php echo $question->enabled ? 
-						CHtml::button('disable question', array('submit'=>Yii::app()->createUrl('question/admin/disable/id/'.$question->primaryKey.'/type/question'), 'class'=>'submenu button')) :
-						CHtml::button('enable question', array('submit'=>Yii::app()->createUrl('question/admin/enable/id/'.$question->primaryKey.'/type/question'), 'class'=>'submenu button'))?>
-						<?php echo CHtml::button('remove question', array('submit'=>Yii::app()->createUrl('question/admin/removeQuestion/id/'.$question->primaryKey), 'confirm'=>'Czy na pewno usunąć tę odpowiedź?', 'class'=>'submenu button')); ?>
-						<?php echo CHtml::button('add answer', array('submit'=>Yii::app()->createUrl('question/admin/addAnswer/id/'.$question->primaryKey), 'class'=>'submenu button')); ?>
+						CHtml::button('zablokuj pytanie', array('submit'=>Yii::app()->createUrl('question/admin/disable/id/'.$question->primaryKey.'/type/question'), 'class'=>'submenu button')) :
+						CHtml::button('odblokuj pytanie', array('submit'=>Yii::app()->createUrl('question/admin/enable/id/'.$question->primaryKey.'/type/question'), 'class'=>'submenu button'))?>
+						<?php echo CHtml::button('usuń pytanie', array('submit'=>Yii::app()->createUrl('question/admin/removeQuestion/id/'.$question->primaryKey), 'confirm'=>'Czy na pewno usunąć tę odpowiedź?', 'class'=>'submenu button')); ?>
+						<?php echo CHtml::button('dodaj odpowiedź', array('submit'=>Yii::app()->createUrl('question/admin/addAnswer/id/'.$question->primaryKey), 'class'=>'submenu button')); ?>
 					</div>
 				</div>			
 			</td>
@@ -42,13 +42,13 @@
 			</td>
 			<td class="answer-menu">
 				<div style="" class="content-submenu">
-					<?php echo CHtml::button('answer menu', array('submit'=>'#', 'class'=>'parent button')); ?>
+					<?php echo CHtml::button('menu odpowiedzi', array('submit'=>'#', 'class'=>'parent button')); ?>
 					<div class="content-submenu-sub">
-						<?php echo CHtml::button('update answer', array('submit'=>Yii::app()->createUrl('question/admin/updateAnswer/id/'.$answer->primaryKey), 'class'=>'submenu button')); ?>
+						<?php echo CHtml::button('edytuj', array('submit'=>Yii::app()->createUrl('question/admin/updateAnswer/id/'.$answer->primaryKey), 'class'=>'submenu button')); ?>
 						<?php echo $answer->enabled ? 
-						CHtml::button('disable answer', array('submit'=>Yii::app()->createUrl('question/admin/disable/id/'.$answer->primaryKey.'/type/answer'), 'class'=>'submenu button')) :
-						CHtml::button('enable answer', array('submit'=>Yii::app()->createUrl('question/admin/enable/id/'.$answer->primaryKey.'/type/answer'), 'class'=>'submenu button'))?>
-						<?php echo CHtml::button('remove answer', array('submit'=>Yii::app()->createUrl('question/admin/removeAnswer/id/'.$answer->primaryKey), 'confirm'=>'Czy na pewno usunąć to pytanie?', 'class'=>'submenu button')); ?>
+						CHtml::button('zablokuj odpowiedź', array('submit'=>Yii::app()->createUrl('question/admin/disable/id/'.$answer->primaryKey.'/type/answer'), 'class'=>'submenu button')) :
+						CHtml::button('odblokuj odpowiedź', array('submit'=>Yii::app()->createUrl('question/admin/enable/id/'.$answer->primaryKey.'/type/answer'), 'class'=>'submenu button'))?>
+						<?php echo CHtml::button('usuń odpowiedź', array('submit'=>Yii::app()->createUrl('question/admin/removeAnswer/id/'.$answer->primaryKey), 'confirm'=>'Czy na pewno usunąć to pytanie?', 'class'=>'submenu button')); ?>
 					</div>
 				</div>
 			</td>

@@ -59,7 +59,7 @@ class ViewAction extends KAction
 			}
 		}
 		
-		$this->controller->headerTitle = 'Users - Display users details';
+		$this->controller->headerTitle = 'Użytkownicy - wyświetl informacje o koncie';
 	}
 	
 	
@@ -92,17 +92,17 @@ class ViewAction extends KAction
 		
 		// add few menu items
 		$this->controller->module->menuItems[] = array(
-			'label'=>'Details', 
+			'label'=>'Szczegóły konta', 
 			'url'=>array('/admin/users/view/id/'.$user->id), 
 			'visible'=> (Yii::app()->user->checkAccess('users.view_self_details')&&Yii::app()->user->id==$id)||Yii::app()->user->checkAccess('users.view_details')
 			);
 		$this->controller->module->menuItems[] = array(
-			'label'=>'Update', 
+			'label'=>'Edytuj konto', 
 			'url'=>array('/admin/users/update/id/'.$user->id), 
 			'visible'=>(Yii::app()->user->checkAccess('users.update_self_details')&&Yii::app()->user->id==$id)||Yii::app()->user->checkAccess('users.update_user')
 			);
 		$this->controller->module->menuItems[] = array(
-			'label'=>'Change password', 
+			'label'=>'Zmień hasło', 
 			'url'=>array('/admin/users/passwd/id/'.$user->id), 
 			'visible' => Yii::app()->user->id == $id
 			);

@@ -49,15 +49,15 @@ class ViewAction extends KAction
 		// set page header (title)
 		if($item->type=='0')
 		{
-			$this->controller->headerTitle = 'Rights - view details of "'.$item->name.'" operation';
+			$this->controller->headerTitle = 'Uprawnienia - szczegóły operacji: "'.$item->name.'"';
 		}
 		elseif($item->type=='1')
 		{
-			$this->controller->headerTitle = 'Rights - view details of "'.$item->name.'" task';
+			$this->controller->headerTitle = 'Uprawnienia - szczegóły zadania: "'.$item->name.'"';
 		}
 		elseif($item->type=='2')
 		{
-			$this->controller->headerTitle = 'Rights - view details of "'.$item->name.'" role';
+			$this->controller->headerTitle = 'Uprawnienia - szczegóły roli: "'.$item->name.'"';
 		}
 		else
 		{

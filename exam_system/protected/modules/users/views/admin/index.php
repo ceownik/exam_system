@@ -7,6 +7,7 @@ if(Yii::app()->user->checkAccess('users.view_users_list'))
 	$this->widget('application.extensions.kgridview.KGridView', array(
 		'dataProvider'=>$data,
 		'filter' => $filter,
+		'template'=>"{items}\n{pager}",
 		'columns' => array(
 			array(
 				'class' => 'CCheckBoxColumn',
@@ -14,7 +15,7 @@ if(Yii::app()->user->checkAccess('users.view_users_list'))
 			),
 			'id'=>array(
 				'name' => 'id',
-				'header' => 'User Id',
+				'header' => 'Id',
 			),
 			'login'=>array(
 				'name' => 'login',
@@ -22,7 +23,7 @@ if(Yii::app()->user->checkAccess('users.view_users_list'))
 			),
 			'display_name'=>array(
 				'name' => 'display_name',
-				'header' => 'Display name',
+				'header' => 'Nazwa użytkownika',
 			),
 			'email'=>array(
 				'name' => 'email',
@@ -44,14 +45,16 @@ if(Yii::app()->user->checkAccess('users.view_users_list'))
 //			),
 			array(
 				'class' => 'CButtonColumn',
-				'header' => 'Actions',
+				'header' => '',
 				'template' => '{view}{update}',
 				'buttons' => array(
 					'view' => array(
 						'url' => 'Yii::app()->createUrl("/admin/users/view/", array("id"=>$data->id))',
+						'label' => 'Wyświetl szczegóły',
 					),
 					'update' => array(
 						'url' => 'Yii::app()->createUrl("/admin/users/update/", array("id"=>$data->id))',
+						'label' => 'Edytuj',
 					),
 				),
 			),

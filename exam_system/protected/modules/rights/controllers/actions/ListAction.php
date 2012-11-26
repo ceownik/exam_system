@@ -33,19 +33,19 @@ class ListAction extends KAction
 		{
 			case '0':
 			case 'operations':
-				$this->controller->headerTitle = 'Rights - Display operations';
+				$this->controller->headerTitle = 'Uprawnienia - wyświetl operacje';
 				//$items = Yii::app()->authManager->getOperations();
 				$items = RbacAuthItem::model()->getAuthItems(0);
 				break;
 			case '1':
 			case 'tasks':
-				$this->controller->headerTitle = 'Rights - Display tasks';
+				$this->controller->headerTitle = 'Uprawnienia - wyświetl zadania';
 				//$items = Yii::app()->authManager->getTasks();
 				$items = RbacAuthItem::model()->getAuthItems(1);
 				break;
 			case '2':
 			case 'roles':
-				$this->controller->headerTitle = 'Rights - Display roles';
+				$this->controller->headerTitle = 'Uprawnienia - wyświetl role';
 				//$items = Yii::app()->authManager->getRoles();
 				$items = RbacAuthItem::model()->getAuthItems(2);
 				break;

@@ -2,21 +2,21 @@
 
 
 	<div style="border: 1px solid #ccc; padding: 5px; margin: 0px 0px 10px 0px;">
-		<h4 style="margin: 0px;">details</h4>
+		<h4 style="margin: 0px;">Szczegóły</h4>
 		<div style="padding: 5px 0px 0px 15px;">
-			<h5 style="margin: 0px 0px 0px 0px;">name</h5>
+			<h5 style="margin: 0px 0px 0px 0px;">Nazwa</h5>
 			<div style="padding: 0px 0px 10px 15px;"><?php echo $item->name; ?></div>
 
-			<h5 style="margin: 0px 0px 0px 0px;">type</h5>
+			<h5 style="margin: 0px 0px 0px 0px;">Typ</h5>
 			<div style="padding: 0px 0px 10px 15px;"><?php echo $item->typeName; ?></div>
 
-			<h5 style="margin: 0px 0px 0px 0px;">description</h5>
+			<h5 style="margin: 0px 0px 0px 0px;">Opis</h5>
 			<div style="padding: 0px 0px 10px 15px;"><?php echo $item->description; ?></div>
 
-			<h5 style="margin: 0px 0px 0px 0px;">bizrule</h5>
+			<h5 style="margin: 0px 0px 0px 0px;">BizRule</h5>
 			<div style="padding: 0px 0px 10px 15px;"><?php echo $item->bizrule; ?></div>
 
-			<h5 style="margin: 0px 0px 0px 0px;">data</h5>
+			<h5 style="margin: 0px 0px 0px 0px;">Dane</h5>
 			<div style="padding: 0px 0px 10px 15px;"><?php echo $item->data; ?></div>
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 	
 		
 	<div style="border: 1px solid #ccc; padding: 5px; margin: 0px 0px 10px 0px;">
-		<h4 style="margin: 0px 0px 5px 0px;">parents</h4>
+		<h4 style="margin: 0px 0px 5px 0px;">Pozycje nadrzędne (rodzice)</h4>
 		<?php
 		$this->widget('application.extensions.kgridview.KGridView', array(
 			'dataProvider' => $parents,
@@ -32,17 +32,17 @@
 			'columns' => array(
 				array(
 					'name' => 'name',
-					'header' => 'Name',
+					'header' => 'Nazwa',
 					'value' => '$data->name',
 				),
 				array(
 					'name' => 'description',
-					'header' => 'Description',
+					'header' => 'Opis',
 					'value' => '$data->description',
 				),
 				array(
 					'name' => 'type',
-					'header' => 'Type',
+					'header' => 'Typ',
 					'value' => '$data->typeName',
 					'headerHtmlOptions' => array(
 						'style' => 'width: 70px; text-align: center;',
@@ -50,12 +50,12 @@
 					'htmlOptions' => array(
 						'style' => 'text-align: center;',
 					),
-					'filter' => array('0'=>'Operation', '1'=>'Task', '2'=>'Role'),
+					'filter' => array('0'=>'Operacja', '1'=>'Zadanie', '2'=>'Rola'),
 				),
 				array(
 					'class' => 'CDataColumn',
-					'header' => 'Relation',
-					'value' => '($data->directlyAssigned) ? "Direct" : "Related";',
+					'header' => 'Relacja',
+					'value' => '($data->directlyAssigned) ? "Bezpośrednio" : "Powiązane";',
 					'headerHtmlOptions' => array(
 						'style' => 'width: 70px; text-align: center;',
 					),
@@ -72,7 +72,7 @@
 	
 	
 	<div style="border: 1px solid #ccc; padding: 5px; margin: 0px 0px 10px 0px;">
-		<h4 style="margin: 0px 0px 5px 0px;">children</h4>
+		<h4 style="margin: 0px 0px 5px 0px;">Pozycje podrzędne (dzieci)</h4>
 		<?php
 		$this->widget('application.extensions.kgridview.KGridView', array(
 			'dataProvider' => $children,
@@ -80,17 +80,17 @@
 			'columns' => array(
 				array(
 					'name' => 'name',
-					'header' => 'Name',
+					'header' => 'Nazwa',
 					'value' => '$data->name',
 				),
 				array(
 					'name' => 'description',
-					'header' => 'Description',
+					'header' => 'Opis',
 					'value' => '$data->description',
 				),
 				array(
 					'name' => 'type',
-					'header' => 'Type',
+					'header' => 'Typ',
 					'value' => '$data->typeName',
 					'headerHtmlOptions' => array(
 						'style' => 'width: 70px; text-align: center;',
@@ -98,15 +98,15 @@
 					'htmlOptions' => array(
 						'style' => 'text-align: center;',
 					),
-					'filter' => array('0'=>'Operation', '1'=>'Task', '2'=>'Role'),
+					'filter' => array('0'=>'Operacja', '1'=>'Zadanie', '2'=>'Rola'),
 				),
 				array(
 					'class' => 'application.extensions.kgridview.KButtonColumn',
 					'template' => '{remove}{text}',
-					'header' => 'Actions',
+					'header' => '',
 					'buttons' => array(
 						'remove' => array(
-							'label' => 'Remove',
+							'label' => 'Usuń',
 							'url' => null,
 							'options' => array(
 								'class' => 'submit-remove',
@@ -140,7 +140,7 @@
 	
 
 	<div style="border: 1px solid #ccc; padding: 5px;">
-		<h4 style="margin: 0px 0px 5px 0px;">potential children</h4>
+		<h4 style="margin: 0px 0px 5px 0px;">Dodaj pozycję podrzędną</h4>
 		<?php
 		$this->widget('application.extensions.kgridview.KGridView', array(
 			'dataProvider' => $potentialChildren,
@@ -148,17 +148,17 @@
 			'columns' => array(
 				array(
 					'name' => 'name',
-					'header' => 'Name',
+					'header' => 'Nazwa',
 					'value' => '$data->name',
 				),
 				array(
 					'name' => 'description',
-					'header' => 'Description',
+					'header' => 'Opis',
 					'value' => '$data->description',
 				),
 				array(
 					'name' => 'type',
-					'header' => 'Type',
+					'header' => 'Typ',
 					'value' => '$data->typeName',
 					'headerHtmlOptions' => array(
 						'style' => 'width: 70px; text-align: center;',
@@ -166,15 +166,15 @@
 					'htmlOptions' => array(
 						'style' => 'text-align: center;',
 					),
-					'filter' => array('0'=>'Operation', '1'=>'Task', '2'=>'Role'),
+					'filter' => array('0'=>'Operacja', '1'=>'Zadanie', '2'=>'Rola'),
 				),
 				array(
 					'class' => 'KButtonColumn',
 					'template' => '{add}',
-					'header' => 'Actions',
+					'header' => '',
 					'buttons' => array(
 						'add' => array(
-							'label' => 'Add',
+							'label' => 'Dodaj',
 							'url' => null,
 							'options' => array(
 								'class' => 'submit-add',

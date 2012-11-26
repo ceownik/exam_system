@@ -42,7 +42,7 @@ class AdminController extends KAdminController
 		if($action->id!='index') {
 			$this->module->menuItems = array(
 				'list' => array(
-					'label'=>'View Sets List', 
+					'label'=>'Wyświetl listę zestawów', 
 					'url'=>array('/admin/question/index'), 
 					'linkOptions' => array('class'=>'',)
 				),
@@ -53,7 +53,7 @@ class AdminController extends KAdminController
 	
 	public function actionIndex() 
 	{
-		$this->headerTitle = 'Question Sets';
+		$this->headerTitle = 'Zestawy pytań';
 		
 		$model = new QuestionSet;
 		$model->unsetAttributes();
@@ -66,7 +66,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionCreateQuestionSet() {
-		$this->headerTitle = 'Create question set';
+		$this->headerTitle = 'Utwórz zestaw pytań';
 		
 		$model = new QuestionSet;
 		$model->setScenario('create');
@@ -79,7 +79,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item created successfully.");
+					Yii::app()->user->setFlash('success', "Zestaw został utworzony.");
 					$this->redirect(array('/admin/question/index'));
 				}
 			}
@@ -91,7 +91,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionUpdateQuestionSet($id, $type=0) {
-		$this->headerTitle = 'Update question set';
+		$this->headerTitle = 'Aktualizuj zestaw pytań';
 		
 		$model = $this->getQuestionSet($id);
 		

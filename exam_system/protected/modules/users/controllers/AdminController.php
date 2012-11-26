@@ -99,7 +99,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionViewGroup($id) {
-		$this->headerTitle = 'View group';
+		$this->headerTitle = 'Wyświetl grupę';
 		
 		$model = $this->getGroup($id);
 		
@@ -178,7 +178,7 @@ class AdminController extends KAdminController
 	}
 	
 	public function actionCreateGroup() {
-		$this->headerTitle = 'Create group';
+		$this->headerTitle = 'Utwórz grupę';
 		
 		$model = new UserGroup;
 		$model->setScenario('create');
