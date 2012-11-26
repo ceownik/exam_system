@@ -43,47 +43,47 @@ class RightsModule extends KModule
 	{
 		$this->menuItems = array(
 			array(
-				'label'=>'Assignments', 
+				'label'=>'Przypisania', 
 				'url'=>array('/admin/rights/index'),
 				'visible'=>Yii::app()->user->checkAccess('rights.view_assingments'),
 			),
 			array(
-				'label'=>'Operations', 
+				'label'=>'Operacje', 
 				'url'=>array('/admin/rights/list/type/0'), 
 				'linkOptions' => array(),
 				'visible'=>Yii::app()->user->checkAccess('rights.view_list'),
 			),
 			array(
-				'label'=>'Tasks', 
+				'label'=>'Zadania', 
 				'url'=>array('/admin/rights/list/type/1'), 
 				'linkOptions' => array(),
 				'visible'=>Yii::app()->user->checkAccess('rights.view_list'),
 			),
 			array(
-				'label'=>'Roles', 
+				'label'=>'Role', 
 				'url'=>array('/admin/rights/list/type/2'), 
 				'linkOptions' => array(),
 				'visible'=>Yii::app()->user->checkAccess('rights.view_list'),
 			),
 			array(
-				'label'=>'Create', 
+				'label'=>'Utwórz', 
 				'linkOptions'=>array(
 					'class'=>'parent create'
 				), 
 				'visible'=>Yii::app()->user->checkAccess('rights.create_item'),
 				'items'=>array(
 					array(
-						'label'=>'Operation', 
+						'label'=>'Operację', 
 						'url'=>array('/admin/rights/create/type/0'), 
 						'linkOptions' => array('class'=>'',)
 					),
 					array(
-						'label'=>'Task', 
+						'label'=>'Zadanie', 
 						'url'=>array('/admin/rights/create/type/1'), 
 						'linkOptions' => array('class'=>'',)
 					),
 					array(
-						'label'=>'Role', 
+						'label'=>'Rolę', 
 						'url'=>array('/admin/rights/create/type/2'), 
 						'linkOptions' => array('class'=>'',)
 					),
@@ -94,7 +94,7 @@ class RightsModule extends KModule
 		
 		if( parent::beforeControllerAction( $controller, $action ) )
 		{
-			$controller->headerTitle = $this->moduleTitle;
+			$controller->headerTitle = 'Uprawnienia';
 			return true;
 		}
 		else

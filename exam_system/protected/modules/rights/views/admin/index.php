@@ -5,15 +5,17 @@ if(Yii::app()->user->checkAccess('rights.view_assingments'))
 		$this->widget('application.extensions.kgridview.KGridView', array(
 		'dataProvider'=>$usersData,
 		'filter'=>$filter,
+		'template'=>"{items}\n{pager}",
 		'columns' => array(
 			array(
 				'name' => 'login',
-				'header'=>'login',
+				'header'=>'Login',
 				'value' => 'CHtml::link($data["login"], array("/admin/rights/assignment/id/".$data["id"]))',
 				'type' => 'raw',
 			),
 			array(
 				'name' => 'roles',
+				'header' => 'Role',
 				'value' => '$data["roles"]',
 				'type' => 'html',
 				'headerHtmlOptions'=>array(
@@ -22,6 +24,7 @@ if(Yii::app()->user->checkAccess('rights.view_assingments'))
 			),
 			array(
 				'name' => 'tasks',
+				'header' => 'Zadania',
 				'value' => '$data["tasks"]',
 				'type' => 'html',
 				'headerHtmlOptions'=>array(
@@ -30,6 +33,7 @@ if(Yii::app()->user->checkAccess('rights.view_assingments'))
 			),
 			array(
 				'name' => 'operations',
+				'header' => 'Operacje',
 				'value' => '$data["operations"]',
 				'type' => 'html',
 				'headerHtmlOptions'=>array(

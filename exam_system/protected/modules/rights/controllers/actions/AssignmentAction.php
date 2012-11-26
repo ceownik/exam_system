@@ -45,7 +45,7 @@ class AssignmentAction extends KAction
 		
 		// set page name
 		$name = ($user->display_name!='') ? $user->display_name : $user->login;
-		$this->controller->headerTitle = 'Rights - Assignments for '. $name;
+		$this->controller->headerTitle = 'Uprawnienia - przyznane dla: '. $name;
 		
 		
 		// get auth manager
@@ -151,7 +151,7 @@ class AssignmentAction extends KAction
 						if( !$authManager->isAssigned($rightToAssign, $user->id ))
 								$authManager->assign( $rightToAssign, $user->id );
 
-						Yii::app()->user->setFlash('success', 'Right was successfully assigned to user.');
+						Yii::app()->user->setFlash('success', 'Pozycja została poprawnie przypisana do użytkownika.');
 						$this->controller->redirect( array( '/admin/rights/assignment/id/'.$user->id) );
 					}
 				}
@@ -168,7 +168,7 @@ class AssignmentAction extends KAction
 						if( $authManager->isAssigned($rightToRevoke, $user->id ))
 								$authManager->revoke( $rightToRevoke, $user->id );
 
-						Yii::app()->user->setFlash('success', 'Right was successfully revoked from user.');
+						Yii::app()->user->setFlash('success', 'Pozycja została poprawnie usunięta.');
 						$this->controller->redirect( array( '/admin/rights/assignment/id/'.$user->id) );
 					}
 				}

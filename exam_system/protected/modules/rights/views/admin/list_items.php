@@ -4,18 +4,21 @@
 $this->widget('application.extensions.kgridview.KGridView', array(
     'dataProvider'=>$items,
 	'filter'=>$filter,
+		'template'=>"{items}\n{pager}",
 	'columns' => array(
 		array(
 			'name' => 'name',
 			'value' => '$data->name',
+			'header' => 'Nazwa'
 		),
 		array(
 			'name' => 'description',
 			'value' => '$data->description',
+			'header' => 'Opis'
 		),
 		array(
 			'class' => 'application.extensions.kgridview.KButtonColumn',
-			'header' => 'Actions',
+			'header' => '',
 			'template' => '{view}{update}{delete}',
 			'buttons' => array(
 				'view' => array(
@@ -27,9 +30,8 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 					'visible'=>"Yii::app()->user->checkAccess('rights.update_item')",
 				),
 				'delete' => array(
-					'label' => RightsModule::t(null, 'delete_label'),
 					'url' => 'Yii::app()->createUrl("/admin/rights/delete/", array("name"=>$data->name))',
-					'click'=>'function(){return confirm("'. RightsModule::t(null, 'delete_confirmation') . '")}',
+					'click'=>'function(){return confirm("Czy na pewno usunąć pozycję?")}',
 					'visible'=>"Yii::app()->user->checkAccess('rights.delete_item')",
 				),
 			

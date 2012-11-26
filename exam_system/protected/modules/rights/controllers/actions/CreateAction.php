@@ -69,17 +69,17 @@ class CreateAction extends KAction
 		if($type=='0')
 		{
 			$type = 0;
-			$this->controller->headerTitle = 'Rights - create operation';
+			$this->controller->headerTitle = 'Uprawnienia - utwórz operację';
 		}
 		elseif($type=='1')
 		{
 			$type = 1;
-			$this->controller->headerTitle = 'Rights - create task';
+			$this->controller->headerTitle = 'Uprawnienia - utwórz zadanie';
 		}
 		elseif($type=='2')
 		{
 			$type = 2;
-			$this->controller->headerTitle = 'Rights - create role';
+			$this->controller->headerTitle = 'Uprawnienia - utwórz rolę';
 		}
 		else
 		{
@@ -107,7 +107,7 @@ class CreateAction extends KAction
 			{
 				if( Yii::app()->authManager->createAuthItem( $model->name, $model->type, $model->description, $model->bizrule, $model->data) )
 				{
-					Yii::app()->user->setFlash('success', "Item created successfully.");
+					Yii::app()->user->setFlash('success', "Utworzono poprawnie.");
 					$this->controller->redirect( array( '/admin/rights/list/type/'.$type ) );
 				}
 			}

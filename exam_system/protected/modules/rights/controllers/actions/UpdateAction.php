@@ -38,15 +38,15 @@ class UpdateAction extends KAction
 		
 		if($item->type=='0')
 		{
-			$this->controller->headerTitle = 'Rights - update operation';
+			$this->controller->headerTitle = 'Uprawnienia - edytuj operację';
 		}
 		elseif($item->type=='1')
 		{
-			$this->controller->headerTitle = 'Rights - update task';
+			$this->controller->headerTitle = 'Uprawnienia - edytuj zadanie';
 		}
 		elseif($item->type=='2')
 		{
-			$this->controller->headerTitle = 'Rights - update role';
+			$this->controller->headerTitle = 'Uprawnienia - edytuj rolę';
 		}
 		else
 		{
@@ -81,7 +81,7 @@ class UpdateAction extends KAction
 				
 				// TODO: some problems with it ;/ 
 				// check if it has been really updated
-					Yii::app()->user->setFlash('success', "Item updated successfully.");
+					Yii::app()->user->setFlash('success', "Zmiany zapisano poprawnie.");
 					$this->controller->redirect( array( 'index' ) );
 				
 			}
