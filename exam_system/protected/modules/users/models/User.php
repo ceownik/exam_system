@@ -163,20 +163,26 @@ class User extends KActiveRecord {
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'User ID',
+			'id' => 'ID',
 			'login' => 'Login',
-			'display_name' => 'User display name',
-			'password' => 'Password',
+			'display_name' => 'Nazwa użytkownika',
+			'password' => 'Hasło',
+			'password_repeat' => 'Hasło ponownie',
 			'email' => 'Email',
-			'is_active' => 'Is Active',
-			'active_from' => 'Active From',
-			'active_from_now' => 'Active From',
-			'active_to' => 'Active To',
-			'is_deleted' => 'Is Deleted',
-			'create_date' => 'Create Date',
-			'create_user' => 'Create User',
+			'is_active' => 'Aktywny',
+			'active_from' => 'Aktywny od',
+			'active_from_now' => 'Aktywny od',
+			'active_from_date' => 'Aktywny od',
+			'active_to_date' => 'Aktywny do',
+			'active_to' => 'Aktywny do',
+			'is_deleted' => 'Usunięty',
+			'create_date' => 'Data utworzenia',
+			'create_user' => 'Użytkownik tworzący',
 			'last_update_date' => 'Last Update Date',
 			'last_update_user' => 'Last Update User',
+			'last_login_date' => 'Ostatnie logowanie',
+			'old_password' => 'Aktualne hasło',
+			'new_password' => 'Nowe hasło'
 		);
 	}
 

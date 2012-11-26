@@ -53,7 +53,7 @@ LAYOUT
 OTHERS
 ============================================================================= */
 
-#aside #logo img {border:1px solid #bfbfbf;}
+#aside #logo img {}
 #aside #search fieldset a {color:#303030;}
 #aside #search fieldset {border:1px solid #bfbfbf;}
 #aside #search fieldset a:hover, #aside #search fieldset a:active, #aside #search fieldset a:focus {color:#df0000;}

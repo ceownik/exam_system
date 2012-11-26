@@ -65,8 +65,8 @@
 				$model, 
 				'active_from_now', 
 				array( 
-					1 => 'now', 
-					0 => 'specific date' 
+					1 => 'Chwili utworzenia', 
+					0 => 'Konkretnej daty (zdefiniowanej poniżej)' 
 				), 
 				array( 
 					'template' => '<p>{input}{label}</p>',
@@ -107,7 +107,7 @@
 
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton( $model->isNewRecord ? 'Create' : 'Save'  ); ?>
+		<?php echo CHtml::submitButton( $model->isNewRecord ? 'Utwórz' : 'Zapisz'  ); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

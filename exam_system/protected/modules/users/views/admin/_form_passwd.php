@@ -39,7 +39,7 @@
 
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton( $model->isNewRecord ? 'Create' : 'Save', array('confirm'=>'Change the password?')  ); ?>
+		<?php echo CHtml::submitButton('Zapisz', array('confirm'=>'Zmienić hasło?')  ); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

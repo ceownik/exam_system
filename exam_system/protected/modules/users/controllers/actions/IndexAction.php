@@ -53,7 +53,7 @@ class IndexAction extends KAction
 			}
 		}
 		
-		$this->controller->headerTitle = 'Users';
+		$this->controller->headerTitle = 'Użytkownicy';
 	}
 	
 	

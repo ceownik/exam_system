@@ -29,8 +29,8 @@
 
 
 	<div class="row buttons">
-		<?php echo CHtml::button('Cancel', array ( 'submit' => array('/admin/users/groups'))); ?>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::button('Anuluj', array ( 'submit' => array('/admin/users/groups'))); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Utwórz' : 'Zapisz'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

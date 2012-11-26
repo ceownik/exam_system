@@ -507,22 +507,22 @@ class KWebUser extends CWebUser
 		switch ($status)
 		{
 			case -3 :
-				return 'guest';
+				return 'Gość';
 				break;
 			case -2 :
-				return 'don\'t exist';
+				return 'Nie ma takiego użytkownika';
 				break;
 			case -1 :
-				return 'deleted';
+				return 'Usunięty';
 				break;
 			case 0 :
-				return 'inactive';
+				return 'Nieaktywny';
 				break;
 			case 1 :
-				return 'active';
+				return 'Aktywny';
 				break;
 			default :
-				return 'error';
+				return 'Error';
 		}
 	}
 }
