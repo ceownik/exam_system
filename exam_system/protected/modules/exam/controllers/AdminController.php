@@ -67,27 +67,36 @@ class AdminController extends KAdminController
 	
 	public function actionIndex() {
 		$this->headerTitle = 'Testy';
-		
+		$this->module->menuItems[] = array(
+			'label'=>'Wyświetl listę', 
+			'url'=>array('/admin/exam/index')
+		);
 		$this->module->menuItems[] = array(
 			'label'=>'Utwórz nowy', 
 			'url'=>array('/admin/exam/create'), 
 			'linkOptions' => array('class'=>'create '),
 		);
 		
-		$model = new Test();
+		$model = new Test('search');
 		$model->unsetAttributes();
 		if(isset($_GET['Test']))
 			$model->attributes = $_GET['Test'];
 		
+		$testUserLog = new TestUserLog('search');
+		$testUserLog->unsetAttributes();
+		if(isset($_GET['TestUserLog']))
+			$testUserLog->attributes = $_GET['TestUserLog'];
+		
 		$this->render('index',array(
-			'model'=>$model,
+			'model' => $model,
+			'testUserLog' => $testUserLog,
 		));
 	}
 	
 	public function actionCreate() {
 		$this->headerTitle = 'Utwórz test';
 		$this->module->menuItems[] = array(
-			'label'=>'Wyświetl testy', 
+			'label'=>'Wyświetl listę', 
 			'url'=>array('/admin/exam/index')
 		);
 		
@@ -311,7 +320,7 @@ class AdminController extends KAdminController
 			$url = '/admin/exam/configure/id/'.$id;
 		
 		if($model->status != Test::STATUS_CONFIRMED) {
-			Yii::app()->user->setFlash('error', 'Egzamin nie może zostać zakończony');
+			Yii::app()->user->setFlash('error', 'Test nie może zostać zakończony');
 			$this->redirect($url);
 		} else {
 			$model->status = Test::STATUS_FINISHED;
@@ -319,7 +328,7 @@ class AdminController extends KAdminController
 			try {
 				$model->save();
 				
-				//TestUserLog::model()->
+				TestUserLog::model()->cancelTestsByTestId($id);
 				
 				$transaction->commit();
 				$this->redirect($url);
@@ -330,11 +339,33 @@ class AdminController extends KAdminController
 		}
 	}
 	
+	public function actionEndUserTest($id) {
+		$model = $this->getTestUserLogModel($id);
+		
+		if($model->status!=TestUserLog::STATUS_STARTED) {
+			Yii::app()->user->setFlash('error', 'Test nie może zostać zakończony');
+			$this->redirect('/admin/exam/index');
+		} else {
+			$model->status = TestUserLog::STATUS_CANCELED;
+			if($model->save()) {
+				Yii::app()->user->setFlash('success', 'Test zakończono poprawnie');
+			} else {
+				Yii::app()->user->setFlash('error', 'Anulowanie testu nie powiodło się');
+			}
+			$this->redirect('/admin/exam/index/');
+		}
+	}
+	
 	public function actionTestSummary($id) {
 		$this->headerTitle = 'Podsumowanie testu';
 		$this->module->menuItems[] = array(
 			'label'=>'Wyświetl listę', 
 			'url'=>array('/admin/exam/index')
+		);
+		$this->module->menuItems[] = array(
+			'label'=>'Utwórz nowy', 
+			'url'=>array('/admin/exam/create'), 
+			'linkOptions' => array('class'=>'create '),
 		);
 		$model = $this->getTestModel($id);
 		$testUserLog = new TestUserLog('search');

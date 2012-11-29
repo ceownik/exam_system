@@ -20,8 +20,8 @@
 		<?php
 	} ?>
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Zapisz'); ?>
 		<?php echo CHtml::button('Anuluj', array('submit'=>Yii::app()->createUrl('/admin/exam/testSummary/id/'.$model->test->id))); ?>
+		<?php echo CHtml::submitButton('Zapisz'); ?>
 	</div>
 	</form>
 </div>

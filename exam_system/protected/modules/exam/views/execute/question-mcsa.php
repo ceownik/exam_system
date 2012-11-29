@@ -1,13 +1,13 @@
-<div>
+<div class="question-mcsa ">
 	<table>
 		<tr>
 			<td style="width: 20px;">
-				<p><?php echo $counter; ?></p>
+				<p><?php echo $counter; ?>.</p>
 			</td>
 			<td colspan="2">
 				<?php echo $questionLog->question->question; ?>
 			</td>
-			<td>
+			<td style="width: 125px;">
 				<a href="#" class="clear">wyczyść odpowiedź</a>
 			</td>
 		</tr>

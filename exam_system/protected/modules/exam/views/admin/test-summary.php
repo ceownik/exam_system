@@ -49,7 +49,7 @@
 			),
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{details} {score}',
+				'template'=>'{details} {score} {end}',
 				'buttons'=>array(
 					'details'=>array(
 						'label'=>'(szczegóły)',
@@ -59,6 +59,13 @@
 					'score'=>array(
 						'label'=>'(oceń)',
 						'url'=>'Yii::app()->createUrl("/admin/exam/scoreTest/id/".$data->primaryKey)',
+						'visible'=>'$data->status == TestUserLog::STATUS_COMPLETED'
+					),
+					'end'=>array(
+						'label'=>'(zakończ)',
+						'url'=>'Yii::app()->createUrl("/admin/exam/endUserTest/id/".$data->primaryKey)',
+						'click'=>'function() {return confirm("zakończyć test?");}',
+						'visible'=>'$data->status==TestUserLog::STATUS_STARTED',
 					),
 				),
 			),

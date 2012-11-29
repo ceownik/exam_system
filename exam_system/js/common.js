@@ -211,13 +211,19 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 	$(dropdown).change();
 }
 
-function performTest(baseUrl, testId) {
+function performTest(baseUrl, testId, timeLeft, totalTime) {
 	window.test = {};
 	test.changed = false;
 	test.saved = true;
+	test.timeLeft = timeLeft;
+	test.totalTime = totalTime;
+	test.interval = null;
 	test.form = $('#content').find('#test-form');
 	test.msg = $('#content').find('.message-wrapper');
+	test.timer = $('#content').find('.timer-wrapper .time');
 	test.id = testId;
+	test.interval = setInterval(function(){setTimer()}, 1000);
+	test.ajaxInterval = 10000;
 	test.form.change(function(){
 		test.changed = true;
 		return true;
@@ -230,12 +236,21 @@ function performTest(baseUrl, testId) {
 		return false;
 	});
 	
+	$('.save-icon').click(function() {
+		test.changed=true;
+		testLooper(baseUrl, false);
+		return false;
+	});
+	
 	testLooper(baseUrl);
 }
 
-function testLooper(baseUrl) {
+function testLooper(baseUrl, doLoop ) {
+	
+	doLoop = typeof doLoop !== 'undefined' ? doLoop : true;
+	
 	if(test.changed==true) {
-		test.msg.stop(true, true).html('zapisywanie zmian').show().delay(1000).slideUp(1000);
+		test.msg.stop(true, true).html('zapisywanie zmian').show().delay(1000).fadeOut(1000);
 		test.saved = false;
 	}
 	test.changed = false;
@@ -252,13 +267,21 @@ function testLooper(baseUrl) {
 		type: "POST",
 		data: postData,
 		success: function(data){
-			console.log(data);
+			//console.log(data);
 			if(data.status=='success') {
 				if(!test.saved) {
-					test.msg.stop(true, true).html('zmiany zostały zapisane').show().delay(1000).slideUp(1000);
+					if(Math.abs(test.timeLeft - data.time_left)>5) {
+						test.timeLeft = data.time_left;
+					}
+					if(data.time_left < 20) {
+						test.ajaxInterval = 1000;
+					}
+					test.msg.stop(true, true).html('zmiany zostały zapisane').show().delay(1000).fadeOut(1000);
 					test.saved = true;
 				}
-				setTimeout(function(){testLooper(baseUrl)}, 1000);	
+				if(doLoop) {
+					setTimeout(function(){testLooper(baseUrl)}, test.ajaxInterval);	
+				}
 			} else if(data.status=='end' || data.status=='error') {
 				alert(data.msg);
 				location.reload();
@@ -267,7 +290,86 @@ function testLooper(baseUrl) {
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log('error');
 			console.log(jqXHR);
-			setTimeout(function(){testLooper(baseUrl)}, 1000);
+			if(doLoop) {
+				setTimeout(function(){testLooper(baseUrl)}, test.ajaxInterval);	
+			}
 		}
 	});
 }
+
+function setTimer() {
+	if(test.timeLeft>0)
+		--test.timeLeft;
+	var hour = Math.floor(test.timeLeft/3600);
+	var min = Math.floor((test.timeLeft-(hour*3600))/60);
+	var sec = test.timeLeft - (hour * 3600) - (min * 60);
+	if (hour   < 10) {hour   = "0"+hour;}
+	if (min < 10) {min = "0"+min;}
+	if (sec < 10) {sec = "0"+sec;}	
+	
+	test.timer.html(hour +':'+ min +':'+ sec);
+	
+	changeColor();
+}
+
+function changeColor() {
+	var p = (test.timeLeft/test.totalTime);
+	
+	test.timer.parent().css({
+		'background-color':getColor(p)
+	});
+}
+
+function getColor(p) {
+	var color = hsv2rgb(p*0.4, 0.9, 0.9);
+	return 'rgb('+color['red']+', '+color['green']+', '+color['blue']+')';
+}
+
+function hsv2rgb(h,s,v) {
+	// Adapted from http://www.easyrgb.com/math.html
+	// hsv values = 0 - 1, rgb values = 0 - 255
+	var r, g, b;
+	var RGB = new Array();
+	if(s==0){
+		RGB['red']=RGB['green']=RGB['blue']=Math.round(v*255);
+	} else {
+		// h must be < 1
+		var var_h = h * 6;
+		if (var_h==6) var_h = 0;
+		//Or ... var_i = floor( var_h )
+		var var_i = Math.floor( var_h );
+		var var_1 = v*(1-s);
+		var var_2 = v*(1-s*(var_h-var_i));
+		var var_3 = v*(1-s*(1-(var_h-var_i)));
+		if(var_i==0){ 
+			var_r = v; 
+			var_g = var_3; 
+			var_b = var_1;
+		}else if(var_i==1){ 
+			var_r = var_2;
+			var_g = v;
+			var_b = var_1;
+		}else if(var_i==2){
+			var_r = var_1;
+			var_g = v;
+			var_b = var_3
+		}else if(var_i==3){
+			var_r = var_1;
+			var_g = var_2;
+			var_b = v;
+		}else if (var_i==4){
+			var_r = var_3;
+			var_g = var_1;
+			var_b = v;
+		}else{ 
+			var_r = v;
+			var_g = var_1;
+			var_b = var_2
+		}
+		//rgb results = 0 ÷ 255  
+		RGB['red']=Math.round(var_r * 255);
+		RGB['green']=Math.round(var_g * 255);
+		RGB['blue']=Math.round(var_b * 255);
+	}
+	return RGB;  
+};

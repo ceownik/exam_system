@@ -30,12 +30,9 @@
 				'filter'=>false,
 			),
 			array(
-				'name'=>'status',
-			),
-			array(
 				'class' => 'application.extensions.kgridview.KButtonColumn',
 				'template' => '{execute}{continue}',
-				'header' => 'Actions',
+				'header' => '',
 				'buttons' => array(
 					'execute' => array(
 						'label' => 'Rozpocznij',
@@ -55,7 +52,7 @@
 						'url' => 'Yii::app()->createUrl("/exam/execute")',
 						'options' => array(
 							'class' => 'submit-execute',
-							'submit' => '',
+							'submit' => '/exam/execute',
 							'params' => array(
 								'continue-exam' => 'true',
 								'exam_id' => '$data->id',

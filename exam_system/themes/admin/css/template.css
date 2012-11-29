@@ -187,20 +187,20 @@ form.active-form .row.checkbox input {
 }
 
 
-form.active-form .row.buttons {
+.row.buttons {
 	
 }
-form.active-form .row.buttons input {
+.row.buttons input {
 	display: block;
 	float: right;
 	padding: 5px 10px;
 	margin: 0px 10px 0px 0px;
 }
-form.active-form .row.buttons input:first-child {
+.row.buttons input:first-child {
 	margin: 0px 30% 0px 0px;
 }
 
-form.active-form .row.radio-button span {
+.row.radio-button span {
 	display: block;
 	float: left;
 }
@@ -243,6 +243,7 @@ form.active-form .errorSummary p {
 	border-radius: 10px;
 	cursor: pointer;
 	width: auto;
+	border-width: 1px;
 }
 #content .content-submenu .parent.button:hover {
 	background-color: #555;

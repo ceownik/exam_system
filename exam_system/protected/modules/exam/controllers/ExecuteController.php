@@ -11,12 +11,13 @@ class ExecuteController extends KPublicController
 	const NOT_STARTED = -1;
 	const EXPIRED = -2;
 	const WRONG_STATUS = -3;
+	const FINISHED = -4;
 	
 	const USER_ACCESS = 2;
 	const USER_ACCESS_DENIDED = -4;
 	
 	public function actionIndex()
-	{
+	{	
 		if((isset($_POST['execute-exam']) || isset($_POST['continue-exam'])) && isset($_POST['exam_id']) && (!Yii::app()->user->isGuest)) {
 			
 			$this->testModel = Test::model()->findByPk($_POST['exam_id']);
@@ -110,6 +111,9 @@ class ExecuteController extends KPublicController
 	public function testCanBePerformed() {
 		if($this->testModel==null)
 			return self::ERROR;
+		
+		if($this->testModel->status==Test::STATUS_FINISHED)
+			return self::FINISHED;
 		
 		if($this->testModel->status != Test::STATUS_CONFIRMED)
 			return self::WRONG_STATUS;
@@ -208,6 +212,13 @@ class ExecuteController extends KPublicController
 				));
 				exit(0);
 			}
+			if($status==self::FINISHED) {
+				echo CJSON::encode(array(
+					'status'=>'error',
+					'msg'=>'Test został zakończony przez administratora',
+				));
+				exit(0);
+			}
 			if($status!=self::PERFORM) {
 				echo CJSON::encode(array(
 					'status'=>'error',
@@ -275,6 +286,7 @@ class ExecuteController extends KPublicController
 			echo CJSON::encode(array(
 				'status'=>'success',
 				'post'=>$post,
+				'time_left'=>$this->userLogModel->end_date - time(),
 			));
 			exit(0);
 		}

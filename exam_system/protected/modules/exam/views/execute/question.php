@@ -1,4 +1,4 @@
-<div><?php
+<div class="question-row <?php echo ($counter%2==0)?'even':'odd'; ?> "><?php
 
 switch($questionLog->question->type) {
 	case Question::TYPE_MCSA:

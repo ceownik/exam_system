@@ -22,6 +22,7 @@ class TestUserLog extends CActiveRecord
 {
 	public $login_search;
 	public $display_name_search;
+	public $test_name_search;
 	
 	
 	const STATUS_NEW = 0;
@@ -80,7 +81,7 @@ class TestUserLog extends CActiveRecord
 			array('test_id, user_id, status, create_date, last_change_date, end_date', 'numerical', 'integerOnly'=>true),
 			array('user_comment', 'safe'),
 			
-			array('id, test_id, user_id, status, create_date, last_change_date, end_date, user_comment, login_search, display_name_search', 'safe', 'on'=>'search'),
+			array('id, test_id, status, create_date, last_change_date, end_date, user_comment, login_search, display_name_search, test_name_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -163,7 +164,7 @@ class TestUserLog extends CActiveRecord
 		
 		Yii::app()->db->createCommand()->update('test_user_log', 
 			array(
-				'status'=>3
+				'status'=>self::STATUS_CANCELED
 			),
 			'test_id=:test AND status=1',
 			array(
@@ -205,5 +206,31 @@ class TestUserLog extends CActiveRecord
 		}
 		
 		return $sum;
+	}
+	
+	public function getActiveTests() {
+		$criteria=new CDbCriteria;
+		$criteria->with = array(
+			'user',
+			'test',
+		);
+
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.test_id',$this->test_id);
+		$criteria->compare('t.user_id',$this->user_id);
+		$criteria->compare('t.status',$this->status);
+		$criteria->compare('t.create_date',$this->create_date);
+		$criteria->compare('t.last_change_date',$this->last_change_date);
+		$criteria->compare('t.end_date',$this->end_date);
+		$criteria->compare('t.user_comment',$this->user_comment,true);
+		$criteria->compare('user.login', $this->login_search, true);
+		$criteria->compare('user.display_name', $this->display_name_search, true);
+		$criteria->compare('test.name', $this->test_name_search, true);
+		
+		$criteria->addCondition('t.status = 1');
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
 	}
 }

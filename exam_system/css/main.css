@@ -9,8 +9,6 @@ body
 
 #page
 {
-	margin-top: 5px;
-	margin-bottom: 5px;
 	background: white;
 	border: 1px solid #C9E0ED;
 }
@@ -24,7 +22,8 @@ body
 
 #content
 {
-    padding: 20px;
+	padding: 20px;
+	position: relative;
 }
 
 #sidebar
@@ -226,4 +225,73 @@ div.search-form
 .operations li a:hover
 {
 	background: #80CFFF;
+}
+
+
+
+
+
+.message-wrapper {
+	display: none;
+	width: auto;
+	padding: 3px 10px;
+	position: absolute;
+	left: 360px;
+	top: -20px;
+}
+
+.msg.warning, .msg.notice {border:2px solid #F2DD8C; background-color:#FFF5CC;}
+.msg.warning a, .msg.notice a {color:#df0000;} 
+.msg.warning a:hover, .msg.warning a:active, m.sg.warning a:focus {color:#303030;}
+.msg.info {border:2px solid #B8E2FB; background-color:#E8F6FF;}
+.msg.done, .msg.success {border:2px solid #BBDF8D; background-color:#EAF7D9;}
+.msg.error {border:2px solid #FFAEAE; background-color:#FEEBEB;}
+
+.timer-wrapper {
+	display: block;
+	width: auto;
+	padding: 3px 10px;
+	position: absolute;
+	right: 45px;
+	top: -25px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #777;
+}
+
+.save-icon {
+	position: absolute;
+	top: -27px;
+	right: 10px;
+	cursor: pointer;
+}
+.save-icon img {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+}
+.save-icon img:hover {
+	opacity: 0.8;
+}
+
+#test-form {
+	
+}
+
+#test-form .question-row {
+	border-top: 1px solid #C9E0ED;
+	padding: 13px 0px 13px 0px;
+}
+#test-form .question-row:first-child {
+	border-top: 0px;
+}
+#test-form .question-row.even {
+	
+}
+#test-form .question-row:hover {
+	background-color: #f0f0f0;
+}
+
+#test-form .question-row > div > table {
+	margin: 0px;
 }
