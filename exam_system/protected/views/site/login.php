@@ -1,15 +1,13 @@
 <?php
-$this->pageTitle=Yii::app()->name . ' - Login';
-$this->breadcrumbs=array(
-	'Login',
-);
+$this->pageTitle=Yii::app()->name . ' - Zaloguj';
 ?>
 
-<h1>Login</h1>
+<h1>Zaloguj</h1>
+
+<img src="/themes/admin/img/app-logo.png" class="login-image" />
 
 
-
-<div class="form">
+<div class="form login-form">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'login-form',
 	'enableClientValidation'=>true,
@@ -39,7 +37,7 @@ $this->breadcrumbs=array(
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Login', array('class'=>'login-button')); ?>
+		<?php echo CHtml::submitButton('Zaloguj', array('class'=>'login-button')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

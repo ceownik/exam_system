@@ -4,7 +4,7 @@
 // Will be used during installation process
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..',
-	'name'=>'Installation',
+	'name'=>'Egzamin - instalacja aplikacji',
 	'language'=>'en',
 	
 	'controllerPath'=>'protected/installation/controllers',

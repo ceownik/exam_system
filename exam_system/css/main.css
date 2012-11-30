@@ -295,3 +295,18 @@ div.search-form
 #test-form .question-row > div > table {
 	margin: 0px;
 }
+
+
+
+#login-form {
+	width: 300px;
+}
+
+.login-image {
+	display: block;
+	position: absolute;
+	top: 5px;
+	right: 0px;
+}
+
+

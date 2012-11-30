@@ -31,8 +31,6 @@ class KAdminController extends KController
 		Yii::app()->theme = 'admin';
 		
 		
-		$this->setPageTitle('name');
-		
 		
 		// import admin panel classes
 		Yii::import('application.extensions.kgridview.KGridView.php');

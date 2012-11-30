@@ -68,6 +68,7 @@ class KController extends CController
 		Yii::app()->clientScript->registerCssFile(Yii::app()->createAbsoluteUrl('').'/css/tiny_mce_content.css');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->createAbsoluteUrl('').'/extensions/tiny_mce/tiny_mce.js', CClientScript::POS_BEGIN);
 		$this->pageTitle = Yii::app()->settings->getValue('appAdmin', 'applicationName');
+		Yii::app()->name = $this->pageTitle;
 		return true;
 	}
 }

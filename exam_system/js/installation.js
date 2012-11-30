@@ -114,7 +114,7 @@ function applicationSettings() {
 
 function install() {
 	$('.main').find('.msg').removeClass('success').removeClass('error');
-	$('.main').find('.msg').html('Sprawdzanie...');
+	$('.main').find('.msg').html('Instalowanie...');
 	
 	
 	if($('#login').val() == '' ||
@@ -143,7 +143,7 @@ function install() {
 	}
 	
 	var dir = installation;
-	
+	dir.find('.install').click(function(){alert('Instalacja została już rozpoczęta.'); return false;});
 	$.ajax({
 		type: "POST",
 		url: baseUrl,
@@ -168,6 +168,7 @@ function install() {
 			dir.find('.step-title').html(msg.title);
 			dir.find('.installation-content').html(msg.html);
 		}
+		dir.find('.install').click(function(){install(); return false;});
 	  });
 	return;
 	// set super admin login, password, email, 

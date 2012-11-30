@@ -65,7 +65,9 @@ class LoginForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'rememberMe'=>Yii::t('app', 'Remember me next time'),
+			'rememberMe'=>Yii::t('app', 'Pamiętaj następnym razem'),
+			'username' => 'Login',
+			'password' => 'Hasło',
 		);
 	}
 

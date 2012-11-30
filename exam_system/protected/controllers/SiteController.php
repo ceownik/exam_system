@@ -52,9 +52,9 @@ class SiteController extends KPublicController
 	{
 		$rules = array(
 			array( 'allow', // allow guest user to...
-				'actions' => array(  ),
 				'users' => array( '*' ),
 			),
+			array('deny'),
 		);
 
 		return $rules;
@@ -65,7 +65,7 @@ class SiteController extends KPublicController
 	public function actionIndex()
 	{
 		if(Yii::app()->user->isGuest) 
-			$this->redirect(array('home'));
+			$this->redirect(array('login'));
 		
 		Yii::import('exam.models.*');
 		

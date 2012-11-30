@@ -14,12 +14,11 @@
 			<!-- page title -->
 			<span class="f-left"><strong><?php echo CHtml::encode($this->pageTitle); ?></strong></span>
 			
-			
-			
 		</p>
-
+		
 		<p class="f-right">Użytkownik: <strong><a href="<?php echo "/admin/users/view/id/".Yii::app()->user->id; ?>"><?php echo Yii::app()->user->name; ?></a></strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 		<strong><?php echo CHtml::link('Wyloguj', array('/admin/logout'), array('id'=>'logout')); ?></strong></p>
+		<p class="f-right"><a href="<?php echo "/"; ?>" target="_blank" >Przejdź do aplikacji</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 
 
 	</div> <!--  /tray -->
 
