@@ -423,3 +423,26 @@ form.active-form .errorSummary p {
 #content .score-test {
 	
 }
+
+
+
+
+.homepage {
+	
+}
+.homepage .item {
+	display: block;
+	float: left;
+	text-align: center;
+	margin: 10px 40px;
+}
+.homepage .item img {
+	display: block;
+	cursor: pointer;
+	width: 128px;
+	height: 128px;
+	opacity: 0.9;
+}
+.homepage .item img:hover {
+	opacity: 1.0;
+}

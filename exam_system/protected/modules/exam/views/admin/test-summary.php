@@ -29,15 +29,28 @@
 				'name' => 'create_date',
 				'value' => 'date("Y-m-d H:i", $data->create_date)',
 				'htmlOptions'=>array('style'=>'width: 90px;'),
-				'header' => 'Data rozpoczęcia'
+				'header' => 'Data rozpoczęcia',
+				'filter'=>false,
 			),
 			array(
 				'name'=>'status',
 				'value'=>'$data->getStatusText();',
+				'filter'=>false,
 			),
 			array(
 				'name'=>'score',
 				'value'=>'($data->status==4) ? $data->scoreSum() : ""',
+				'filter'=>false,
+				'sortable'=>false,
+			),
+			array(
+				'name'=> 'mark',
+				'filter'=>false,
+				'sortable'=>false,
+			),
+			array(
+				'name'=> 'passed',
+				'value'=>'$data->passed == 1 ? "Tak" : "Nie"',
 				'filter'=>false,
 				'sortable'=>false,
 			),

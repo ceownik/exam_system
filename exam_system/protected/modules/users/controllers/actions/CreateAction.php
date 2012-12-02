@@ -57,7 +57,7 @@ class CreateAction extends KAction
 			}
 		}
 		
-		$this->controller->headerTitle = 'Users - Create user';
+		$this->controller->headerTitle = 'Użytkownicy - utwórz użytkownika';
 	}
 	
 	
@@ -104,7 +104,7 @@ class CreateAction extends KAction
 			
 			if( $model->save( true, $model->attributes_to_save ) )
 			{
-				Yii::app()->user->setFlash('success', "User created successfully");
+				Yii::app()->user->setFlash('success', "Utworzono nowego użytkownika");
 				$this->controller->redirect(array('/admin/users/view/id/'.$model->id));
 			}
 		}

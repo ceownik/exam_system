@@ -685,6 +685,8 @@ return array(
 				`create_date` int(11) not null,
 				`last_change_date` int(11) not null,
 				`end_date` int(11) not null,
+				`mark` float default null,
+				`passed` boolean not null default false,
 				
 				`user_comment`  text default null collate utf8_unicode_ci,
 				

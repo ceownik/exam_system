@@ -69,17 +69,22 @@ class SiteController extends KPublicController
 		
 		Yii::import('exam.models.*');
 		
-		$model = new Test();
+		$model = new Test('search');
 		$model->unsetAttributes();
 		if(isset($_GET['Test']))
 			$model->attributes = $_GET['Test'];
 		
-//		if(isset($_POST['execute-exam'])) {
-//			$this->redirect('/exam/execute');
-//		}
+		$testLog = new TestUserLog('search');
+		$testLog->unsetAttributes();
+		if(isset($_GET['TestUserLog']))
+			$testLog->attributes = $_GET['TestUserLog'];
+		
+		$user = User::model()->findByPk(Yii::app()->user->id);
 
 		$this->render('index', array(
 			'model'=>$model,
+			'testLog'=>$testLog,
+			'user'=>$user,
 		));
 	}
 	

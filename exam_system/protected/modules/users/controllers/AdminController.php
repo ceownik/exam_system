@@ -88,6 +88,8 @@ class AdminController extends KAdminController
 	 */
 	
 	public function actionGroups() {
+		$this->headerTitle = 'Grupy';
+		
 		$model = new UserGroup;
 		$model->unsetAttributes();
 		if(isset($_GET['UserGroup'])) 
@@ -119,16 +121,16 @@ class AdminController extends KAdminController
 						if( $assignment )
 						{
 							if( !$assignment->delete() )
-								throw new CHttpException( 404, 'An error occured.' );
+								throw new CHttpException( 404, 'BŁĄD.' );
 							else
 							{
-								Yii::app()->user->setFlash('success', 'User removed successfully');
+								Yii::app()->user->setFlash('success', 'Usunięto użytkownika');
 								$this->redirect('/admin/users/viewGroup/id/'.$model->primaryKey);
 							}
 						}
 						else
 						{
-							Yii::app()->user->setFlash('error', 'User does not exist');
+							Yii::app()->user->setFlash('error', 'Użytkownik nie istnieje');
 							$this->redirect('/admin/users/viewGroup/id/'.$model->primaryKey);
 						}
 					}
@@ -151,13 +153,13 @@ class AdminController extends KAdminController
 							}
 							else
 							{
-								Yii::app()->user->setFlash('success', 'User added successfully');
+								Yii::app()->user->setFlash('success', 'Dodano użytkownika');
 							$this->redirect('/admin/users/viewGroup/id/'.$model->primaryKey);
 							}
 						}
 						else
 						{
-							Yii::app()->user->setFlash('error', 'User already assigned');
+							Yii::app()->user->setFlash('error', 'Użytkownik jest już w grupie');
 							$this->redirect('/admin/users/viewGroup/id/'.$model->primaryKey);
 						}
 					}
@@ -191,7 +193,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item created successfully.");
+					Yii::app()->user->setFlash('success', "Utworzono nową grupę.");
 					$this->redirect(array('/admin/users/groups'));
 				}
 			}
@@ -214,7 +216,7 @@ class AdminController extends KAdminController
 			{
 				if($model->save())
 				{
-					Yii::app()->user->setFlash('success', "Item changed successfully.");
+					Yii::app()->user->setFlash('success', "Zmiany zapisano poprawnie.");
 					$this->redirect(array('/admin/users/groups'));
 				}
 			}

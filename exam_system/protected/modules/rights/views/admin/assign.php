@@ -32,7 +32,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 		array(
 			'class' => 'application.extensions.kgridview.KButtonColumn',
 			'template' => '{revoke}{text}',
-			'header' => 'Actions',
+			'header' => '',
 			'buttons' => array(
 				'revoke' => array(
 					'label' => 'Odwołaj',
@@ -102,7 +102,7 @@ $this->widget('application.extensions.kgridview.KGridView', array(
 		array(
 			'class' => 'application.extensions.kgridview.KButtonColumn',
 			'template' => '{assign}',
-			'header' => 'Actions',
+			'header' => '',
 			'buttons' => array(
 				'assign' => array(
 					'label' => 'Przypisz',

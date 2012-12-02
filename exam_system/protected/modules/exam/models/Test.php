@@ -189,7 +189,7 @@ class Test extends CActiveRecord
 		$criteria->compare('status',$this->status);
 		
 		$criteria->addCondition('is_deleted = 0');
-		$criteria->addCondition('begin_time < '.time());
+		//$criteria->addCondition('begin_time < '.time());
 		$criteria->addCondition('status = 2');
 		$criteria->having = '(end_time + duration_time) > '.time() .'';
 		

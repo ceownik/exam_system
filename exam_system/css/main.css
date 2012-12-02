@@ -252,7 +252,7 @@ div.search-form
 	width: auto;
 	padding: 3px 10px;
 	position: absolute;
-	right: 45px;
+	right: 75px;
 	top: -25px;
 	border-width: 1px;
 	border-style: solid;
@@ -262,16 +262,33 @@ div.search-form
 .save-icon {
 	position: absolute;
 	top: -27px;
-	right: 10px;
+	right: 40px;
 	cursor: pointer;
 }
 .save-icon img {
 	width: 25px;
 	height: 25px;
 	cursor: pointer;
+	opacity: 0.8;
 }
 .save-icon img:hover {
+	opacity: 1.0;
+}
+
+.end-icon {
+	position: absolute;
+	top: -27px;
+	right: 10px;
+	cursor: pointer;
+}
+.end-icon img {
+	width: 25px;
+	height: 25px;
 	opacity: 0.8;
+	cursor: pointer;
+}
+.end-icon img:hover {
+	opacity: 1.0;
 }
 
 #test-form {
@@ -308,5 +325,22 @@ div.search-form
 	top: 5px;
 	right: 0px;
 }
+
+
+.user-informations {
+	display: block;
+	overflow: auto;
+}
+
+.user-informations .user-icon {
+	width: 128px;
+	float: left;
+}
+
+.user-informations .user-info {
+	display: block;
+	float: left;
+}
+
 
 

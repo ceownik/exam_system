@@ -14,11 +14,19 @@
 				</div>			
 			</div>
 			<div class="score">
-				<input name="question[<?php echo $k; ?>]score" value="<?php echo $scores[$k]; ?>">
+				Ilość punktów: <input name="question[<?php echo $k; ?>]score" value="<?php echo $scores[$k]; ?>" style="width: 20px; padding: 0px 3px; border: 1px solid #ccc; text-align: center;">
 			</div>
 		</div>
 		<?php
 	} ?>
+	<div class="mark-row">
+		<div>
+			Ocena:  <input name="mark" value="<?php echo $model->mark; ?>" style="width: 20px; padding: 0px 3px; border: 1px solid #ccc; text-align: center;">
+		</div>
+		<div>
+			Test zaliczony: <input name="passed" value="<?php echo $model->passed; ?>" type="checkbox">
+		</div>
+	</div>
 	<div class="row buttons">
 		<?php echo CHtml::button('Anuluj', array('submit'=>Yii::app()->createUrl('/admin/exam/testSummary/id/'.$model->test->id))); ?>
 		<?php echo CHtml::submitButton('Zapisz'); ?>

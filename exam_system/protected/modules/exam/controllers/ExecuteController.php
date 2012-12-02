@@ -223,12 +223,14 @@ class ExecuteController extends KPublicController
 				echo CJSON::encode(array(
 					'status'=>'error',
 					'msg'=>'Wystąpił nieoczekiwany błąd',
+					's'=>$status,
 				));
 				exit(0);
 			}
 			
 			$post = array();
 			parse_str($_POST['test'], $post);
+			$end = $_POST['endTest']=='true'? true : false;
 			
 			$transaction = Yii::app()->db->beginTransaction();
 			try {
@@ -258,12 +260,18 @@ class ExecuteController extends KPublicController
 							}
 						}
 					}
+					if($end==true) {
+						$this->userLogModel->updateStatus(TestUserLog::STATUS_COMPLETED);
+						//$this->userLogModel->status = TestUserLog::STATUS_COMPLETED;
+						//$this->userLogModel->update(array('status');
+					}
 					$transaction->commit();
 				} elseif($this->userLogModel->status == TestUserLog::STATUS_COMPLETED) {
 					$transaction->commit();
 					echo CJSON::encode(array(
 						'status'=>'end',
 						'msg'=>'Czas na wykonanie testu dobiegł końca',
+						'time_left'=>$this->userLogModel->end_date - time(),
 					));
 					exit(0);
 				} elseif($this->userLogModel->status == TestUserLog::STATUS_CANCELED) {
@@ -279,6 +287,10 @@ class ExecuteController extends KPublicController
 				echo CJSON::encode(array(
 					'status'=>'error',
 					'msg'=>'Wystąpił nieoczekiwany błąd',
+					's'=>'transaction',
+					'e'=>$e->getMessage(),
+					'file'=>$e->getFile(),
+					'line'=>$e->getLine(),
 				));
 				exit(0);
 			}
@@ -287,6 +299,7 @@ class ExecuteController extends KPublicController
 				'status'=>'success',
 				'post'=>$post,
 				'time_left'=>$this->userLogModel->end_date - time(),
+				'end'=>$end==true,
 			));
 			exit(0);
 		}

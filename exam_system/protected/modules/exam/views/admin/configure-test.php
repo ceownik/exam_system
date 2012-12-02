@@ -26,7 +26,7 @@
 
 		<div class="row">
 			<?php echo $form->label($group, '['.$group->group_id.']question_types'); ?>
-			<?php echo $form->dropDownList($group, '['.$group->group_id.']question_types', Question::getTypesOptions(), array('prompt'=>'All', 'class'=>'question-type')); ?>
+			<?php echo $form->dropDownList($group, '['.$group->group_id.']question_types', Question::getTypesOptions(), array('prompt'=>'Wszystkie', 'class'=>'question-type')); ?>
 			<?php echo $form->error($group, '['.$group->group_id.']question_types'); ?>
 			<span class="success"></span>
 		</div>

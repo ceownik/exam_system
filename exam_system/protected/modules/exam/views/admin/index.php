@@ -152,7 +152,7 @@
 				),
 				array(
 					'name' => 'end_date',
-					'value' => 'date("Y-m-d H:i", $data->end_date)',
+					'value' => '$data->status == 1 ? "" : date("Y-m-d H:i", $data->end_date)',
 					'headerHtmlOptions'=>array('style'=>'width: 90px;'),
 				),
 //				array(

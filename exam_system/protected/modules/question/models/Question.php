@@ -32,7 +32,7 @@ class Question extends KActiveRecord
 	public $hasCorrectAnswer = false;
 	
 	protected static $_typesMap = array(
-		self::TYPE_MCSA => 'Multiple choice single answer',
+		self::TYPE_MCSA => 'Pojedynczego wyboru',
 	);
 
 	public static function getTypesOptions() {

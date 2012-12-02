@@ -107,11 +107,14 @@ class TestUserLog extends CActiveRecord
 			'test_id' => 'Test',
 			'user_id' => 'User',
 			'status' => 'Status',
-			'create_date' => 'Create Date',
+			'create_date' => 'Data rozpoczęcia',
 			'last_change_date' => 'Last Change Date',
-			'end_date' => 'End Date',
+			'end_date' => 'Data zakończenia',
 			'user_comment' => 'User Comment',
 			'display_name_search' => '',
+			'score'=>'Ilość punktów',
+			'mark'=>'Ocena',
+			'passed'=>'Zaliczony',
 		);
 	}
 
@@ -137,6 +140,41 @@ class TestUserLog extends CActiveRecord
 		));
 	}
 	
+	public function searchCompletedForUser() {
+		$criteria=new CDbCriteria;
+		$criteria->with = array(
+			'test'
+		);
+
+//		$criteria->compare('t.id',$this->id);
+//		$criteria->compare('t.name',$this->name,true);
+//		$criteria->compare('t.description',$this->description,true);
+//		$criteria->compare('t.begin_time',$this->begin_time);
+//		$criteria->compare('t.end_time',$this->end_time);
+//		$criteria->compare('t.duration_time',$this->duration_time);
+//		$criteria->compare('t.status',$this->status);
+		$criteria->compare('test.name',$this->test_name_search, true);
+//		
+//		$criteria->addCondition('t.is_deleted = 0');
+//		$criteria->addCondition('t.begin_time < '.time());
+		$criteria->addCondition('t.status IN (2, 3, 4)');
+		$criteria->addCondition('t.user_id='.Yii::app()->user->id.'');
+//		$criteria->addCondition(Yii::app()->user->id.' IN (select assign.user_id from user_group_assignment assign where assign.group_id IN (select test.group_id from test_user_group test where test.test_id=t.id))');
+//		$criteria->having = '(t.end_time + t.duration_time) > '.time() .'';
+		
+		
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>20,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'end_time',
+			),
+		));
+	}
+	
 	public static function checkStatus($testId, $userId) {
 		$model = TestUserLog::model()->findByAttributes(array(
 			'test_id' => $testId,
@@ -151,13 +189,13 @@ class TestUserLog extends CActiveRecord
 	public function updateStatus($status = null) {
 		if($status!==null) {
 			$this->status = $status;
-		} else {
-			if($this->end_date < time()) {
+		} elseif($this->status==self::STATUS_SCORED) {
+			if((int)$this->end_date < time()) {
 				$this->status = self::STATUS_COMPLETED;
 			}
 		}
 		$this->last_change_date = time();
-		return $this->save();
+		return $this->update(array('last_change_date', 'status'));
 	}
 	
 	public function cancelTestsByTestId($id) {

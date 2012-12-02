@@ -242,12 +242,22 @@ function performTest(baseUrl, testId, timeLeft, totalTime) {
 		return false;
 	});
 	
+	$('.end-icon').click(function() {
+		var action = confirm('Czy na pewno zakończyć test?');
+		if(action) {
+			test.changed = true;
+			testLooper(baseUrl, false, true);
+		}
+		return false;
+	});
+	
 	testLooper(baseUrl);
 }
 
-function testLooper(baseUrl, doLoop ) {
+function testLooper(baseUrl, doLoop, endTest ) {
 	
 	doLoop = typeof doLoop !== 'undefined' ? doLoop : true;
+	endTest = typeof endTest !== 'undefined' ? endTest : false;
 	
 	if(test.changed==true) {
 		test.msg.stop(true, true).html('zapisywanie zmian').show().delay(1000).fadeOut(1000);
@@ -257,8 +267,12 @@ function testLooper(baseUrl, doLoop ) {
 	var postData = {
 		id: test.id,
 		test: test.form.serialize(),
-		changed: test.changed
+		changed: test.changed,
+		endTest: false
 	};
+	if(endTest==true) {
+		postData.endTest = true;
+	}
 	
 	$.ajax({
 		url: baseUrl + '/exam/execute/submitTest',
@@ -276,8 +290,12 @@ function testLooper(baseUrl, doLoop ) {
 					if(data.time_left < 20) {
 						test.ajaxInterval = 1000;
 					}
-					test.msg.stop(true, true).html('zmiany zostały zapisane').show().delay(1000).fadeOut(1000);
+					test.msg.stop(true, true).removeClass('error').addClass('notice').html('zmiany zostały zapisane').show().delay(1500).fadeOut(1000);
 					test.saved = true;
+					if(endTest==true) {
+						alert('Test został zakończony');
+						location.reload();
+					}
 				}
 				if(doLoop) {
 					setTimeout(function(){testLooper(baseUrl)}, test.ajaxInterval);	
@@ -290,6 +308,8 @@ function testLooper(baseUrl, doLoop ) {
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log('error');
 			console.log(jqXHR);
+			
+			test.msg.stop(true, true).removeClass('notice').addClass('error').html('wystąpił błąd podczas wysyłania zmian na serwera').show().delay(2000).fadeOut(1000);
 			if(doLoop) {
 				setTimeout(function(){testLooper(baseUrl)}, test.ajaxInterval);	
 			}

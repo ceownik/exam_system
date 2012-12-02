@@ -458,10 +458,10 @@ class AdminController extends KAdminController
 						break;
 				}
 			}
-			if($model->status == TestUserLog::STATUS_COMPLETED) {
-				$model->status = TestUserLog::STATUS_SCORED;
-				$model->update(array('status'));
-			}
+//			if($model->status == TestUserLog::STATUS_COMPLETED) {
+//				$model->status = TestUserLog::STATUS_SCORED;
+//				$model->update(array('status'));
+//			}
 			$transaction->commit();
 		} catch(Exception $e) {
 			KThrowException::throw500();
@@ -477,6 +477,9 @@ class AdminController extends KAdminController
 					$correct = false;
 				}
 			}
+			if(!is_numeric($_POST['mark']) && strlen($_POST['mark'])!=0) {
+				$correct = false;
+			}
 			if($correct) {
 				$transaction = Yii::app()->db->beginTransaction();
 				try {
@@ -486,6 +489,16 @@ class AdminController extends KAdminController
 							'score' => $newScore,
 						));
 					}
+					if(isset($_POST['passed'])) {
+						$model->passed = true;
+					} else {
+						$model->passed = false;
+					}
+					$model->mark = $_POST['mark'];
+					if($model->status == TestUserLog::STATUS_COMPLETED) {
+						$model->status = TestUserLog::STATUS_SCORED;
+					}
+					$model->update(array('status', 'mark', 'passed'));
 					$transaction->commit();
 					Yii::app()->user->setFlash('success', 'Zmiany zapisano poprawnie.');
 					$this->refresh();

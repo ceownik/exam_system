@@ -28,6 +28,11 @@
 .row {
 	margin: 0px auto 10px auto;
 }
+
+.row.buttons {
+	overflow: auto;
+}
+
 .form .input-text {
 	display: block;
 	width: 250px;
