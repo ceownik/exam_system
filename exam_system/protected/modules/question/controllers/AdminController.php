@@ -80,7 +80,7 @@ class AdminController extends KAdminController
 				if($model->save())
 				{
 					Yii::app()->user->setFlash('success', "Zestaw został utworzony.");
-					$this->redirect(array('/admin/question/index'));
+					$this->redirect(array('/admin/question/viewQuestionSet/id/'.$model->primaryKey));
 				}
 			}
 		}

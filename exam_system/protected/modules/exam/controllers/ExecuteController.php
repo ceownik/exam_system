@@ -49,9 +49,11 @@ class ExecuteController extends KPublicController
 				if($this->userLogModel->status == TestUserLog::STATUS_STARTED) {
 					$this->renderHtml();
 				} elseif($this->userLogModel->status == TestUserLog::STATUS_COMPLETED) {
-					echo 'completed';
+					Yii::app()->user->setFlash('alert', 'Test został zakończony');
+					$this->redirect('/');
 				} elseif($this->userLogModel->status == TestUserLog::STATUS_CANCELED) {
-					echo 'canceled';
+					Yii::app()->user->setFlash('alert', 'Test został anulowany');
+					$this->redirect('/');
 				}
 			}
 			exit;
@@ -92,7 +94,7 @@ class ExecuteController extends KPublicController
 	}
 	
 	public function renderError() {
-		echo 'error';
+		throw new HttpException('Error');
 	}
 	
 	public function checkAccess() {
@@ -145,20 +147,20 @@ class ExecuteController extends KPublicController
 								$question = $questions[$q];
 								$selectedQuestions[] = $question;
 							}
-							shuffle($selectedQuestions);
-							foreach($selectedQuestions as $question) {
-								$questionLog = new TestUserQuestionLog();
-								$questionLog->test_user_id = $this->userLogModel->id;
-								$questionLog->question_id = $question->id;
-								$questionLog->save();
-								if($question->type==Question::TYPE_MCSA) {
-									$this->generateAnswers($question, $questionGroupSettings->answers, $questionLog);
-								}
-							}
 						}
 						break;
 					}
 				}
+			}
+		}
+		shuffle($selectedQuestions);
+		foreach($selectedQuestions as $question) {
+			$questionLog = new TestUserQuestionLog();
+			$questionLog->test_user_id = $this->userLogModel->id;
+			$questionLog->question_id = $question->id;
+			$questionLog->save();
+			if($question->type==Question::TYPE_MCSA) {
+				$this->generateAnswers($question, $questionGroupSettings->answers, $questionLog);
 			}
 		}
 	}
@@ -270,7 +272,7 @@ class ExecuteController extends KPublicController
 					$transaction->commit();
 					echo CJSON::encode(array(
 						'status'=>'end',
-						'msg'=>'Czas na wykonanie testu dobiegł końca',
+						'msg'=>'Czas na wykonanie testu dobiegł końca.',
 						'time_left'=>$this->userLogModel->end_date - time(),
 					));
 					exit(0);

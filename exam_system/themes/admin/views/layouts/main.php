@@ -46,7 +46,7 @@
 	<!-- Footer -->
 	<div id="footer" class="box">
 
-		<p class="f-left">&copy; 2012 Kamil Kafara &reg;</p>
+		<p class="f-left">&copy; <?php echo date("Y"); ?> Kamil Kafara &reg;</p>
 
 		<p class="f-right"></p>
 

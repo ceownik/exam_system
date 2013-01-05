@@ -88,8 +88,9 @@ class KAdminController extends KController
 				'users' => array( '*' ),
 			),
 			array( 'allow', // allow authenticated user to...
-				'actions' => array(  ),
-				'users' => array( '@' ),
+				'actions' => array( '*' ),
+				//'users' => array( '@' ),
+				'roles' => array('admin')
 			),
 			array( 'deny', // deny all users
 				'users' => array( '*' ),

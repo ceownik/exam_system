@@ -741,6 +741,11 @@ return array(
 //			'bizrule' => '',
 //			'data' => ''
 //		),
+		array(
+			'name' => 'admin',
+			'type' => 1,
+			'description' => "Access to admin panel",
+		),
 		// rights
 		array(
 			'name' => 'rights',

@@ -189,8 +189,8 @@ class TestUserLog extends CActiveRecord
 	public function updateStatus($status = null) {
 		if($status!==null) {
 			$this->status = $status;
-		} elseif($this->status==self::STATUS_SCORED) {
-			if((int)$this->end_date < time()) {
+		} elseif($this->status==self::STATUS_STARTED) {
+			if((int)$this->end_date <= time()) {
 				$this->status = self::STATUS_COMPLETED;
 			}
 		}

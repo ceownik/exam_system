@@ -281,14 +281,11 @@ function testLooper(baseUrl, doLoop, endTest ) {
 		type: "POST",
 		data: postData,
 		success: function(data){
-			//console.log(data);
+			//console.log(data);console.log(test.ajaxInterval);console.log(test.timeLeft);
 			if(data.status=='success') {
 				if(!test.saved) {
 					if(Math.abs(test.timeLeft - data.time_left)>5) {
 						test.timeLeft = data.time_left;
-					}
-					if(data.time_left < 20) {
-						test.ajaxInterval = 1000;
 					}
 					test.msg.stop(true, true).removeClass('error').addClass('notice').html('zmiany zostały zapisane').show().delay(1500).fadeOut(1000);
 					test.saved = true;
@@ -296,6 +293,9 @@ function testLooper(baseUrl, doLoop, endTest ) {
 						alert('Test został zakończony');
 						location.reload();
 					}
+				}
+				if(data.time_left < 25) {
+					test.ajaxInterval = 1000;
 				}
 				if(doLoop) {
 					setTimeout(function(){testLooper(baseUrl)}, test.ajaxInterval);	

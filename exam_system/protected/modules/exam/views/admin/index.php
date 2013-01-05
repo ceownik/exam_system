@@ -33,7 +33,7 @@
 				),
 				array(
 					'name'=>'duration_time',
-					'headerHtmlOptions'=>array('style'=>'width: 70px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 75px;'),
 				),
 				array(
 					'name'=>'status',
@@ -96,7 +96,7 @@
 				),
 				array(
 					'name'=>'duration_time',
-					'headerHtmlOptions'=>array('style'=>'width: 70px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 75px;'),
 				),
 				array(
 					'class'=>'CButtonColumn',
@@ -206,7 +206,7 @@
 				),
 				array(
 					'name'=>'duration_time',
-					'headerHtmlOptions'=>array('style'=>'width: 70px;'),
+					'headerHtmlOptions'=>array('style'=>'width: 75px;'),
 				),
 				array(
 					'class'=>'CButtonColumn',

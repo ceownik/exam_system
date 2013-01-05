@@ -44,7 +44,7 @@ class AdminController extends KAdminController
 			),
 			array( 'allow', // allow authenticated user to...
 				'actions' => array(  ),
-				'users' => array( '@' ),
+				'roles' => array('admin')
 			),
 			array( 'deny', // deny all users
 				'users' => array( '*' ),
