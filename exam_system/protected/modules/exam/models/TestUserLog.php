@@ -11,7 +11,6 @@
  * @property integer $create_date
  * @property integer $last_change_date
  * @property integer $end_date
- * @property string $user_comment
  *
  * The followings are the available model relations:
  * @property Test $test
@@ -79,9 +78,8 @@ class TestUserLog extends CActiveRecord
 		return array(
 			array('test_id, user_id, status, create_date, last_change_date, end_date', 'required'),
 			array('test_id, user_id, status, create_date, last_change_date, end_date', 'numerical', 'integerOnly'=>true),
-			array('user_comment', 'safe'),
 			
-			array('id, test_id, status, create_date, last_change_date, end_date, user_comment, login_search, display_name_search, test_name_search', 'safe', 'on'=>'search'),
+			array('id, test_id, status, create_date, last_change_date, end_date, login_search, display_name_search, test_name_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -110,7 +108,6 @@ class TestUserLog extends CActiveRecord
 			'create_date' => 'Data rozpoczęcia',
 			'last_change_date' => 'Last Change Date',
 			'end_date' => 'Data zakończenia',
-			'user_comment' => 'User Comment',
 			'display_name_search' => '',
 			'score'=>'Ilość punktów',
 			'mark'=>'Ocena',
@@ -133,7 +130,6 @@ class TestUserLog extends CActiveRecord
 		$criteria->compare('create_date',$this->create_date);
 		$criteria->compare('last_change_date',$this->last_change_date);
 		$criteria->compare('end_date',$this->end_date);
-		$criteria->compare('user_comment',$this->user_comment,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -224,7 +220,6 @@ class TestUserLog extends CActiveRecord
 		$criteria->compare('t.create_date',$this->create_date);
 		$criteria->compare('t.last_change_date',$this->last_change_date);
 		$criteria->compare('t.end_date',$this->end_date);
-		$criteria->compare('t.user_comment',$this->user_comment,true);
 		$criteria->compare('user.login', $this->login_search, true);
 		$criteria->compare('user.display_name', $this->display_name_search, true);
 		
@@ -260,7 +255,6 @@ class TestUserLog extends CActiveRecord
 		$criteria->compare('t.create_date',$this->create_date);
 		$criteria->compare('t.last_change_date',$this->last_change_date);
 		$criteria->compare('t.end_date',$this->end_date);
-		$criteria->compare('t.user_comment',$this->user_comment,true);
 		$criteria->compare('user.login', $this->login_search, true);
 		$criteria->compare('user.display_name', $this->display_name_search, true);
 		$criteria->compare('test.name', $this->test_name_search, true);

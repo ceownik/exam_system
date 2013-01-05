@@ -55,12 +55,6 @@
 				'sortable'=>false,
 			),
 			array(
-				'name'=>'user_comment',
-				'header'=>'Komentarz',
-				'filter'=>false,
-				'sortable'=>false,
-			),
-			array(
 				'class'=>'CButtonColumn',
 				'template'=>'{details} {score} {end}',
 				'buttons'=>array(

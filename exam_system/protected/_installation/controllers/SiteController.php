@@ -347,9 +347,6 @@ return array(
 				`active_from` int(11) not null default 0,
 				`active_to` int(11) not null default 0,
 				`is_deleted` boolean not null default false,
-				`activated` boolean not null default false,
-				`activation_code` varchar(64) collate utf8_unicode_ci not null default '',
-				`pass_reset_code` varchar(64) collate utf8_unicode_ci not null default '',
 
 				`create_date` int(11) not null,
 				`create_user` int(11) not null,
@@ -503,7 +500,6 @@ return array(
 				`question` text collate utf8_unicode_ci default null,
 				`description` text default null collate utf8_unicode_ci,
 				`item_order` int(11)  not null,
-				`difficulty` int(11) not null default 1,
 				
 				primary key (`id`),
 				unique (`group_id`, `item_order`),
@@ -527,7 +523,6 @@ return array(
 				`question` text collate utf8_unicode_ci default null,
 				`description` text default null collate utf8_unicode_ci,
 				`item_order` int(11)  not null,
-				`difficulty` int(11) not null default 1,
 				
 				primary key (`history_id`),
 				foreign key (`id`) references `question`(`id`),
@@ -549,9 +544,6 @@ return array(
 				`answer` text collate utf8_unicode_ci default null,
 				`is_correct` boolean not null default false,
 				`description` text default null collate utf8_unicode_ci,
-				`correct_order` int(11) default null,
-				`column_left` text default null collate utf8_unicode_ci,
-				`column_right` text default null collate utf8_unicode_ci,
 				
 				`item_order` int(11)  not null,
 				
@@ -576,9 +568,6 @@ return array(
 				`answer` text collate utf8_unicode_ci default null,
 				`is_correct` boolean not null default false,
 				`description` text default null collate utf8_unicode_ci,
-				`correct_order` int(11) default null,
-				`column_left` text default null collate utf8_unicode_ci,
-				`column_right` text default null collate utf8_unicode_ci,
 				
 				`item_order` int(11)  not null,
 				
@@ -688,8 +677,6 @@ return array(
 				`mark` float default null,
 				`passed` boolean not null default false,
 				
-				`user_comment`  text default null collate utf8_unicode_ci,
-				
 				primary key(`id`),
 				foreign key(`test_id`) references `test`(`id`),
 				foreign key(`user_id`) references `user`(`id`)
@@ -704,7 +691,6 @@ return array(
 				`answer` text collate utf8_unicode_ci default null,
 				
 				`last_change_date` int(11) default null,
-				`user_comment`  text default null collate utf8_unicode_ci,
 				
 				`score` double default null,
 

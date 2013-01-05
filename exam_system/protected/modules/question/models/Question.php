@@ -16,7 +16,6 @@
  * @property string $question
  * @property string $description
  * @property integer $item_order
- * @property integer $difficulty
  *
  * The followings are the available model relations:
  * @property Answer[] $answers
@@ -76,7 +75,7 @@ class Question extends KActiveRecord
 			array('type, question', 'required'),
 			array('question, description, enabled', 'safe'),
 			
-			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order, difficulty', 'safe', 'on'=>'search'),
+			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -113,7 +112,6 @@ class Question extends KActiveRecord
 			'question' => 'Pytanie',
 			'description' => 'Opis',
 			'item_order' => 'Item Order',
-			'difficulty' => 'Difficulty',
 		);
 	}
 
@@ -134,7 +132,6 @@ class Question extends KActiveRecord
 		$criteria->compare('question',$this->question,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('item_order',$this->item_order);
-		$criteria->compare('difficulty',$this->difficulty);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -17,7 +17,6 @@
  * @property string $question
  * @property string $description
  * @property integer $item_order
- * @property integer $difficulty
  *
  * The followings are the available model relations:
  * @property User $createUser
@@ -49,10 +48,10 @@ class QuestionHistory extends CActiveRecord
 	{
 		return array(
 			array('group_id, create_date, create_user, last_update_date, last_update_user, type, item_order', 'required'),
-			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, item_order, difficulty', 'numerical', 'integerOnly'=>true),
+			array('id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, item_order', 'numerical', 'integerOnly'=>true),
 			array('question, description, enabled', 'safe'),
 			
-			array('history_id, id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order, difficulty', 'safe', 'on'=>'search'),
+			array('history_id, id, group_id, create_date, create_user, last_update_date, last_update_user, is_deleted, type, question, description, item_order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,7 +87,6 @@ class QuestionHistory extends CActiveRecord
 			'question' => 'Question',
 			'description' => 'Description',
 			'item_order' => 'Item Order',
-			'difficulty' => 'Difficulty',
 		);
 	}
 
@@ -115,7 +113,6 @@ class QuestionHistory extends CActiveRecord
 		$criteria->compare('question',$this->question,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('item_order',$this->item_order);
-		$criteria->compare('difficulty',$this->difficulty);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

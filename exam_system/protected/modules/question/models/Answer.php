@@ -15,9 +15,6 @@
  * @property string $answer
  * @property integer $is_correct
  * @property string $description
- * @property integer $correct_order
- * @property string $column_left
- * @property string $column_right
  * @property integer $item_order
  *
  * The followings are the available model relations:
@@ -53,10 +50,10 @@ class Answer extends KActiveRecord
 	{
 		return array(
 			array('answer', 'required'),
-			array('question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, is_correct, correct_order, item_order', 'numerical', 'integerOnly'=>true),
-			array('answer, description, column_left, column_right, enabled', 'safe'),
+			array('question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, is_correct, item_order', 'numerical', 'integerOnly'=>true),
+			array('answer, description, enabled', 'safe'),
 			
-			array('id, question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, answer, is_correct, description, correct_order, column_left, column_right, item_order', 'safe', 'on'=>'search'),
+			array('id, question_id, create_date, create_user, last_update_date, last_update_user, is_deleted, answer, is_correct, description, item_order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,9 +85,6 @@ class Answer extends KActiveRecord
 			'answer' => 'Odpowiedź',
 			'is_correct' => 'Odpowiedź poprawna',
 			'description' => 'Opis',
-			'correct_order' => 'Correct Order',
-			'column_left' => 'Column Left',
-			'column_right' => 'Column Right',
 			'item_order' => 'Item Order',
 		);
 	}
@@ -113,9 +107,6 @@ class Answer extends KActiveRecord
 		$criteria->compare('answer',$this->answer,true);
 		$criteria->compare('is_correct',$this->is_correct);
 		$criteria->compare('description',$this->description,true);
-		$criteria->compare('correct_order',$this->correct_order);
-		$criteria->compare('column_left',$this->column_left,true);
-		$criteria->compare('column_right',$this->column_right,true);
 		$criteria->compare('item_order',$this->item_order);
 
 		return new CActiveDataProvider($this, array(
@@ -160,7 +151,7 @@ class Answer extends KActiveRecord
 	}
 	
 	private function getOrder($id) {
-		var_dump($id);
+		
 		$model = $this->findByAttributes(array('question_id'=>$id), array('order'=>'item_order desc'));
 		
 		if(!$model) {

@@ -9,7 +9,6 @@
  * @property integer $question_id
  * @property string $answer
  * @property integer $last_change_date
- * @property string $user_comment
  * @property double $score
  *
  * The followings are the available model relations:
@@ -46,9 +45,9 @@ class TestUserQuestionLog extends CActiveRecord
 			array('test_user_id, question_id', 'required'),
 			array('test_user_id, question_id, last_change_date', 'numerical', 'integerOnly'=>true),
 			array('score', 'numerical'),
-			array('answer, user_comment', 'safe'),
+			array('answer', 'safe'),
 			
-			array('id, test_user_id, question_id, answer, last_change_date, user_comment, score', 'safe', 'on'=>'search'),
+			array('id, test_user_id, question_id, answer, last_change_date, score', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,7 +74,6 @@ class TestUserQuestionLog extends CActiveRecord
 			'question_id' => 'Question',
 			'answer' => 'Answer',
 			'last_change_date' => 'Last Change Date',
-			'user_comment' => 'User Comment',
 			'score' => 'Score',
 		);
 	}
@@ -93,7 +91,6 @@ class TestUserQuestionLog extends CActiveRecord
 		$criteria->compare('question_id',$this->question_id);
 		$criteria->compare('answer',$this->answer,true);
 		$criteria->compare('last_change_date',$this->last_change_date);
-		$criteria->compare('user_comment',$this->user_comment,true);
 		$criteria->compare('score',$this->score);
 
 		return new CActiveDataProvider($this, array(
