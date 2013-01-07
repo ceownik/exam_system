@@ -26,12 +26,14 @@
 class Question extends KActiveRecord
 {
 	const TYPE_MCSA = 1;
+	const TYPE_MCMA = 2;
 	
 	public $hasErrors = false;
 	public $hasCorrectAnswer = false;
 	
 	protected static $_typesMap = array(
 		self::TYPE_MCSA => 'Jednokrotnego wyboru',
+		self::TYPE_MCMA => 'Wielokrotnego wyboru',
 	);
 
 	public static function getTypesOptions() {
@@ -191,11 +193,15 @@ class Question extends KActiveRecord
 		if($question->type == self::TYPE_MCSA) {
 			$correctCount = 0;
 			$wrongCount = 0;
+			$enabledCount = 0;
 			foreach($question->answers as $answer) {
 				if($answer->is_correct && ($answer->enabled)) {
 					$correctCount++;
 				} elseif(!$answer->is_correct && $answer->enabled) {
 					$wrongCount++;
+				}
+				if($answer->enabled) {
+					$enabledCount++;
 				}
 			}
 			if($correctCount >= 1) {
@@ -208,7 +214,30 @@ class Question extends KActiveRecord
 				$question->hasErrors = true;
 			}
 			
-			if(count($question->answers) < 2) {
+			if($enabledCount < 2) {
+				$question->hasErrors = true;
+			}
+		} elseif($question->type == self::TYPE_MCMA) {
+			$correctCount = 0;
+			$wrongCount = 0;
+			$enabledCount = 0;
+			foreach($question->answers as $answer) {
+				if($answer->is_correct && ($answer->enabled)) {
+					$correctCount++;
+				} elseif(!$answer->is_correct && $answer->enabled) {
+					$wrongCount++;
+				}
+				if($answer->enabled) {
+					$enabledCount++;
+				}
+			}
+			if($correctCount >= 1) {
+				$question->hasCorrectAnswer = true;
+			} else {
+				$question->hasErrors = true;
+			}
+			
+			if($enabledCount < 2) {
 				$question->hasErrors = true;
 			}
 		}

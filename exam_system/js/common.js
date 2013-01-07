@@ -168,6 +168,9 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 		var answers = $(this).parents('div.group').find('.answers-count');
 		var answersValue = answers.val();
 		
+		answers.html('');
+		quantity.html('');
+		
 		$.ajax({
 			url: baseUrl + '/admin/exam/getQuestionCount',
 			cache: false,
@@ -179,7 +182,7 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 				type: type
 			},
 			success: function(data){
-				//console.log(data);
+				console.log(data);
 				quantity.html('');
 				var html = '';
 				for(var i=0; i<=data.count; i++)  {
@@ -193,8 +196,9 @@ function updateQuestionQuantity(testId, dropdown, baseUrl) {
 				answers.html('');
 				if(type==1 || type=='') 
 					var loopTo = data.answersCount.minWrong + 1;
-				else if(type==2)
+				else if(type==2) {
 					var loopTo = data.answersCount.minWrong + data.answersCount.minCorrect;
+				}
 				for(i=2; i<=loopTo; i++) {
 					html = '<option value="'+i+'">'+i+'</option>';
 					if(i==answersValue)
@@ -281,7 +285,8 @@ function testLooper(baseUrl, doLoop, endTest ) {
 		type: "POST",
 		data: postData,
 		success: function(data){
-			//console.log(data);console.log(test.ajaxInterval);console.log(test.timeLeft);
+			console.log(data);
+			//console.log(test.ajaxInterval);console.log(test.timeLeft);
 			if(data.status=='success') {
 				if(!test.saved) {
 					if(Math.abs(test.timeLeft - data.time_left)>5) {

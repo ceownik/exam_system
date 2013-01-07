@@ -152,7 +152,9 @@ class QuestionGroupHistory extends KActiveRecord
 			if(!$q->hasErrors && $q->enabled) {
 				if($type==null || $type=="")
 					++$count;
-				elseif($type == Question::TYPE_MCSA)
+				elseif($type == Question::TYPE_MCSA && $q->type==Question::TYPE_MCSA)
+					++$count;
+				elseif($type==Question::TYPE_MCMA && $q->type==Question::TYPE_MCMA)
 					++$count;
 			}
 		}
@@ -165,7 +167,9 @@ class QuestionGroupHistory extends KActiveRecord
 			if(!$q->hasErrors && $q->enabled) {
 				if($type==null || $type == 0) {
 					$questions[] = $q;
-				} elseif($type == Question::TYPE_MCSA) {
+				} elseif($type == Question::TYPE_MCSA && $q->type==Question::TYPE_MCSA) {
+					$questions[] = $q;
+				} elseif($type==Question::TYPE_MCMA && $q->type==Question::TYPE_MCMA) {
 					$questions[] = $q;
 				}
 			}
@@ -179,11 +183,13 @@ class QuestionGroupHistory extends KActiveRecord
 		$maxCorrectCount = null;
 		$maxWrongCount = null;
 		foreach($this->questions as $q) {
-			if(!$q->hasErrors) {
-				if($q->type == Question::TYPE_MCSA) {
+			if(!$q->hasErrors && $q->enabled) {
+				if($q->type == Question::TYPE_MCSA || $q->type==Question::TYPE_MCMA) {
 					$correct = 0;
 					$wrong = 0;
 					foreach($q->answers as $answer) {
+						if(!$answer->enabled)
+							continue;
 						if($answer->is_correct)
 							$correct++;
 						elseif(!$answer->is_correct)
@@ -204,7 +210,7 @@ class QuestionGroupHistory extends KActiveRecord
 						$maxCorrectCount = $correct;
 						$maxWrongCount = $wrong;
 					}
-				}
+				} 
 			}
 		}
 		return array(

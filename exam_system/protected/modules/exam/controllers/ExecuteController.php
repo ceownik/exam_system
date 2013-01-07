@@ -159,7 +159,7 @@ class ExecuteController extends KPublicController
 			$questionLog->test_user_id = $this->userLogModel->id;
 			$questionLog->question_id = $question->id;
 			$questionLog->save();
-			if($question->type==Question::TYPE_MCSA) {
+			if($question->type==Question::TYPE_MCSA || $question->type==Question::TYPE_MCMA) {
 				$this->generateAnswers($question, $questionGroupSettings->answers, $questionLog);
 			}
 		}
@@ -181,6 +181,22 @@ class ExecuteController extends KPublicController
 			if(!is_array($selectedCorrect))
 				$selectedCorrect = array($selectedCorrect);
 			$selectedWrong = array_rand($wrongAnswers, $count - 1);
+			if(!is_array($selectedWrong))
+				$selectedWrong = array($selectedWrong);
+		} elseif($question->type==Question::TYPE_MCMA) {
+			foreach($question->answers as $k=>$answer) {
+				if($answer->is_correct) {
+					$correctAnswers[$k] = $k;
+				} else {
+					$wrongAnswers[$k] = $k;
+				}
+			}
+			$selectedCorrect = array_rand($correctAnswers); // pick one correct
+			unset($correctAnswers[$selectedCorrect]); // remove it from rest of correct answers
+			if(!is_array($selectedCorrect))
+				$selectedCorrect = array($selectedCorrect);
+			$allAnswers = CMap::mergeArray($correctAnswers, $wrongAnswers);
+			$selectedWrong = array_rand($allAnswers, $count - 1);
 			if(!is_array($selectedWrong))
 				$selectedWrong = array($selectedWrong);
 		}
@@ -253,6 +269,24 @@ class ExecuteController extends KPublicController
 									$answerLog->last_change_date = $time;
 								} else {
 									if($answerLog->id==$selected) {
+										$answerLog->selected = 1;
+									} else {
+										$answerLog->selected = 0;
+									}
+								}
+								$answerLog->save();
+							}
+						} elseif($questionLog->question->type==Question::TYPE_MCMA) {
+							$selected = null;
+							if(isset($post['question-'.$questionLog->id])) {
+								$selected = $post['question-'.$questionLog->id];
+							}
+							foreach($questionLog->testUserAnswerLogs as $answerLog) {
+								if($selected==null) {
+									$answerLog->selected = -1;
+									$answerLog->last_change_date = $time;
+								} else {
+									if(in_array($answerLog->id, $selected)) {
 										$answerLog->selected = 1;
 									} else {
 										$answerLog->selected = 0;

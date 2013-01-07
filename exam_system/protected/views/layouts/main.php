@@ -31,7 +31,7 @@
 				//array('label'=>'Contact', 'url'=>array('/site/contact')),
 				array('label'=>'Zaloguj', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Wyloguj ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Panel administracyjny', 'url'=>array('/admin/index'), 'visible'=>!Yii::app()->user->isGuest),
+				array('label'=>'Panel administracyjny', 'url'=>array('/admin/index'), 'visible'=>(!Yii::app()->user->isGuest && Yii::app()->user->checkAccess('admin'))),
 			),
 		)); ?>
 	</div><!-- mainmenu -->

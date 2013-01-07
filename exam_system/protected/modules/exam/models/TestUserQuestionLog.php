@@ -7,7 +7,6 @@
  * @property integer $id
  * @property integer $test_user_id
  * @property integer $question_id
- * @property string $answer
  * @property integer $last_change_date
  * @property double $score
  *
@@ -45,9 +44,8 @@ class TestUserQuestionLog extends CActiveRecord
 			array('test_user_id, question_id', 'required'),
 			array('test_user_id, question_id, last_change_date', 'numerical', 'integerOnly'=>true),
 			array('score', 'numerical'),
-			array('answer', 'safe'),
 			
-			array('id, test_user_id, question_id, answer, last_change_date, score', 'safe', 'on'=>'search'),
+			array('id, test_user_id, question_id, last_change_date, score', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,7 +70,6 @@ class TestUserQuestionLog extends CActiveRecord
 			'id' => 'ID',
 			'test_user_id' => 'Test User',
 			'question_id' => 'Question',
-			'answer' => 'Answer',
 			'last_change_date' => 'Last Change Date',
 			'score' => 'Score',
 		);
@@ -89,7 +86,6 @@ class TestUserQuestionLog extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('test_user_id',$this->test_user_id);
 		$criteria->compare('question_id',$this->question_id);
-		$criteria->compare('answer',$this->answer,true);
 		$criteria->compare('last_change_date',$this->last_change_date);
 		$criteria->compare('score',$this->score);
 

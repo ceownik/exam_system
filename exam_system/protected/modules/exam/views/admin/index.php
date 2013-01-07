@@ -100,7 +100,7 @@
 				),
 				array(
 					'class'=>'CButtonColumn',
-					'template'=>'{end} {statistics}',
+					'template'=>'{end} {statistics} {print}',
 					'buttons'=>array(
 						'end'=>array(
 							'label'=>'(zakończ)',
@@ -110,6 +110,10 @@
 						'statistics'=>array(
 							'label'=>'(podsumowanie)',
 							'url'=>'Yii::app()->createUrl("/admin/exam/testSummary/id/".$data->primaryKey)',
+						),
+						'print' => array(
+							'label'=>'(wersja do druku)',
+							'url'=>'Yii::app()->createUrl("/admin/exam/print/id/".$data->primaryKey)',
 						),
 					),
 				),
@@ -210,11 +214,15 @@
 				),
 				array(
 					'class'=>'CButtonColumn',
-					'template'=>'{statistics}',
+					'template'=>'{statistics} {print}',
 					'buttons'=>array(
 						'statistics'=>array(
 							'label'=>'(podsumowanie)',
 							'url'=>'Yii::app()->createUrl("/admin/exam/testSummary/id/".$data->primaryKey)',
+						),
+						'print' => array(
+							'label'=>'(wersja do druku)',
+							'url'=>'Yii::app()->createUrl("/admin/exam/print/id/".$data->primaryKey)',
 						),
 					),
 				),

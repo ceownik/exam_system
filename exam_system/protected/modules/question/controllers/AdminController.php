@@ -299,7 +299,6 @@ class AdminController extends KAdminController
 		
 		$question = $this->getQuestion($id);
 		
-		if($question->type == Question::TYPE_MCSA) {
 			$model = new Answer;
 			$model->question_id = $question->primaryKey;
 			
@@ -315,6 +314,12 @@ class AdminController extends KAdminController
 					}
 				}
 			}
+		if($question->type == Question::TYPE_MCSA) {
+			$this->render('create-mcsa-answer', array(
+				'model'=>$model,
+				'question'=>$question,
+				));
+		} elseif($question->type == Question::TYPE_MCMA) {
 			$this->render('create-mcsa-answer', array(
 				'model'=>$model,
 				'question'=>$question,

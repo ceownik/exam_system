@@ -407,8 +407,7 @@ form.active-form .errorSummary p {
 
 #content .score-test .question-body {
 	display: block;
-	float: left;
-	
+	width: 100%;
 }
 
 #content .score-test .score {
@@ -420,8 +419,14 @@ form.active-form .errorSummary p {
 	
 }
 
-#content .score-test {
+.score-test .question-body .answer {
 	
+}
+.score-test .question-body .answer.selected.wrong {
+	background-color: #f76f6f;
+}
+.score-test .question-body .answer.selected.correct {
+	background-color: #BBDF8D;
 }
 
 

@@ -139,15 +139,10 @@
 			),
 			array(
 				'name'=> 'passed',
-				'value'=>'$data->passed == 1 ? "Tak" : "Nie"',
+				'value'=>'$data->passed == null ? "" : ($data->passed == 1 ? "Tak" : "Nie")',
 				'filter'=>false,
 				'sortable'=>false,
 			),
-//			array(
-//				'name'=>'duration_time',
-//				'htmlOptions'=>array('style'=>'width: 110px;'),
-//				'filter'=>false,
-//			),
 			array(
 				'class' => 'application.extensions.kgridview.KButtonColumn',
 				'template' => '',

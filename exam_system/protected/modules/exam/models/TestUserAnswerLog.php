@@ -9,7 +9,6 @@
  * @property integer $answer_id
  * @property integer $display_order
  * @property integer $selected
- * @property integer $item_order
  * @property integer $last_change_date
  *
  * The followings are the available model relations:
@@ -39,9 +38,9 @@ class TestUserAnswerLog extends CActiveRecord
 	{
 		return array(
 			array('test_log_id, answer_id, display_order', 'required'),
-			array('test_log_id, answer_id, display_order, selected, item_order, last_change_date', 'numerical', 'integerOnly'=>true),
+			array('test_log_id, answer_id, display_order, selected, last_change_date', 'numerical', 'integerOnly'=>true),
 			
-			array('id, test_log_id, answer_id, display_order, selected, item_order, last_change_date', 'safe', 'on'=>'search'),
+			array('id, test_log_id, answer_id, display_order, selected, last_change_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,7 +66,6 @@ class TestUserAnswerLog extends CActiveRecord
 			'answer_id' => 'Answer',
 			'display_order' => 'Display Order',
 			'selected' => 'Selected',
-			'item_order' => 'Item Order',
 			'last_change_date' => 'Last Change Date',
 		);
 	}
@@ -85,7 +83,6 @@ class TestUserAnswerLog extends CActiveRecord
 		$criteria->compare('answer_id',$this->answer_id);
 		$criteria->compare('display_order',$this->display_order);
 		$criteria->compare('selected',$this->selected);
-		$criteria->compare('item_order',$this->item_order);
 		$criteria->compare('last_change_date',$this->last_change_date);
 
 		return new CActiveDataProvider($this, array(

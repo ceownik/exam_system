@@ -6,5 +6,11 @@ switch($question->type) {
 			'questionCount' => $questionCount,
 		));
 		break;
+	case Question::TYPE_MCMA:
+		$this->renderPartial('question-mcma', array(
+			'question' => $question,
+			'questionCount' => $questionCount,
+		));
+		break;
 }
 ?>

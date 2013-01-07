@@ -1,4 +1,4 @@
-<div class="question type-mcsa <?php if($question->hasErrors){echo 'errors';}?>" >
+<div class="question type-mcma <?php if($question->hasErrors){echo 'errors';}?>" >
 	<table class="question-table">
 		<tr>
 			<td class="question-number">

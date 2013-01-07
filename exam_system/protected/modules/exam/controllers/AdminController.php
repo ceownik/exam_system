@@ -417,39 +417,144 @@ class AdminController extends KAdminController
 		$questions = array();
 		$answers = array();
 		$scores = array();
+		$sum = 0;
+		$total = 0;
 		
-		$transaction = Yii::app()->db->beginTransaction();
-		try {
+		if($model->status!=TestUserLog::STATUS_SCORED) {
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				foreach($model->testUserQuestionLogs as $questionLog) {
+					$scores[$questionLog->id] = $questionLog->score;
+					$break = false;
+					$answers[$questionLog->id] = array();
+					// find question
+					foreach($questionSet->questionGroups as $questionGroup) {
+						foreach($questionGroup->questions as $question) {
+							if($questionLog->question_id==$question->id) {
+								// found question - score it
+								$questions[$questionLog->id] = $question;
+								$total++;
+								if($question->type == Question::TYPE_MCSA) {
+									$correctSelected = 0;
+									foreach($questionLog->testUserAnswerLogs as $answerLog) {
+										//if($answerLog->selected==1) {
+											foreach($question->answers as $answer) {
+												if($answerLog->answer_id==$answer->id) {
+													if($answerLog->selected==1)
+														$answer->selected = 1;
+													else
+														$answer->selected = 0;
+													$answers[$questionLog->id][] = $answer;
+													if($answer->is_correct && $answerLog->selected==1) {
+														$correctSelected = 1;
+													}
+												}
+											}
+										//}
+									}
+									if($model->status == TestUserLog::STATUS_COMPLETED) {
+										$questionLog->score = $correctSelected;
+										$questionLog->update(array('score'));
+										$scores[$questionLog->id] = $correctSelected;
+										$sum +=1;
+									}
+								} elseif($question->type==Question::TYPE_MCMA) {
+									$correctAnswers = 0;
+									$correctSelected = 0;
+									$wrongSelected = 0;
+									foreach($questionLog->testUserAnswerLogs as $answerLog) {
+										
+										foreach($question->answers as $answer) {
+											if($answerLog->answer_id==$answer->id) {
+												if($answerLog->selected==1)
+													$answer->selected = 1;
+												else
+													$answer->selected = 0;
+
+												if($answer->is_correct)
+													$correctAnswers++;
+
+												$answers[$questionLog->id][] = $answer;
+												if($answer->is_correct && $answerLog->selected==1) {
+													$correctSelected++;
+												} elseif($answerLog->selected==1) {
+													$wrongSelected++;
+												}
+											}
+										}
+									}
+									if($model->status == TestUserLog::STATUS_COMPLETED) {
+										$questionLog->score = (($correctSelected==$correctAnswers)&&($wrongSelected==0)) ? 1 : 0;
+										$sum +=$questionLog->score;
+										$questionLog->update(array('score'));
+										$scores[$questionLog->id] = $questionLog->score;
+									}
+								}
+								$break = true;
+								break;
+							}
+						}
+						if($break)
+							break;
+					}
+				}
+	//			if($model->status == TestUserLog::STATUS_COMPLETED) {
+	//				$model->status = TestUserLog::STATUS_SCORED;
+	//				$model->update(array('status'));
+	//			}
+				$transaction->commit();
+			} catch(Exception $e) {
+				KThrowException::throw500();
+			}
+		} else {
 			foreach($model->testUserQuestionLogs as $questionLog) {
 				$scores[$questionLog->id] = $questionLog->score;
 				$break = false;
+				$answers[$questionLog->id] = array();
 				// find question
 				foreach($questionSet->questionGroups as $questionGroup) {
 					foreach($questionGroup->questions as $question) {
 						if($questionLog->question_id==$question->id) {
 							// found question - score it
 							$questions[$questionLog->id] = $question;
+							$total++;
 							if($question->type == Question::TYPE_MCSA) {
 								$correctSelected = 0;
 								foreach($questionLog->testUserAnswerLogs as $answerLog) {
-									if($answerLog->selected==1) {
+									//if($answerLog->selected==1) {
 										foreach($question->answers as $answer) {
 											if($answerLog->answer_id==$answer->id) {
-												$answers[$questionLog->id] = $answer;
-												if($answer->is_correct) {
-													$correctSelected = 1;
-												}
+												if($answerLog->selected==1)
+													$answer->selected = 1;
+												else
+													$answer->selected = 0;
+												$answers[$questionLog->id][] = $answer;
 											}
+										}
+									//}
+								}
+								$scores[$questionLog->id] = $questionLog->score;
+								$sum +=$questionLog->score;
+							} elseif($question->type==Question::TYPE_MCMA) {
+								$correctAnswers = 0;
+								$correctSelected = 0;
+								$wrongSelected = 0;
+								foreach($questionLog->testUserAnswerLogs as $answerLog) {
+
+									foreach($question->answers as $answer) {
+										if($answerLog->answer_id==$answer->id) {
+											if($answerLog->selected==1)
+												$answer->selected = 1;
+											else
+												$answer->selected = 0;
+
+											$answers[$questionLog->id][] = $answer;
 										}
 									}
 								}
-								if($model->status == TestUserLog::STATUS_COMPLETED) {
-									$questionLog->score = $correctSelected;
-									$questionLog->update(array('score'));
-									$scores[$questionLog->id] = $correctSelected;
-								}
-							}								
-
+								$sum +=$questionLog->score;
+								$scores[$questionLog->id] = $questionLog->score;
+							}
 							$break = true;
 							break;
 						}
@@ -458,16 +563,7 @@ class AdminController extends KAdminController
 						break;
 				}
 			}
-//			if($model->status == TestUserLog::STATUS_COMPLETED) {
-//				$model->status = TestUserLog::STATUS_SCORED;
-//				$model->update(array('status'));
-//			}
-			$transaction->commit();
-		} catch(Exception $e) {
-			KThrowException::throw500();
-			die;
 		}
-		
 		
 		if(!empty($_POST)) {
 			$correct = true;
@@ -516,6 +612,96 @@ class AdminController extends KAdminController
 			'questions'=>$questions,
 			'answers'=>$answers,
 			'scores'=>$scores,
+			'total'=>$total,
+			'sum'=>$sum,
+		));
+	}
+	
+	public function actionPrint($id) {
+		$testModel = Test::model()->findByPk($id);
+		$questionSet = QuestionSet::getHistoryByIdVersion($testModel->question_set_id, $testModel->question_set_version);
+		
+		
+		$selectedQuestions = array();
+		$selectedAnswers = array();
+		foreach($testModel->testQuestionGroups as $questionGroupSettings) {
+			if($questionGroupSettings->question_quantity > 0 ) {
+				foreach($questionSet->questionGroups as $group) { // find correct group
+					if($questionGroupSettings->group_id == $group->id) {
+						$questions = $group->getCorrectQuestions($questionGroupSettings->question_types);
+						if(count($questions) < $questionGroupSettings->question_quantity) {
+							KThrowException::throw404();
+						} else {
+							$selected = array_rand($questions, $questionGroupSettings->question_quantity);
+							if(!is_array($selected))
+								$selected = array($selected);
+							
+							foreach($selected as $q) {
+								$question = $questions[$q];
+								$selectedQuestions[] = $question;
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		shuffle($selectedQuestions);
+		foreach($selectedQuestions as $question) {
+			if($question->type==Question::TYPE_MCSA || $question->type==Question::TYPE_MCMA) {
+				$count = $questionGroupSettings->answers;
+				$answers = array();
+				$correctAnswers = array();
+				$wrongAnswers = array();
+				if($question->type==Question::TYPE_MCSA) {
+					foreach($question->answers as $k=>$answer) {
+						if($answer->is_correct) {
+							$correctAnswers[$k] = $k;
+						} else {
+							$wrongAnswers[$k] = $k;
+						}
+					}
+					$selectedCorrect = array(array_rand($correctAnswers));
+					if(!is_array($selectedCorrect))
+						$selectedCorrect = array($selectedCorrect);
+					$selectedWrong = array_rand($wrongAnswers, $count - 1);
+					if(!is_array($selectedWrong))
+						$selectedWrong = array($selectedWrong);
+				} elseif($question->type==Question::TYPE_MCMA) {
+					foreach($question->answers as $k=>$answer) {
+						if($answer->is_correct) {
+							$correctAnswers[$k] = $k;
+						} else {
+							$wrongAnswers[$k] = $k;
+						}
+					}
+					$selectedCorrect = array_rand($correctAnswers); // pick one correct
+					unset($correctAnswers[$selectedCorrect]); // remove it from rest of correct answers
+					if(!is_array($selectedCorrect))
+						$selectedCorrect = array($selectedCorrect);
+					$allAnswers = CMap::mergeArray($correctAnswers, $wrongAnswers);
+					$selectedWrong = array_rand($allAnswers, $count - 1);
+					if(!is_array($selectedWrong))
+						$selectedWrong = array($selectedWrong);
+				}
+				foreach($selectedCorrect as $correct)
+					$answers[] = $question->answers[$correct];
+				foreach($selectedWrong as $wrong)
+					$answers[] = $question->answers[$wrong];
+				shuffle($answers);
+				$selectedAnswers[$question->primaryKey] = array();
+				foreach($answers as $answer) {
+					$selectedAnswers[$question->primaryKey][] = $answer;
+				}
+			}
+		}
+		
+		$this->layout = 'print';
+		
+		$this->render('print', array(
+			'questions' => $selectedQuestions,
+			'answers' => $selectedAnswers,
+			'test' => $testModel,
 		));
 	}
 }

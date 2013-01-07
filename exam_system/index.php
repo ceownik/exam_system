@@ -47,27 +47,3 @@ $end = microtime(true);
 $time = $end - $start;
 
 ?>
-
-<?php 
- // TODO: delete lines below
-?>
-<div id="render-time" 
-	 style="background-color: rgb(15,0,80); 
-		color: rgb(0,215,75); 
-		padding: 0pc 5px; 
-		position: fixed; 
-		bottom: 0px; 
-		right: 0px; 
-		font-weight: bold;
-		cursor: pointer;
-		display: none;">
-	<?php echo 'Render time: '.$time; ?>
-</div>
-<script type="text/javascript">
-	console.log('Render time: <?php echo $time; ?>');
-	(function($){
-		$("#render-time").click(function(){
-			$(this).fadeOut();
-		});
-	})(jQuery);
-</script><?

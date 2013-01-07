@@ -50,7 +50,7 @@
 			),
 			array(
 				'name'=> 'passed',
-				'value'=>'$data->passed == 1 ? "Tak" : "Nie"',
+				'value'=>'$data->passed == null ? "" : ($data->passed == 1 ? "Tak" : "Nie")',
 				'filter'=>false,
 				'sortable'=>false,
 			),
@@ -66,7 +66,7 @@
 					'score'=>array(
 						'label'=>'(oceń)',
 						'url'=>'Yii::app()->createUrl("/admin/exam/scoreTest/id/".$data->primaryKey)',
-						'visible'=>'$data->status == TestUserLog::STATUS_COMPLETED'
+						'visible'=>'$data->status == TestUserLog::STATUS_COMPLETED || $data->status == TestUserLog::STATUS_SCORED'
 					),
 					'end'=>array(
 						'label'=>'(zakończ)',

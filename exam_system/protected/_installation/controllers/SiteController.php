@@ -141,6 +141,10 @@ class SiteController extends CController
 					$valid = false;
 				}
 				
+				if(strlen($data['title'])<2) {
+					$valid = false;
+				}
+				
 				if(!$valid)
 				{
 					echo CJSON::encode(array(
@@ -153,6 +157,7 @@ class SiteController extends CController
 				Yii::app()->session->add('login', $data['login']);
 				Yii::app()->session->add('email', $data['email']);
 				Yii::app()->session->add('password_user', $data['password_user']);
+				Yii::app()->session->add('appName', $data['title']);
 				
 				// perform installation
 				if($this->install())
@@ -331,6 +336,10 @@ return array(
 				->insert('settings', $s);
 		}
 		
+		
+		$db->createCommand()->update('settings', array(
+			'value' => serialize(Yii::app()->session->get('appName')),
+		),'category = "appAdmin" and name = "applicationName"');
 		return true;
 	}
 	
@@ -675,7 +684,7 @@ return array(
 				`last_change_date` int(11) not null,
 				`end_date` int(11) not null,
 				`mark` float default null,
-				`passed` boolean not null default false,
+				`passed` boolean default null,
 				
 				primary key(`id`),
 				foreign key(`test_id`) references `test`(`id`),
@@ -687,8 +696,6 @@ return array(
 				`id` int(11) not null auto_increment,
 				`test_user_id` int(11) not null,
 				`question_id` int(11) not null,
-				
-				`answer` text collate utf8_unicode_ci default null,
 				
 				`last_change_date` int(11) default null,
 				
@@ -883,6 +890,11 @@ return array(
 			'category' => 'appAdmin',
 			'name' => 'applicationName',
 			'value' => 'Egzamin',
+		),
+		array(
+			'category' => 'appAdmin',
+			'name' => 'sessionTime',
+			'value' => 15,
 		),
 	);
 }

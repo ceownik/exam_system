@@ -1,15 +1,17 @@
 <div class="question-row <?php echo ($counter%2==0)?'even':'odd'; ?> "><?php
 
-switch($questionLog->question->type) {
+switch($question->type) {
 	case Question::TYPE_MCSA:
-		$this->renderPartial('question-mcsa', array(
-			'questionLog'=>$questionLog,
+		$this->renderPartial('print-question-mcsa', array(
+			'question'=>$question,
+			'answers'=>$answers,
 			'counter'=>$counter,
 		));
 		break;
 	case Question::TYPE_MCMA:
-		$this->renderPartial('question-mcma', array(
-			'questionLog'=>$questionLog,
+		$this->renderPartial('print-question-mcsa', array(
+			'question'=>$question,
+			'answers'=>$answers,
 			'counter'=>$counter,
 		));
 		break;
