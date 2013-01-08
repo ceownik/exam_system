@@ -433,13 +433,14 @@ form.active-form .errorSummary p {
 
 
 .homepage {
-	
+	width: 740px;
+	margin: 0px auto;
 }
 .homepage .item {
 	display: block;
 	float: left;
 	text-align: center;
-	margin: 10px 40px;
+	margin: 10px 10px;
 }
 .homepage .item img {
 	display: block;

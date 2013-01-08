@@ -698,10 +698,22 @@ class AdminController extends KAdminController
 		
 		$this->layout = 'print';
 		
+		$hash = mt_rand(0, 9999999999999999);
+		$hash = substr(md5($hash), mt_rand(0, 27), 5);
+		
 		$this->render('print', array(
 			'questions' => $selectedQuestions,
 			'answers' => $selectedAnswers,
 			'test' => $testModel,
+			'hash' => $hash,
 		));
+	}
+	
+	public function getAlphabet($letterOn = null) {
+		$a = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','w','y','z');
+		if($letterOn==null)
+			return $a;
+		else
+			return $a[$letterOn];
 	}
 }

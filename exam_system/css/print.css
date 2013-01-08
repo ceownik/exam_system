@@ -16,11 +16,19 @@ blockquote {margin:1.5em;padding:1em;font-style:italic;font-size:.9em;}
 a:link, a:visited {background:transparent;font-weight:700;text-decoration:underline;}
 a:link:after, a:visited:after {content:" (" attr(href) ")";font-size:90%;}
 
+#test {
+	page-break-after: always;
+}
 
 .test-title {
 	display: block;
 	text-align: center;
 	width: 100%;
+	border-bottom: 1px solid #ccc;
+}
+
+.hash {
+	float: right;
 }
 
 p {
@@ -30,4 +38,8 @@ p {
 
 .question-row {
 	margin-bottom: 20px;
+}
+
+td {
+	vertical-align: top;
 }

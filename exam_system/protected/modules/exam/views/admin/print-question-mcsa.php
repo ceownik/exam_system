@@ -8,7 +8,7 @@
 				<?php echo $question->question; ?>
 			</td>
 		</tr>
-		<?php $i=0; $a = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','w','y','z'); foreach($answers as $answer) : ?>
+		<?php $i=0; $a = $this->getAlphabet(); foreach($answers as $answer) : ?>
 		<tr>
 			<td></td>
 			<td style="width: 20px;">
